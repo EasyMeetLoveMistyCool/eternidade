@@ -274,7 +274,7 @@ body {
 .dm-btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 10px; margin-bottom: 16px; }
 .dm-btn-row:last-child { margin-bottom: 0; }
 .dm-btn-single { display: flex; justify-content: center; margin-bottom: 16px; }
-.dm-btn-single .dm-btn { width: auto; min-width: 200px; max-width: 80%; }
+.dm-btn-single .dm-btn { width: auto; min-width: 280px; max-width: 90%; }
 .dm-section-title { text-align: center; font-size: 13px; color: var(--aux-gray); letter-spacing: 2px; margin: 20px 0 8px; }
 .dm-divider { border: none; border-top: 1px solid var(--border-subtle); margin: 20px 0; }
 .dm-footer-spacer { height: 24px; }
@@ -608,13 +608,13 @@ body {
 .diary-card-footer { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--aux-light); }
 .diary-card-tags { display: flex; gap: 6px; align-items: center; }
 .diary-card-tag { font-size: 10px; color: var(--aux-gray); background: var(--note-bg); padding: 2px 6px; border-radius: 4px; }
-.diary-write-btn { text-align: center; padding: 12px; background: var(--ink-gray); color: var(--card-cream); border-radius: 12px; font-size: 14px; letter-spacing: 2px; cursor: pointer; margin: 8px 14px; }
+.diary-write-btn { text-align: center; padding: 12px; background: var(--ink-gray); color: var(--card-cream); border-radius: 12px; font-size: 14px; letter-spacing: 2px; cursor: pointer; margin: 8px 14px 20px; }
 .diary-write-btn:active { opacity: 0.8; }
 .diary-empty { text-align: center; color: var(--aux-light); padding: 60px 0; font-size: 14px; letter-spacing: 2px; }
 
 /* 信箱样式 */
 .letters-mailbox-list { display: flex; flex-direction: column; gap: 16px; }
-.letters-mailbox-item { background: var(--card-cream); border-radius: 12px; padding: 14px; box-shadow: 0 2px 8px var(--shadow-brown); cursor: pointer; border: 1px solid var(--border-subtle); display: flex; align-items: center; gap: 12px; }
+.letters-mailbox-item { background: var(--card-cream); border-radius: 12px; padding: 14px; box-shadow: 0 2px 8px var(--shadow-brown); cursor: pointer; border: 1px solid var(--border-subtle); display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
 .letters-mailbox-item:active { transform: scale(0.98); }
 .letters-mailbox-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--avatar-bg); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--aux-gray); overflow: hidden; flex-shrink: 0; }
 .letters-mailbox-avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -687,7 +687,8 @@ body {
 .css-weather.night::after { content: ''; position: absolute; top: 2px; left: 16px; width: 6px; height: 6px; background: #FFF8E1; border-radius: 50%; box-shadow: 3px -2px 0 1px #FFF8E1, 5px 3px 0 0px #FFF8E1; }
 .css-weather.starry { width: 36px; height: 36px; position: relative; }
 .css-weather.starry::before { content: ''; position: absolute; top: 6px; left: 6px; width: 4px; height: 4px; background: #FFE082; border-radius: 50%; box-shadow: 8px -2px 0 0 #FFE082, 16px 4px 0 0 #FFE082, 4px 12px 0 0 #FFE082, 14px 14px 0 0 #FFE082, 20px 8px 0 1px #FFE082, 2px 20px 0 0 #FFE082, 18px 20px 0 0 #FFE082; }
-.css-weather.rainbow { width: 36px; height: 20px; border-radius: 18px 18px 0 0; border: 3px solid transparent; border-top: 3px solid #E57373; box-shadow: 0 -4px 0 2px #FFB74D, 0 -8px 0 5px #FFE082, 0 -12px 0 8px #AED581, 0 -16px 0 11px #64B5F6, 0 -20px 0 14px #CE93D8; position: relative; margin-bottom: 10px; }
+/* 修复4：彩虹 CSS 图标缩小 */
+.css-weather.rainbow { width: 24px; height: 14px; border-radius: 12px 12px 0 0; border: 2px solid transparent; border-top: 2px solid #E57373; box-shadow: 0 -3px 0 1px #FFB74D, 0 -6px 0 4px #FFE082, 0 -9px 0 7px #AED581, 0 -12px 0 10px #64B5F6, 0 -15px 0 13px #CE93D8; position: relative; margin-bottom: 8px; }
 .css-weather.windy { width: 36px; height: 6px; position: relative; }
 .css-weather.windy::before { content: ''; position: absolute; top: 0; left: 0; width: 24px; height: 3px; background: #90A4AE; border-radius: 2px; }
 .css-weather.windy::after { content: ''; position: absolute; top: 8px; left: 6px; width: 18px; height: 3px; background: #B0BEC5; border-radius: 2px; }
@@ -768,11 +769,11 @@ body {
       <div class="polaroid" onclick="showPlaceholder('纪念日')"><div class="polaroid-img">✿</div><div class="polaroid-label">纪念日</div></div>
     </div>
     <div class="world-section"><div class="snow-globe" onclick="openSmallWorld()"><div class="globe"><div class="shine"></div></div><div class="base"></div><div class="globe-label">小世界</div></div></div>
+    <!-- 修复5：档案库删掉卡牌库抽屉 -->
     <div class="archive-cabinet">
       <div class="cabinet-label">档 案 库</div>
       <div class="drawers">
         <div class="drawer" onclick="event.stopPropagation(); openStateLibrary()"><div class="knob"></div><div class="drawer-label">状态库</div></div>
-        <div class="drawer" onclick="event.stopPropagation(); showPlaceholder('卡牌库')"><div class="knob"></div><div class="drawer-label">卡牌库</div></div>
         <div class="drawer open" onclick="event.stopPropagation(); openMemoryPage()"><div class="knob"></div><div class="drawer-label">记忆库</div><div class="cards-peek">▍▍</div></div>
         <div class="drawer" onclick="event.stopPropagation(); openCardLibrary()"><div class="knob"></div><div class="drawer-label">字卡库</div></div>
         <div class="drawer" onclick="event.stopPropagation(); openPatpatLibrary()"><div class="knob"></div><div class="drawer-label">拍一拍库</div></div>
@@ -807,7 +808,8 @@ body {
       <div class="gear-icon" onclick="openSettings()">⚙</div>
     </div>
   </div>
-    <div class="chat-page" id="privateChatPage">
+
+  <div class="chat-page" id="privateChatPage">
     <div class="chat-header" style="position:relative;"><div class="header-back-hotarea" onclick="goToDesktop()"></div><div class="header-avatar" id="chatHisAvatar" onclick="showDreamDailyNotice()">他</div><div class="hearts-row">🩷🩷🩷🩷🩷🩷🩷🩷🩷</div><div class="header-avatar" id="chatMyAvatar">我</div><div class="header-title" id="chatTitle" onclick="toggleDreamSelect()">梦角🩷我</div><div class="dream-select-dropdown" id="dreamSelectDropdown"></div></div>
     <div class="chat-messages" id="privateChatMessages"></div>
     <div class="typing-indicator" id="privateTypingIndicator">他正在输入中...</div>
@@ -1097,7 +1099,8 @@ const NOTE_MENTION_REPLIES = [
   "你的留言条正在闪闪发光","有一张小纸条在等你哦","纸条已就位，请查收","留言条到了，请签个字","你的今日份纸条已到达",
   "小纸条偷偷溜进来了","留言条：我在这里，看看我","有一封迷你留言等待开启","纸条轻轻落在你的桌面上了","留言条到了，记得看一眼哦"
 ];
-  // ========== 主题色定义 ==========
+
+// ========== 主题色定义 ==========
 const THEMES = {
   default: {name:'默认暖茶', desk:'#EBE5DF', card:'#FDFAF5', paper:'#F8F4E8', xuan:'#F2EDE4', moon:'#F4F6F9', ink:'#4A423B', aux:'#8B8178', blush:'#E8B4B8'},
   mint: {name:'薄荷绿', desk:'#E8F0E3', card:'#F5FAF2', paper:'#F0F5EB', xuan:'#ECF2E6', moon:'#F2F7EF', ink:'#3D4A3B', aux:'#7A8B74', blush:'#A8C9A5'},
@@ -1237,7 +1240,8 @@ async function saveStickers(arr){await ensureDB();return new Promise((r,j)=>{con
 // ========== 专属回复存储 ==========
 async function getPrivateCards(){await ensureDB();return new Promise((r,j)=>{const t=db.transaction('cardLibrary','readonly');const s=t.objectStore('cardLibrary');const R=s.get('privateCardData');R.onsuccess=()=>{r(R.result&&R.result.data?R.result.data:{})};R.onerror=e=>j(e.target.error)})}
 async function savePrivateCards(d){await ensureDB();return new Promise((r,j)=>{const t=db.transaction('cardLibrary','readwrite');const s=t.objectStore('cardLibrary');s.put({key:'privateCardData',data:d});t.oncomplete=()=>r();t.onerror=e=>j(e.target.error)})}
-  // ========== 导航 ==========
+
+// ========== 导航 ==========
 function hideAll(){['desktopPage','privateChatPage','groupChatPage','placeholderPage','cardLibraryPage','settingsPage','memoryPage','privateReplyPage','cleanLogPage','dataViewPage','songLibraryPage','musicPlayerPage','decidePage','teachFullpage','patpatLibraryPage','stateLibraryPage','smallWorldPage','dataMgmtPage','personalPage','notesPage','diaryPage','lettersPage','letterMailboxPage','letterWritePage'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none'})}
 function goToDesktop(){hideAll();document.getElementById('desktopPage').style.display='flex';updateTotalDataSize();updateDesktopTimeCard()}
 function showPlaceholder(t){hideAll();document.getElementById('placeholderPage').style.display='flex';document.getElementById('placeholderTitle').textContent=t+' - 待开发';document.getElementById('placeholderVersion').textContent=''}
@@ -1661,7 +1665,8 @@ async function checkPendingLetterReplies(){
     }
   }
 }
-  // ========== 每日公告 ==========
+
+// ========== 每日公告 ==========
 function getTodayKey(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
 function getWeatherCSS(weatherName){
   const map={晴天:'sunny',雨天:'rainy',多云:'cloudy',夜晚:'night',星空:'starry',彩虹:'rainbow',起风:'windy',雷雨:'thunder',下雪:'snowy',雾气:'foggy'};
@@ -1876,7 +1881,8 @@ function exportWordCardData(){getCL().then(d=>{const json=JSON.stringify(d);down
 function exportPatData(){getPat().then(d=>{const json=JSON.stringify(d);downloadText(json,'拍一拍库.json')})}
 function exportSongLibrary(){getSL().then(d=>{const json=JSON.stringify(d);downloadText(json,'歌曲库.json')})}
 function downloadText(content,filename){const blob=new Blob([content],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url)}
-  // ========== 个性化页面 ==========
+
+// ========== 个性化页面 ==========
 function getPersonal(){const d={theme:'default',fontSize:'medium',bubbleRadius:'standard',myBubbleColor:0,otherBubbleColor:0,timeFormat:'24h',font:'serif',desktopBgStyle:'grid',hasDesktopBg:false};const raw=localStorage.getItem('yiyu_personal');if(raw)try{return{...d,...JSON.parse(raw)}}catch(e){}return d}
 function savePersonal(d){localStorage.setItem('yiyu_personal',JSON.stringify(d));applyPersonal();updateDesktopTimeCard()}
 async function applyPersonal(){
@@ -2160,7 +2166,8 @@ async function triggerPokeReply(isGroup){
     if(document.getElementById('privateChatPage').style.display==='flex'){const rm={id:'',conv:getPrivateConvId(),sender:currentDreamId,content:'[戳一戳]'+text,ts:Date.now()};appendPrivateMsg(rm)}
   }
 }
-  // ========== 回复 ==========
+
+// ========== 回复 ==========
 async function getRandomCards(count,concat){const data=await getCL();const all=[];for(const[,cards]of Object.entries(data.groups))cards.forEach(c=>all.push(c));if(all.length===0)return['（字卡库为空）'];const cc=rand(2,3);const tc=concat?cc:count;const pool=[...all];const sel=[];for(let i=0;i<tc;i++){if(pool.length===0){sel.push(all[Math.floor(Math.random()*all.length)])}else{sel.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0])}}for(let i=sel.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[sel[i],sel[j]]=[sel[j],sel[i]]}if(concat){const puncs='。！？；…、，,.!?;';let result='';for(let i=0;i<sel.length;i++){let card=sel[i];const lc=card.charAt(card.length-1);if(i===sel.length-1){if(!puncs.includes(lc))card+='。';}else{if(!puncs.includes(lc))card+='，';}result+=card}return[result]}return sel}
 
 async function getRandomReply(dreamId,count,concat){
@@ -2370,7 +2377,8 @@ function closeCLModal(e){if(e&&e.target!==document.getElementById('clModalOverla
 async function switchCLTab(tab){document.querySelectorAll('.cl-tab').forEach(t=>t.classList.remove('active'));event.target.classList.add('active');if(tab==='cards'){clV='groups';clG='';clSel.clear();clAll=false;clQ='';await renderCLGroups()}else if(tab==='emoji'){clV='emoji';clG='';clSel.clear();clAll=false;await renderEmojiPage()}else if(tab==='sticker'){clV='sticker';clG='';clSel.clear();clAll=false;await renderStickerLibPage()}}
 async function handleCLBack(){if(clV==='cards')await renderCLGroups();else if(clV==='emoji'||clV==='sticker'){clV='groups';clG='';clSel.clear();clAll=false;clQ='';document.getElementById('clTabRow').style.display='flex';document.querySelectorAll('.cl-tab').forEach((t,i)=>t.classList.toggle('active',i===0));await renderCLGroups()}else goToDesktop()}
 async function openCardLibrary(){hideAll();document.getElementById('cardLibraryPage').style.display='flex';clV='groups';clG='';clSel.clear();clAll=false;clQ='';document.getElementById('clTabRow').style.display='flex';document.querySelectorAll('.cl-tab').forEach((t,i)=>t.classList.toggle('active',i===0));document.querySelectorAll('.cl-sub-row span').forEach((s,i)=>s.classList.toggle('active',i===0));await renderCLGroups()}
-  // ========== 专属回复库页面 ==========
+
+// ========== 专属回复库页面 ==========
 let prCurDream='';
 async function openPrivateReplyPage(){hideAll();document.getElementById('cardLibraryPage').style.display='flex';document.getElementById('clTabRow').style.display='none';document.querySelectorAll('.cl-sub-row span').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.cl-sub-row span')[1].classList.add('active');document.getElementById('cardLibraryPage').style.display='none';document.getElementById('privateReplyPage').style.display='flex';await renderPRDreamList()}
 async function renderPRDreamList(){const mem=await getMem();const ids=Object.keys(mem.dreams);let h='';ids.forEach(id=>{const d=mem.dreams[id];const n=d.nickname||d.name||id;h+=`<div class="pr-dream-capsule${id===prCurDream?' active':''}" onclick="selectPRDream('${id}')">${escHtml(n)}</div>`});document.getElementById('prDreamScroll').innerHTML=h;if(prCurDream&&mem.dreams[prCurDream]){await renderPRList(prCurDream)}else if(ids.length>0){prCurDream=ids[0];document.querySelector('.pr-dream-capsule')?.classList.add('active');await renderPRList(prCurDream)}else{document.getElementById('prDedupBar').innerHTML='';document.getElementById('prList').innerHTML='<div style="text-align:center;color:var(--aux-light);padding:40px 0;">请先在记忆库中创建梦角</div>'}}
