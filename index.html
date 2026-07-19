@@ -240,7 +240,7 @@ body {
 .ph-title { font-size: 15px; color: var(--aux-gray); }
 .ph-version { font-size: 11px; color: var(--aux-light); margin-top: 4px; }
 .placeholder-back { margin-top: 20px; font-size: 12px; color: var(--aux-gray); cursor: pointer; text-decoration: underline; }
-.card-library-page, .memory-page, .settings-page, .clean-log-page, .data-view-page, .song-library-page, .music-player-page, .decide-page, .teach-fullpage, .patpat-library-page, .state-library-page, .small-world-page, .data-mgmt-page, .personal-page { flex: 1; min-height: 0; display: none; flex-direction: column; background: var(--paper-white); overflow: hidden; }
+.card-library-page, .memory-page, .settings-page, .clean-log-page, .data-view-page, .song-library-page, .music-player-page, .decide-page, .teach-fullpage, .patpat-library-page, .state-library-page, .small-world-page, .data-mgmt-page, .personal-page, .tarot-transfer-page { flex: 1; min-height: 0; display: none; flex-direction: column; background: var(--paper-white); overflow: hidden; }
 .notes-page, .diary-page, .letters-page, .letter-write-page, .letter-mailbox-page { flex: 1; min-height: 0; display: none; flex-direction: column; background: var(--paper-white); overflow: hidden; }
 .clean-log-page, .data-view-page, .decide-page, .data-mgmt-page, .personal-page { overflow-y: auto; }
 .notes-page, .diary-page, .letters-page, .letter-mailbox-page { overflow-y: auto; }
@@ -297,21 +297,21 @@ body {
 .import-progress-list { text-align: left; font-size: 12px; color: var(--aux-gray); margin-bottom: 16px; line-height: 2; }
 .import-progress-list .done { color: var(--aux-light); }
 .import-progress-list .active { color: var(--ink-gray); font-weight: bold; }
-.mem-top-bar, .cl-top-bar, .clog-top-bar, .dv-top-bar, .song-top-bar, .mp-top-bar, .dc-top-bar, .teach-top-bar, .pat-top-bar, .st-top-bar, .sw-top-bar, .dm-top-bar, .ps-top-bar { display: flex; align-items: center; justify-content: center; padding: 14px 16px; position: relative; flex-shrink: 0; border-bottom: 1px solid var(--border-subtle); }
+.mem-top-bar, .cl-top-bar, .clog-top-bar, .dv-top-bar, .song-top-bar, .mp-top-bar, .dc-top-bar, .teach-top-bar, .pat-top-bar, .st-top-bar, .sw-top-bar, .dm-top-bar, .ps-top-bar, .tt-top-bar { display: flex; align-items: center; justify-content: center; padding: 14px 16px; position: relative; flex-shrink: 0; border-bottom: 1px solid var(--border-subtle); }
 .notes-top-bar, .diary-top-bar, .letters-top-bar, .letter-write-top-bar, .letter-mailbox-top-bar { display: flex; align-items: center; justify-content: center; padding: 14px 16px; position: relative; flex-shrink: 0; border-bottom: 1px solid var(--border-subtle); }
-.mem-title, .cl-main-title, .clog-title, .dv-title, .song-title, .mp-title, .dc-title, .teach-full-title, .pat-title, .st-title, .sw-title, .dm-title, .ps-title { font-size: 15px; letter-spacing: 3px; color: var(--ink-gray); }
+.mem-title, .cl-main-title, .clog-title, .dv-title, .song-title, .mp-title, .dc-title, .teach-full-title, .pat-title, .st-title, .sw-title, .dm-title, .ps-title, .tt-title { font-size: 15px; letter-spacing: 3px; color: var(--ink-gray); }
 .notes-title, .diary-title, .letters-title, .letter-write-title, .letter-mailbox-title { font-size: 15px; letter-spacing: 3px; color: var(--ink-gray); }
-.mem-back-hotarea, .cl-back-hotarea, .clog-back-hotarea, .dv-back-hotarea, .song-back-hotarea, .mp-back-hotarea, .dc-back-hotarea, .teach-back-hotarea, .pat-back-hotarea, .st-back-hotarea, .sw-back-hotarea, .dm-back-hotarea, .ps-back-hotarea { position: absolute; left: 0; top: 0; width: 48px; height: 100%; cursor: pointer; z-index: 5; }
+.mem-back-hotarea, .cl-back-hotarea, .clog-back-hotarea, .dv-back-hotarea, .song-back-hotarea, .mp-back-hotarea, .dc-back-hotarea, .teach-back-hotarea, .pat-back-hotarea, .st-back-hotarea, .sw-back-hotarea, .dm-back-hotarea, .ps-back-hotarea, .tt-back-hotarea { position: absolute; left: 0; top: 0; width: 48px; height: 100%; cursor: pointer; z-index: 5; }
 .notes-back-hotarea, .diary-back-hotarea, .letters-back-hotarea, .letter-write-back-hotarea, .letter-mailbox-back-hotarea { position: absolute; left: 0; top: 0; width: 48px; height: 100%; cursor: pointer; z-index: 5; }
-.mp-back-hotarea, .dc-back-hotarea, .teach-back-hotarea, .pat-back-hotarea, .st-back-hotarea, .sw-back-hotarea, .dm-back-hotarea, .ps-back-hotarea { opacity: 0; }
+.mp-back-hotarea, .dc-back-hotarea, .teach-back-hotarea, .pat-back-hotarea, .st-back-hotarea, .sw-back-hotarea, .dm-back-hotarea, .ps-back-hotarea, .tt-back-hotarea { opacity: 0; }
 .letter-write-back-hotarea, .letter-mailbox-back-hotarea { opacity: 0; }
 .mem-tab-row, .cl-tab-row, .pat-tab-row, .st-tab-row { display: flex; border-bottom: 1px solid var(--border-subtle); flex-shrink: 0; }
 .mem-tab, .cl-tab, .pat-tab, .st-tab { flex: 1; text-align: center; padding: 10px 0; font-size: 13px; color: var(--aux-light); cursor: pointer; position: relative; }
 .mem-tab.active, .cl-tab.active, .pat-tab.active, .st-tab.active { color: var(--ink-gray); }
 .mem-tab.active::after, .cl-tab.active::after, .pat-tab.active::after, .st-tab.active::after { content: ''; position: absolute; bottom: 0; left: 30%; right: 30%; height: 2px; background: var(--blush-pink); border-radius: 1px; }
-.mem-main-content, .cl-main-content, .clog-main-content, .dv-main-content, .song-main-content, .dc-main-content, .teach-main-content, .pat-main-content, .st-main-content, .sw-main-content, .dm-main-content, .ps-main-content { flex: 1; min-height: 0; overflow-y: auto; padding: 14px 14px 24px; scrollbar-width: none; }
+.mem-main-content, .cl-main-content, .clog-main-content, .dv-main-content, .song-main-content, .dc-main-content, .teach-main-content, .pat-main-content, .st-main-content, .sw-main-content, .dm-main-content, .ps-main-content, .tt-main-content { flex: 1; min-height: 0; overflow-y: auto; padding: 14px 14px 24px; scrollbar-width: none; }
 .notes-main-content, .diary-main-content, .letters-main-content, .letter-write-main-content, .letter-mailbox-main-content { flex: 1; min-height: 0; overflow-y: auto; padding: 14px 14px 24px; scrollbar-width: none; }
-.mem-main-content::-webkit-scrollbar, .cl-main-content::-webkit-scrollbar, .clog-main-content::-webkit-scrollbar, .dv-main-content::-webkit-scrollbar, .song-main-content::-webkit-scrollbar, .dc-main-content::-webkit-scrollbar, .teach-main-content::-webkit-scrollbar, .pat-main-content::-webkit-scrollbar, .st-main-content::-webkit-scrollbar, .sw-main-content::-webkit-scrollbar, .dm-main-content::-webkit-scrollbar, .ps-main-content::-webkit-scrollbar { display: none; }
+.mem-main-content::-webkit-scrollbar, .cl-main-content::-webkit-scrollbar, .clog-main-content::-webkit-scrollbar, .dv-main-content::-webkit-scrollbar, .song-main-content::-webkit-scrollbar, .dc-main-content::-webkit-scrollbar, .teach-main-content::-webkit-scrollbar, .pat-main-content::-webkit-scrollbar, .st-main-content::-webkit-scrollbar, .sw-main-content::-webkit-scrollbar, .dm-main-content::-webkit-scrollbar, .ps-main-content::-webkit-scrollbar, .tt-main-content::-webkit-scrollbar { display: none; }
 .notes-main-content::-webkit-scrollbar, .diary-main-content::-webkit-scrollbar, .letters-main-content::-webkit-scrollbar, .letter-write-main-content::-webkit-scrollbar, .letter-mailbox-main-content::-webkit-scrollbar { display: none; }
 .teach-header-fixed { flex-shrink: 0; padding: 10px 14px 14px; text-align: center; border-bottom: 1px solid var(--border-subtle); }
 .teach-header-fixed select { border: 1px solid var(--border-subtle); border-radius: 8px; padding: 4px 8px; font-family: inherit; font-size: 12px; background: var(--card-cream); color: var(--ink-gray); outline: none; }
@@ -573,6 +573,51 @@ body {
 .teach-send-btn { display: none; white-space: nowrap; }
 .teach-send-btn.visible { display: flex; }
 
+/* 传讯样式 */
+.tarot-card-back {
+  width: 90px; height: 130px; background: linear-gradient(135deg, #2E1A47 0%, #4A2060 30%, #6B3A8A 60%, #4A2060 100%);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+  cursor: pointer; position: relative; overflow: hidden; margin: 0 auto;
+  border: 2px solid #8B6BAE; transition: transform 0.4s, box-shadow 0.3s;
+}
+.tarot-card-back:active { transform: scale(0.95); box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+.tarot-card-back .tb-symbols {
+  width: 100%; height: 100%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  padding: 10px; font-size: 14px; color: rgba(255,255,255,0.7); letter-spacing: 6px; line-height: 2;
+  font-family: serif;
+}
+.tarot-card-back::after {
+  content: ''; position: absolute; inset: 4px; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; pointer-events: none;
+}
+.tarot-card-front {
+  width: 90px; background: linear-gradient(180deg, #FDF8F0 0%, #F5EDE0 100%);
+  border-radius: 8px; padding: 10px 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  border: 2px solid #C8B898; margin: 0 auto; text-align: center; min-height: 130px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+}
+[data-mode="night"] .tarot-card-front { background: linear-gradient(180deg, #3A3228 0%, #4A3F30 100%); border-color: #6B5E50; }
+.tarot-card-front .tc-name { font-size: 15px; color: #4A2060; font-weight: bold; letter-spacing: 2px; }
+[data-mode="night"] .tarot-card-front .tc-name { color: #D4B8E0; }
+.tarot-card-front .tc-position { font-size: 12px; padding: 2px 10px; border-radius: 10px; letter-spacing: 1px; }
+.tarot-card-front .tc-position.upright { background: #E8D5F5; color: #4A2060; }
+.tarot-card-front .tc-position.reversed { background: #F5E0D5; color: #8B4513; }
+[data-mode="night"] .tarot-card-front .tc-position.upright { background: #4A2060; color: #D4B8E0; }
+[data-mode="night"] .tarot-card-front .tc-position.reversed { background: #5A3A20; color: #F0C8A0; }
+.tarot-card-front .tc-meaning { font-size: 11px; color: var(--aux-gray); line-height: 1.5; margin-top: 2px; }
+.tarot-spread-label { text-align: center; font-size: 13px; color: var(--aux-gray); letter-spacing: 2px; margin-bottom: 8px; padding: 4px 0; }
+.tarot-cards-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 14px; }
+.tarot-msg-text { background: var(--card-cream); border-radius: 10px; padding: 14px; font-size: 14px; color: var(--ink-gray); line-height: 1.8; border: 1px solid var(--border-subtle); margin-bottom: 10px; }
+.tarot-comprehensive { background: rgba(232,180,184,0.1); border-radius: 10px; padding: 12px 14px; font-size: 13px; color: var(--ink-gray); line-height: 1.7; border: 1px dashed var(--blush-pink); margin-bottom: 10px; }
+.tarot-comprehensive .tc-comp-title { text-align: center; font-size: 12px; color: var(--blush-pink); letter-spacing: 2px; margin-bottom: 6px; }
+.tt-send-area { padding: 10px 14px 14px; flex-shrink: 0; border-top: 1px solid var(--border-subtle); display: flex; flex-direction: column; gap: 8px; }
+.tt-send-row { display: flex; gap: 8px; align-items: center; }
+.tt-send-row .tt-card-select { font-size: 12px; color: var(--aux-gray); cursor: pointer; padding: 6px 10px; border-radius: 8px; background: var(--card-cream); border: 1px solid var(--border-subtle); white-space: nowrap; }
+.tt-send-row .tt-card-select.active { background: var(--blush-pink); color: #fff; border-color: var(--blush-pink); }
+.tt-input-wrap { display: flex; align-items: center; background: var(--moon-white); border-radius: 22px; padding: 2px 6px; box-shadow: 0 2px 8px var(--shadow-brown); }
+.tt-input-wrap input { flex: 1; border: none; background: transparent; padding: 10px 6px; font-size: 14px; color: var(--ink-gray); outline: none; font-family: inherit; min-width: 0; }
+.tt-input-wrap input::placeholder { color: var(--aux-light); font-style: italic; }
+
 .notes-date-selector { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 10px 0 16px; flex-shrink: 0; }
 .notes-date-arrow { font-size: 16px; color: var(--aux-gray); cursor: pointer; padding: 4px 8px; user-select: none; }
 .notes-date-arrow.disabled { color: var(--aux-light); opacity: 0.4; cursor: default; pointer-events: none; }
@@ -748,7 +793,7 @@ body {
     <div class="comms-row">
       <div class="card-soft private-msg" onclick="openPrivateChat()"><svg viewBox="0 0 32 20" fill="none" stroke="#8B8178" stroke-width="1.2" width="32" height="20"><circle cx="7" cy="7" r="3.5"/><path d="M2 15 Q7 11 12 15"/><circle cx="25" cy="7" r="3.5"/><path d="M20 15 Q25 11 30 15"/><text x="16" y="12" font-size="8" fill="#8B8178" stroke="none" text-anchor="middle">♡</text></svg><div class="card-label">私 讯</div></div>
       <div class="card-soft" onclick="openGroupChat()"><svg viewBox="0 0 34 20" fill="none" stroke="#8B8178" stroke-width="1.2" width="34" height="20"><circle cx="17" cy="5" r="3"/><path d="M12 12 Q17 9 22 12"/><circle cx="6" cy="9" r="2.5"/><path d="M2 15 Q6 12.5 10 15"/><circle cx="28" cy="9" r="2.5"/><path d="M24 15 Q28 12.5 32 15"/></svg><div class="card-label">群 讯</div></div>
-      <div class="card-soft transfer-msg" onclick="showPlaceholder('传讯')"><svg viewBox="0 0 28 20" fill="none" stroke="#8B8178" stroke-width="1.2" width="28" height="20"><rect x="2" y="5" width="20" height="12" rx="1.5"/><path d="M2 5 L12 12 L22 5"/><path d="M23 2 L20 10 L24 7 L26 12 L23 2Z"/></svg><div class="card-label">传 讯</div></div>
+      <div class="card-soft transfer-msg" onclick="openTarotTransfer()"><svg viewBox="0 0 28 20" fill="none" stroke="#8B8178" stroke-width="1.2" width="28" height="20"><rect x="2" y="5" width="20" height="12" rx="1.5"/><path d="M2 5 L12 12 L22 5"/><path d="M23 2 L20 10 L24 7 L26 12 L23 2Z"/></svg><div class="card-label">传 讯</div></div>
     </div>
     <div class="letters-row">
       <div class="envelope-item" onclick="openLettersPage()"><div class="envelope-stack"><div class="env"><div class="flap"></div><div class="seal"></div></div><div class="env"><div class="flap"></div><div class="seal"></div></div><div class="env"><div class="flap"></div><div class="seal"></div></div></div><span class="envelope-label">信 件</span></div>
@@ -797,7 +842,8 @@ body {
       <div class="gear-icon" onclick="openSettings()">⚙</div>
     </div>
   </div>
-    <div class="chat-page" id="privateChatPage">
+
+  <div class="chat-page" id="privateChatPage">
     <div class="chat-header" style="position:relative;"><div class="header-back-hotarea" onclick="goToDesktop()"></div><div class="header-avatar" id="chatHisAvatar" onclick="showDreamDailyNotice()">他</div><div class="hearts-row">🩷🩷🩷🩷🩷🩷🩷🩷🩷</div><div class="header-avatar" id="chatMyAvatar">我</div><div class="header-title" id="chatTitle" onclick="toggleDreamSelect()">梦角🩷我</div><div class="dream-select-dropdown" id="dreamSelectDropdown"></div></div>
     <div class="chat-messages" id="privateChatMessages"></div>
     <div class="typing-indicator" id="privateTypingIndicator">他正在输入中...</div>
@@ -1006,6 +1052,19 @@ body {
     <span class="mf-close" onclick="event.stopPropagation();mpClose()">✕</span>
   </div>
 
+  <div class="tarot-transfer-page" id="tarotTransferPage">
+    <div class="tt-top-bar"><div class="tt-back-hotarea" onclick="goToDesktop()"></div><div class="tt-title">传 讯</div></div>
+    <div class="tt-main-content" id="ttMainContent"></div>
+    <div class="tt-send-area" id="ttSendArea">
+      <div class="tt-send-row" id="ttSendRow">
+        <span class="tt-card-select active" onclick="ttSetCardMode('none')">无牌</span>
+        <span class="tt-card-select" onclick="ttSetCardMode('single')">单张</span>
+        <span class="tt-card-select" onclick="ttSetCardMode('three')">三张</span>
+      </div>
+      <div class="tt-input-wrap"><input type="text" id="ttMessageInput" placeholder="写下传讯..." oninput="onTTInputChange()" onkeydown="if(event.key==='Enter')sendTTMessage()"><button class="capsule-btn send-btn" id="ttSendBtn" onclick="sendTTMessage()">Enviar</button></div>
+    </div>
+  </div>
+
 </div>
 <script>
 const APP_VERSION = 'v3.10.6';
@@ -1014,6 +1073,7 @@ const MAX_MESSAGES = 1000;
 const KEEP_MESSAGES = 50;
 let musicPlayerFromPage = 'desktop';
 let quoteTargetId = null;
+let ttCardMode='none';
 
 const DAILY_QUOTES = [
   "今天也是想你的一天","无论晴天雨天，我都在","你今天过得怎么样","我在等你的消息","今天适合听一首温柔的歌",
@@ -1105,7 +1165,100 @@ const THEMES = {
 const MY_BUBBLE_COLORS = ['#F4F6F9','#E3F2FD','#EDE7F6','#E8F5E9','#FCE4EC','#FFF3E0','#FFFDE7','#E0F7FA','#FCE4EC','#FFE0B2'];
 const OTHER_BUBBLE_COLORS = ['#F2EDE4','#FFF8E1','#FFF3E0','#FCE4EC','#EDE7F6','#EFEBE9','#E3F2FD','#F5F5DC','#FFF0F0','#E8F5E9'];
 
-let db; const DBN = 'YiYuDB'; const DB_VERSION = 11;
+// ========== 塔罗牌数据 ==========
+const TAROT_DECK = [
+  // 大阿尔卡那
+  {id:0,name:'愚者',upright:'新的开始，冒险，天真，自由',reversed:'鲁莽，轻率，犹豫不决'},
+  {id:1,name:'魔术师',upright:'创造力，技能，自信，显化',reversed:'欺骗，滥用能力，计划受阻'},
+  {id:2,name:'女祭司',upright:'直觉，潜意识，神秘，内在智慧',reversed:'忽视直觉，隐藏的秘密，沉默'},
+  {id:3,name:'女皇',upright:'丰饶，母性，自然，感官享受',reversed:'依赖，创造力受阻，情感冷漠'},
+  {id:4,name:'皇帝',upright:'权威，结构，稳定，领导力',reversed:'暴政，缺乏纪律，失控'},
+  {id:5,name:'教皇',upright:'传统，信仰，指导，精神引领',reversed:'叛逆，非传统，盲目追随'},
+  {id:6,name:'恋人',upright:'爱情，和谐，选择，关系',reversed:'分离，不和谐，错误选择'},
+  {id:7,name:'战车',upright:'胜利，决心，掌控，前进',reversed:'失控，失败，方向迷失'},
+  {id:8,name:'力量',upright:'勇气，内在力量，耐心，温柔',reversed:'软弱，恐惧，缺乏信心'},
+  {id:9,name:'隐士',upright:'内省，孤独，智慧，寻求真理',reversed:'孤立，逃避，固执'},
+  {id:10,name:'命运之轮',upright:'命运转折，机遇，循环，好运',reversed:'厄运，停滞，意外变故'},
+  {id:11,name:'正义',upright:'公正，真理，因果，平衡',reversed:'不公，逃避责任，偏见'},
+  {id:12,name:'倒吊人',upright:'牺牲，换个角度，等待，顿悟',reversed:'无谓牺牲，固执己见，停滞'},
+  {id:13,name:'死神',upright:'结束，转变，重生，放下',reversed:'抗拒改变，停滞，恐惧转变'},
+  {id:14,name:'节制',upright:'平衡，适度，调和，耐心',reversed:'失衡，过度，缺乏节制'},
+  {id:15,name:'恶魔',upright:'束缚，欲望，物质主义，诱惑',reversed:'解脱，觉醒，打破束缚'},
+  {id:16,name:'高塔',upright:'剧变，崩塌，启示，释放',reversed:'抗拒变化，危机延缓，困局'},
+  {id:17,name:'星星',upright:'希望，灵感，治愈，宁静',reversed:'绝望，失去信心，疲惫'},
+  {id:18,name:'月亮',upright:'幻象，恐惧，潜意识，不安',reversed:'真相揭露，恐惧消散，清晰'},
+  {id:19,name:'太阳',upright:'快乐，成功，活力，光明',reversed:'暂时阴霾，延迟的成功，低落'},
+  {id:20,name:'审判',upright:'觉醒，重生，召唤，清算',reversed:'逃避审判，悔恨，无法释怀'},
+  {id:21,name:'世界',upright:'完成，圆满，旅程终点，成就',reversed:'未完成，停滞，缺乏圆满'},
+  // 权杖
+  {id:22,name:'权杖一',upright:'灵感，新开始，行动力，勇气',reversed:'犹豫，拖延，目标不明'},
+  {id:23,name:'权杖二',upright:'规划，远见，抉择，掌控',reversed:'缺乏规划，犹豫，受限'},
+  {id:24,name:'权杖三',upright:'扩展，远航，进步，探索',reversed:'退缩，计划受阻，失望'},
+  {id:25,name:'权杖四',upright:'庆祝，稳定，和谐，归属',reversed:'不安，变动，缺乏归属'},
+  {id:26,name:'权杖五',upright:'竞争，冲突，挑战，成长',reversed:'避免冲突，妥协，内耗'},
+  {id:27,name:'权杖六',upright:'胜利，认可，自信，凯旋',reversed:'失败，自大，不被认可'},
+  {id:28,name:'权杖七',upright:'坚持，防御，勇气，立场',reversed:'放弃，被压垮，退让'},
+  {id:29,name:'权杖八',upright:'迅速，行动，进展，消息',reversed:'延迟，混乱，方向错误'},
+  {id:30,name:'权杖九',upright:'坚守，韧性，最后的坚持',reversed:'放弃，疲惫，无力坚持'},
+  {id:31,name:'权杖十',upright:'责任，重担，完成，压力',reversed:'卸下重担，逃避责任'},
+  {id:32,name:'权杖侍从',upright:'热情，探索，新消息，勇气',reversed:'幼稚，缺乏方向，坏消息'},
+  {id:33,name:'权杖骑士',upright:'冒险，行动，激情，追逐',reversed:'冲动，鲁莽，三分钟热度'},
+  {id:34,name:'权杖皇后',upright:'温暖，自信，独立，魅力',reversed:'嫉妒，自私，缺乏信心'},
+  {id:35,name:'权杖国王',upright:'领导力，远见，创业，魄力',reversed:'专制，急躁，缺乏远见'},
+  // 圣杯
+  {id:36,name:'圣杯一',upright:'爱，新感情，直觉，丰盛',reversed:'情感空虚，失恋，压抑'},
+  {id:37,name:'圣杯二',upright:'伴侣，和谐，平等，承诺',reversed:'分手，不平衡，背叛'},
+  {id:38,name:'圣杯三',upright:'友谊，庆祝，团聚，欢乐',reversed:'过度放纵，孤立，失和'},
+  {id:39,name:'圣杯四',upright:'沉思，不满，冷漠，新机会被忽视',reversed:'觉醒，接受，新的动力'},
+  {id:40,name:'圣杯五',upright:'失落，悲伤，遗憾，希望犹存',reversed:'走出悲伤，重建，释怀'},
+  {id:41,name:'圣杯六',upright:'回忆，怀旧，纯真，重逢',reversed:'沉溺过去，无法前进'},
+  {id:42,name:'圣杯七',upright:'幻想，选择，梦想，迷惑',reversed:'清醒，做出选择，现实'},
+  {id:43,name:'圣杯八',upright:'离开，追寻，放弃，新的旅程',reversed:'逃避，徘徊，无法割舍'},
+  {id:44,name:'圣杯九',upright:'愿望成真，满足，幸福，享受',reversed:'不满足，空虚，愿望落空'},
+  {id:45,name:'圣杯十',upright:'圆满，家庭幸福，和谐，归属',reversed:'家庭不和，破碎，失落'},
+  {id:46,name:'圣杯侍从',upright:'敏感，创意，暗恋，好消息',reversed:'情绪化，坏消息，幻想破灭'},
+  {id:47,name:'圣杯骑士',upright:'浪漫，追求，理想主义，邀约',reversed:'欺骗，虚幻，不切实际'},
+  {id:48,name:'圣杯皇后',upright:'温柔，直觉，同理心，关怀',reversed:'情绪失控，依赖，敏感过度'},
+  {id:49,name:'圣杯国王',upright:'成熟，宽容，艺术，情感掌控',reversed:'情绪操纵，冷漠，压抑'},
+  // 宝剑
+  {id:50,name:'宝剑一',upright:'清晰，真理，决断，智慧',reversed:'混乱，误解，犹豫'},
+  {id:51,name:'宝剑二',upright:'抉择，僵局，平衡，逃避',reversed:'打破僵局，做出决定'},
+  {id:52,name:'宝剑三',upright:'心碎，悲伤，背叛，痛苦',reversed:'愈合，释怀，走出阴霾'},
+  {id:53,name:'宝剑四',upright:'休息，恢复，内省，暂停',reversed:'躁动，无法休息，回归'},
+  {id:54,name:'宝剑五',upright:'冲突，失败，空虚的胜利',reversed:'和解，放下，吸取教训'},
+  {id:55,name:'宝剑六',upright:'过渡，疗愈，前行，离开',reversed:'停滞，无法释怀，回头'},
+  {id:56,name:'宝剑七',upright:'策略，机智，隐秘，欺骗',reversed:'暴露，坦白，策略失败'},
+  {id:57,name:'宝剑八',upright:'束缚，困境，无力，限制',reversed:'解脱，突破，自由'},
+  {id:58,name:'宝剑九',upright:'焦虑，噩梦，恐惧，内疚',reversed:'释怀，希望，走出恐惧'},
+  {id:59,name:'宝剑十',upright:'结束，最低点，崩溃，重生',reversed:'复苏，转机，重获新生'},
+  {id:60,name:'宝剑侍从',upright:'好奇，新想法，警觉，消息',reversed:'流言，幼稚，缺乏思考'},
+  {id:61,name:'宝剑骑士',upright:'迅速，果决，挑战，进取',reversed:'冲动，鲁莽，不计后果'},
+  {id:62,name:'宝剑皇后',upright:'洞察，独立，智慧，理性',reversed:'冷漠，刻薄，偏见'},
+  {id:63,name:'宝剑国王',upright:'权威，理性，公正，智慧',reversed:'专制，冷酷，滥用权力'},
+  // 星币
+  {id:64,name:'星币一',upright:'机会，繁荣，新开始，实质',reversed:'错失机会，财务问题'},
+  {id:65,name:'星币二',upright:'平衡，灵活，适应，多任务',reversed:'失衡，超负荷，混乱'},
+  {id:66,name:'星币三',upright:'合作，技能，成长，学习',reversed:'缺乏合作，低质量，懈怠'},
+  {id:67,name:'星币四',upright:'稳定，储蓄，控制，保守',reversed:'贪婪，失去，过度控制'},
+  {id:68,name:'星币五',upright:'困境，贫乏，孤立，求助',reversed:'转机，援助，走出困境'},
+  {id:69,name:'星币六',upright:'分享，慷慨，施与受，平衡',reversed:'吝啬，不平等，施舍'},
+  {id:70,name:'星币七',upright:'等待，耐心，收获，评估',reversed:'焦虑，不满，收获延迟'},
+  {id:71,name:'星币八',upright:'勤奋，精进，专注，技能',reversed:'懒散，缺乏专注，敷衍'},
+  {id:72,name:'星币九',upright:'独立，享受，成就，优雅',reversed:'依赖，不安，失去'},
+  {id:73,name:'星币十',upright:'传承，富足，家族，圆满',reversed:'失去，争执，家族问题'},
+  {id:74,name:'星币侍从',upright:'学习，务实，新机会，踏实',reversed:'懒惰，浪费机会，不上进'},
+  {id:75,name:'星币骑士',upright:'坚持，责任，效率，务实',reversed:'拖延，懒散，缺乏动力'},
+  {id:76,name:'星币皇后',upright:'富足，滋养，务实，可靠',reversed:'焦虑，不安，物质主义'},
+  {id:77,name:'星币国王',upright:'财富，稳定，成功，务实',reversed:'贪婪，挥霍，物质至上'}
+];
+
+const TAROT_SPREADS = {
+  past_present_future:{name:'过去·现在·未来',positions:['过去','现在','未来'],comprehensive:'时间之河静静流淌，三张牌串联起你的过去、现在与未来。过去是你走过的路，现在是你的立足之地，未来是前方等待你的风景。'},
+  body_mind_spirit:{name:'身·心·灵',positions:['身体','心灵','灵魂'],comprehensive:'身心灵三位一体，彼此映照。身体的感受、心灵的波动、灵魂的渴望，三者交织成一幅完整的你。倾听它们的声音，找到内在的和谐。'},
+  you_relation_other:{name:'你·关系·对方',positions:['你','关系','对方'],comprehensive:'关系的本质在于两端的平衡。你在这段关系中的位置、关系的状态、对方的能量，共同描绘出这张关系的地图。'},
+  start_process_result:{name:'开始·过程·结果',positions:['开始','过程','结果'],comprehensive:'万事万物皆有起始、发展、终局。开始的种子、过程中的风雨、最终结出的果实，都在牌面中一一呈现。'}
+};
+  let db; const DBN = 'YiYuDB'; const DB_VERSION = 12;
 function initDB(){return new Promise((r,j)=>{const R=indexedDB.open(DBN,DB_VERSION);R.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains('messages')){const s=d.createObjectStore('messages',{keyPath:'id'});s.createIndex('conv','conv',{unique:false});s.createIndex('ts','ts',{unique:false})}
 if(!d.objectStoreNames.contains('memory')){d.createObjectStore('memory',{keyPath:'key'})}
 if(!d.objectStoreNames.contains('cardLibrary')){const s=d.createObjectStore('cardLibrary',{keyPath:'key'});s.createIndex('group','group',{unique:false})}
@@ -1116,6 +1269,7 @@ if(!d.objectStoreNames.contains('stateLibrary')){d.createObjectStore('stateLibra
 if(!d.objectStoreNames.contains('notes')){const s=d.createObjectStore('notes',{keyPath:'id'});s.createIndex('ts','ts',{unique:false});s.createIndex('dreamId','dreamId',{unique:false})}
 if(!d.objectStoreNames.contains('diary')){const s=d.createObjectStore('diary',{keyPath:'id'});s.createIndex('ts','ts',{unique:false});s.createIndex('dreamId','dreamId',{unique:false})}
 if(!d.objectStoreNames.contains('letters')){const s=d.createObjectStore('letters',{keyPath:'id'});s.createIndex('threadId','threadId',{unique:false});s.createIndex('ts','ts',{unique:false})}
+if(!d.objectStoreNames.contains('tarotMessages')){const s=d.createObjectStore('tarotMessages',{keyPath:'id'});s.createIndex('ts','ts',{unique:false});s.createIndex('dreamId','dreamId',{unique:false})}
 };R.onsuccess=e=>{db=e.target.result;r(db)};R.onerror=e=>j(e.target.error)})}
 function ensureDB(){return new Promise(r=>{if(db){r(db);return}const c=setInterval(()=>{if(db){clearInterval(c);r(db)}},100)})}
 async function addMsg(conv,sender,content,ts){await ensureDB();return new Promise((r,j)=>{const t=db.transaction('messages','readwrite');const s=t.objectStore('messages');const m={id:Date.now().toString(36)+Math.random().toString(36).substr(2,6),conv,sender,content,ts:ts||Date.now(),read:false};const req=s.add(m);req.onsuccess=()=>{if(!ts)autoCleanMessages(conv)};req.onerror=e=>j(e.target.error);t.oncomplete=()=>r(m);t.onerror=e=>j(e.target.error)})}
@@ -1124,6 +1278,10 @@ async function getMsgById(id){await ensureDB();return new Promise((r,j)=>{const 
 async function autoCleanMessages(conv){await ensureDB();const t=db.transaction('messages','readonly');const s=t.objectStore('messages');const idx=s.index('conv');const R=idx.getAll(conv);R.onsuccess=async()=>{const msgs=R.result||[];if(msgs.length>MAX_MESSAGES){const sorted=msgs.sort((a,b)=>a.ts-b.ts);const toDeleteCount=msgs.length-KEEP_MESSAGES;const toDelete=sorted.slice(0,toDeleteCount);const wt=db.transaction('messages','readwrite');const ws=wt.objectStore('messages');toDelete.forEach(m=>ws.delete(m.id));wt.oncomplete=async()=>{const type=conv.startsWith('chat_')?'私讯':'群讯';await addCleanLog(type,toDeleteCount)}}}}
 async function clearAllMessages(){await ensureDB();return new Promise((r,j)=>{const t=db.transaction('messages','readwrite');const s=t.objectStore('messages');const R=s.clear();R.onsuccess=()=>r();R.onerror=e=>j(e.target.error)})}
 async function getAllMessages(){await ensureDB();return new Promise((r,j)=>{const t=db.transaction('messages','readonly');const s=t.objectStore('messages');const R=s.getAll();R.onsuccess=()=>{r(R.result||[])};R.onerror=e=>j(e.target.error)})}
+
+// 传讯存储
+async function getTarotMessages(){await ensureDB();return new Promise((r,j)=>{const t=db.transaction('tarotMessages','readonly');const s=t.objectStore('tarotMessages');const R=s.getAll();R.onsuccess=()=>{r((R.result||[]).sort((a,b)=>a.ts-b.ts))};R.onerror=e=>j(e.target.error)})}
+async function addTarotMessage(data){await ensureDB();return new Promise((r,j)=>{const t=db.transaction('tarotMessages','readwrite');const s=t.objectStore('tarotMessages');const msg={id:'tt_'+Date.now().toString(36)+Math.random().toString(36).substr(2,6),...data,ts:data.ts||Date.now()};const req=s.add(msg);req.onsuccess=()=>r(msg);req.onerror=e=>j(e.target.error)})}
 
 async function getNotes(){await ensureDB();return new Promise((r,j)=>{const t=db.transaction('notes','readonly');const s=t.objectStore('notes');const R=s.getAll();R.onsuccess=()=>{r((R.result||[]).sort((a,b)=>a.ts-b.ts))};R.onerror=e=>j(e.target.error)})}
 async function addNote(dreamId,content,weather,mood,daily,ts){await ensureDB();return new Promise((r,j)=>{const t=db.transaction('notes','readwrite');const s=t.objectStore('notes');const note={id:'note_'+Date.now().toString(36)+Math.random().toString(36).substr(2,6),dreamId,content,weather:weather||'',mood:mood||'',daily:daily||'',ts:ts||Date.now(),read:false,mentioned:false};const req=s.add(note);req.onsuccess=()=>r(note);req.onerror=e=>j(e.target.error)})}
@@ -1175,17 +1333,17 @@ function closeConfirm(e){if(e&&e.target!==document.getElementById('confirmOverla
 function showClearConfirm(){showConfirm('清空聊天记录','确定要清空所有聊天记录吗？此操作不可恢复。',clearAllChatRecords,true,false)}
 function showFactoryResetConfirm(){showConfirm('恢复出厂设置','⚠️此操作将永久清除所有数据',factoryReset,true,true)}
 function checkConfirmInput(){const inp=document.getElementById('confirmInput');const btn=document.getElementById('confirmOkBtn');if(inp&&btn){btn.disabled=inp.value!=='确认清除'}}
-async function factoryReset(){try{await ensureDB();const stores=['messages','memory','cardLibrary','cleanLog','songLibrary','patpatLibrary','stateLibrary','notes','diary','letters'];for(const name of stores){await new Promise((r,j)=>{const t=db.transaction(name,'readwrite');const s=t.objectStore(name);const R=s.clear();R.onsuccess=()=>r();R.onerror=e=>j(e.target.error)})}memCache=null;clCache=null;songCache=null;patCache=null;stCache=null;currentDreamId='';localStorage.clear();stopMusic();showConfirm('已恢复','已恢复出厂设置，页面将刷新。',()=>{location.reload()},false,false)}catch(e){showConfirm('操作失败','恢复出厂设置时出错：'+e.message,null,false,false)}}
+async function factoryReset(){try{await ensureDB();const stores=['messages','memory','cardLibrary','cleanLog','songLibrary','patpatLibrary','stateLibrary','notes','diary','letters','tarotMessages'];for(const name of stores){await new Promise((r,j)=>{const t=db.transaction(name,'readwrite');const s=t.objectStore(name);const R=s.clear();R.onsuccess=()=>r();R.onerror=e=>j(e.target.error)})}memCache=null;clCache=null;songCache=null;patCache=null;stCache=null;currentDreamId='';localStorage.clear();stopMusic();showConfirm('已恢复','已恢复出厂设置，页面将刷新。',()=>{location.reload()},false,false)}catch(e){showConfirm('操作失败','恢复出厂设置时出错：'+e.message,null,false,false)}}
 
-async function collectAllData(){const msgs=await getAllMessages();const mem=await getMem();const cl=await getCL();const sl=await getSL();const pat=await getPat();const st=await getST();const emojis=await getEmojis();const stickers=await getStickers();const privateCards=await getPrivateCards();const cleanLogs=await getCleanLogs();const vinylBg=await getVinylBg();const desktopBg=await getDesktopBg();const notes=await getNotes();const diary=await getDiaryEntries();const letters=await getLetters();const settings=localStorage.getItem(SK);const personal=localStorage.getItem('yiyu_personal');const mode=localStorage.getItem('mode');return {version:APP_VERSION,exportTime:Date.now(),messages:msgs,memory:mem,cardLibrary:cl,songLibrary:sl,patpatLibrary:pat,stateLibrary:st,emojis,stickers,privateCards,cleanLogs,vinylBg,desktopBg,notes,diary,letters,settings,personal,mode}}
+async function collectAllData(){const msgs=await getAllMessages();const mem=await getMem();const cl=await getCL();const sl=await getSL();const pat=await getPat();const st=await getST();const emojis=await getEmojis();const stickers=await getStickers();const privateCards=await getPrivateCards();const cleanLogs=await getCleanLogs();const vinylBg=await getVinylBg();const desktopBg=await getDesktopBg();const notes=await getNotes();const diary=await getDiaryEntries();const letters=await getLetters();const tarotMsgs=await getTarotMessages();const settings=localStorage.getItem(SK);const personal=localStorage.getItem('yiyu_personal');const mode=localStorage.getItem('mode');return {version:APP_VERSION,exportTime:Date.now(),messages:msgs,memory:mem,cardLibrary:cl,songLibrary:sl,patpatLibrary:pat,stateLibrary:st,emojis,stickers,privateCards,cleanLogs,vinylBg,desktopBg,notes,diary,letters,tarotMessages:tarotMsgs,settings,personal,mode}}
 async function fullBackup(){const data=await collectAllData();const json=JSON.stringify(data);const blob=new Blob([json],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='易遇夏雾凉_全量备份_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url)}
 async function exportChatRecords(){const msgs=await getAllMessages();const json=JSON.stringify(msgs);const blob=new Blob([json],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='聊天记录_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url)}
 async function exportCardData(){const cl=await getCL();const sl=await getSL();const st=await getST();const emojis=await getEmojis();const stickers=await getStickers();const privateCards=await getPrivateCards();const data={cardLibrary:cl,songLibrary:sl,stateLibrary:st,emojis,stickers,privateCards};const json=JSON.stringify(data);const blob=new Blob([json],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='卡牌数据_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url)}
-function importFullBackup(){const inp=document.createElement('input');inp.type='file';inp.accept='.json';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const reader=new FileReader();reader.onload=async()=>{try{const data=JSON.parse(reader.result);showImportProgress(async(update)=>{update('正在验证备份文件...');if(!data.messages||!data.memory||!data.cardLibrary){throw new Error('备份文件格式不正确')}update('正在清空现有数据...');await clearAllMessages();const stores=['memory','cardLibrary','cleanLog','songLibrary','patpatLibrary','stateLibrary','notes','diary','letters'];for(const name of stores){await new Promise((r,j)=>{const t=db.transaction(name,'readwrite');const s=t.objectStore(name);s.clear().onsuccess=()=>r();s.onerror=e=>j(e.target.error)})}update('正在导入聊天记录...');for(const msg of data.messages||[]){await addMsg(msg.conv,msg.sender,msg.content,msg.ts)}update('正在导入记忆库...');await saveMem(data.memory||{dreams:{},currentDreamId:'',myName:'',myAvatar:'',groupBg:''});update('正在导入字卡库...');await saveCL(data.cardLibrary||{groups:{}});if(data.songLibrary)await saveSL(data.songLibrary);if(data.patpatLibrary)await savePat(data.patpatLibrary);if(data.stateLibrary)await saveST(data.stateLibrary);if(data.emojis)await saveEmojis(data.emojis);if(data.stickers)await saveStickers(data.stickers);if(data.privateCards)await savePrivateCards(data.privateCards);if(data.vinylBg)await saveVinylBg(data.vinylBg||'');if(data.desktopBg)await saveDesktopBg(data.desktopBg||'');if(data.notes){const wt=db.transaction('notes','readwrite');const ws=wt.objectStore('notes');for(const n of data.notes)ws.add(n)}if(data.diary){const wt=db.transaction('diary','readwrite');const ws=wt.objectStore('diary');for(const d of data.diary)ws.add(d)}if(data.letters){const wt=db.transaction('letters','readwrite');const ws=wt.objectStore('letters');for(const l of data.letters)ws.add(l)}if(data.cleanLogs){const wt=db.transaction('cleanLog','readwrite');const ws=wt.objectStore('cleanLog');for(const log of data.cleanLogs)ws.add(log)}if(data.settings)localStorage.setItem(SK,data.settings);if(data.personal){localStorage.setItem('yiyu_personal',data.personal);applyPersonal();}if(data.mode)localStorage.setItem('mode',data.mode);update('导入完成！');memCache=null;clCache=null;songCache=null;patCache=null;stCache=null;await loadVinylBg();await applyDesktopBg();await new Promise(r=>setTimeout(r,1500))})}catch(err){showConfirm('导入失败',err.message,null,false,false)}};reader.readAsText(f)};inp.click()}
+function importFullBackup(){const inp=document.createElement('input');inp.type='file';inp.accept='.json';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const reader=new FileReader();reader.onload=async()=>{try{const data=JSON.parse(reader.result);showImportProgress(async(update)=>{update('正在验证备份文件...');if(!data.messages||!data.memory||!data.cardLibrary){throw new Error('备份文件格式不正确')}update('正在清空现有数据...');await clearAllMessages();const stores=['memory','cardLibrary','cleanLog','songLibrary','patpatLibrary','stateLibrary','notes','diary','letters','tarotMessages'];for(const name of stores){await new Promise((r,j)=>{const t=db.transaction(name,'readwrite');const s=t.objectStore(name);s.clear().onsuccess=()=>r();s.onerror=e=>j(e.target.error)})}update('正在导入聊天记录...');for(const msg of data.messages||[]){await addMsg(msg.conv,msg.sender,msg.content,msg.ts)}update('正在导入记忆库...');await saveMem(data.memory||{dreams:{},currentDreamId:'',myName:'',myAvatar:'',groupBg:''});update('正在导入字卡库...');await saveCL(data.cardLibrary||{groups:{}});if(data.songLibrary)await saveSL(data.songLibrary);if(data.patpatLibrary)await savePat(data.patpatLibrary);if(data.stateLibrary)await saveST(data.stateLibrary);if(data.emojis)await saveEmojis(data.emojis);if(data.stickers)await saveStickers(data.stickers);if(data.privateCards)await savePrivateCards(data.privateCards);if(data.vinylBg)await saveVinylBg(data.vinylBg||'');if(data.desktopBg)await saveDesktopBg(data.desktopBg||'');if(data.notes){const wt=db.transaction('notes','readwrite');const ws=wt.objectStore('notes');for(const n of data.notes)ws.add(n)}if(data.diary){const wt=db.transaction('diary','readwrite');const ws=wt.objectStore('diary');for(const d of data.diary)ws.add(d)}if(data.letters){const wt=db.transaction('letters','readwrite');const ws=wt.objectStore('letters');for(const l of data.letters)ws.add(l)}if(data.tarotMessages){const wt=db.transaction('tarotMessages','readwrite');const ws=wt.objectStore('tarotMessages');for(const tm of data.tarotMessages)ws.add(tm)}if(data.cleanLogs){const wt=db.transaction('cleanLog','readwrite');const ws=wt.objectStore('cleanLog');for(const log of data.cleanLogs)ws.add(log)}if(data.settings)localStorage.setItem(SK,data.settings);if(data.personal){localStorage.setItem('yiyu_personal',data.personal);applyPersonal();}if(data.mode)localStorage.setItem('mode',data.mode);update('导入完成！');memCache=null;clCache=null;songCache=null;patCache=null;stCache=null;await loadVinylBg();await applyDesktopBg();await new Promise(r=>setTimeout(r,1500))})}catch(err){showConfirm('导入失败',err.message,null,false,false)}};reader.readAsText(f)};inp.click()}
 function importCardData(){const inp=document.createElement('input');inp.type='file';inp.accept='.json';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const reader=new FileReader();reader.onload=async()=>{try{const data=JSON.parse(reader.result);if(data.cardLibrary)await saveCL(data.cardLibrary);if(data.songLibrary)await saveSL(data.songLibrary);if(data.stateLibrary)await saveST(data.stateLibrary);if(data.emojis)await saveEmojis(data.emojis);if(data.stickers)await saveStickers(data.stickers);if(data.privateCards)await savePrivateCards(data.privateCards);clCache=null;songCache=null;stCache=null;showConfirm('导入成功','卡牌数据已成功导入。',null,false,false)}catch(err){showConfirm('导入失败',err.message,null,false,false)}};reader.readAsText(f)};inp.click()}
 function showImportProgress(importFn){const overlay=document.getElementById('importProgressOverlay');const panel=document.getElementById('importProgressPanel');const steps=[];const update=(text)=>{steps.push(text);panel.innerHTML='<div class="import-progress-title">正在导入备份</div><div class="import-progress-list">'+steps.map((s,i)=>{const isLast=i===steps.length-1;return'<div class="'+(isLast?'active':(s==='导入完成！'?'done':''))+'" style="'+(s==='导入完成！'?'color:var(--blush-pink);':'')+'">'+(i+1)+'. '+s+'</div>'}).join('')+'</div>'+(steps[steps.length-1]==='导入完成！'?'<button class="confirm-btn confirm-danger" onclick="document.getElementById(\'importProgressOverlay\').classList.remove(\'show\');goToDesktop()">关闭</button>':'')};overlay.classList.add('show');importFn(update).catch(err=>{panel.innerHTML='<div class="import-progress-title">导入失败</div><div style="color:var(--blush-pink);margin-bottom:16px;">'+err.message+'</div><button class="confirm-btn confirm-danger" onclick="document.getElementById(\'importProgressOverlay\').classList.remove(\'show\')">关闭</button>'})}
 function formatBytes(bytes){if(bytes<1024)return bytes+' B';if(bytes<1048576)return (bytes/1024).toFixed(1)+' KB';return (bytes/1048576).toFixed(2)+' MB'}
-async function openDataView(){hideAll();document.getElementById('dataViewPage').style.display='flex';const msgs=await getAllMessages();const cl=await getCL();const sl=await getSL();const pat=await getPat();const st=await getST();const emojis=await getEmojis();const stickers=await getStickers();const privateCards=await getPrivateCards();const cleanLogs=await getCleanLogs();const notes=await getNotes();const diary=await getDiaryEntries();const letters=await getLetters();let cardTotal=0;for(const[,cards]of Object.entries(cl.groups||{}))cardTotal+=cards.length;let privateTotal=0;for(const[,cards]of Object.entries(privateCards||{}))privateTotal+=cards.length;const totalCardItems=cardTotal+emojis.length+stickers.length+privateTotal;let songTotal=0;for(const[,songs]of Object.entries(sl.groups||{}))songTotal+=songs.length;const patTotal=(pat.poked||[]).length+(pat.pat||[]).length;const stTotal=(st.weather||[]).length+(st.mood||[]).length+(st.daily||[]).length;const msgsJson=JSON.stringify(msgs);const clJson=JSON.stringify({cl,emojis,stickers,privateCards});const totalJson=JSON.stringify(await collectAllData());let h='';h+=`<div class="dv-stat-card"><span>聊天信息</span><span class="dv-stat-count">${msgs.length} 条（${formatBytes(msgsJson.length)}）</span></div>`;h+=`<div class="dv-stat-card"><span>留言条</span><span class="dv-stat-count">${notes.length} 条（${formatBytes(JSON.stringify(notes).length)}）</span></div>`;h+=`<div class="dv-stat-card"><span>日记</span><span class="dv-stat-count">${diary.length} 篇（${formatBytes(JSON.stringify(diary).length)}）</span></div>`;h+=`<div class="dv-stat-card"><span>信件</span><span class="dv-stat-count">${letters.length} 封（${formatBytes(JSON.stringify(letters).length)}）</span></div>`;h+=`<div class="dv-stat-card"><span>表情库数据</span><span class="dv-stat-count">${emojis.length} 个（${formatBytes(JSON.stringify(emojis).length)}）</span></div>`;h+=`<div class="dv-stat-card"><span>字卡库数据</span><span class="dv-stat-count">${totalCardItems} 条（${formatBytes(clJson.length)}）</span></div>`;h+=`<div class="dv-stat-card"><span>歌曲库数据</span><span class="dv-stat-count">${songTotal} 首（${formatBytes(JSON.stringify(sl).length)}）</span></div>`;h+=`<div class="dv-stat-card"><span>拍一拍库数据</span><span class="dv-stat-count">${patTotal} 条（${formatBytes(JSON.stringify(pat).length)}）</span></div>`;h+=`<div class="dv-stat-card"><span>状态库数据</span><span class="dv-stat-count">${stTotal} 条（${formatBytes(JSON.stringify(st).length)}）</span></div>`;h+=`<div class="dv-stat-card"><span>卡牌库数据</span><span class="dv-stat-count">0 个（0 B）</span></div>`;h+=`<div class="dv-stat-card"><span>清档日志</span><span class="dv-stat-count">${cleanLogs.length} 条（${formatBytes(JSON.stringify(cleanLogs).length)}）</span></div>`;h+=`<div class="dv-total-card">总数据量：${formatBytes(totalJson.length)}</div>`;document.getElementById('dvMainContent').innerHTML=h;document.getElementById('totalDataSize').textContent='总数据量：'+formatBytes(totalJson.length)}
+async function openDataView(){hideAll();document.getElementById('dataViewPage').style.display='flex';const msgs=await getAllMessages();const cl=await getCL();const sl=await getSL();const pat=await getPat();const st=await getST();const emojis=await getEmojis();const stickers=await getStickers();const privateCards=await getPrivateCards();const cleanLogs=await getCleanLogs();const notes=await getNotes();const diary=await getDiaryEntries();const letters=await getLetters();const tarotMsgs=await getTarotMessages();let cardTotal=0;for(const[,cards]of Object.entries(cl.groups||{}))cardTotal+=cards.length;let privateTotal=0;for(const[,cards]of Object.entries(privateCards||{}))privateTotal+=cards.length;const totalCardItems=cardTotal+emojis.length+stickers.length+privateTotal;let songTotal=0;for(const[,songs]of Object.entries(sl.groups||{}))songTotal+=songs.length;const patTotal=(pat.poked||[]).length+(pat.pat||[]).length;const stTotal=(st.weather||[]).length+(st.mood||[]).length+(st.daily||[]).length;const msgsJson=JSON.stringify(msgs);const clJson=JSON.stringify({cl,emojis,stickers,privateCards});const totalJson=JSON.stringify(await collectAllData());let h='';h+=`<div class="dv-stat-card"><span>聊天信息</span><span class="dv-stat-count">${msgs.length} 条（${formatBytes(msgsJson.length)}）</span></div>`;h+=`<div class="dv-stat-card"><span>留言条</span><span class="dv-stat-count">${notes.length} 条（${formatBytes(JSON.stringify(notes).length)}）</span></div>`;h+=`<div class="dv-stat-card"><span>日记</span><span class="dv-stat-count">${diary.length} 篇（${formatBytes(JSON.stringify(diary).length)}）</span></div>`;h+=`<div class="dv-stat-card"><span>信件</span><span class="dv-stat-count">${letters.length} 封（${formatBytes(JSON.stringify(letters).length)}）</span></div>`;h+=`<div class="dv-stat-card"><span>传讯</span><span class="dv-stat-count">${tarotMsgs.length} 条（${formatBytes(JSON.stringify(tarotMsgs).length)}）</span></div>`;h+=`<div class="dv-stat-card"><span>表情库数据</span><span class="dv-stat-count">${emojis.length} 个（${formatBytes(JSON.stringify(emojis).length)}）</span></div>`;h+=`<div class="dv-stat-card"><span>字卡库数据</span><span class="dv-stat-count">${totalCardItems} 条（${formatBytes(clJson.length)}）</span></div>`;h+=`<div class="dv-stat-card"><span>歌曲库数据</span><span class="dv-stat-count">${songTotal} 首（${formatBytes(JSON.stringify(sl).length)}）</span></div>`;h+=`<div class="dv-stat-card"><span>拍一拍库数据</span><span class="dv-stat-count">${patTotal} 条（${formatBytes(JSON.stringify(pat).length)}）</span></div>`;h+=`<div class="dv-stat-card"><span>状态库数据</span><span class="dv-stat-count">${stTotal} 条（${formatBytes(JSON.stringify(st).length)}）</span></div>`;h+=`<div class="dv-stat-card"><span>卡牌库数据</span><span class="dv-stat-count">0 个（0 B）</span></div>`;h+=`<div class="dv-stat-card"><span>清档日志</span><span class="dv-stat-count">${cleanLogs.length} 条（${formatBytes(JSON.stringify(cleanLogs).length)}）</span></div>`;h+=`<div class="dv-total-card">总数据量：${formatBytes(totalJson.length)}</div>`;document.getElementById('dvMainContent').innerHTML=h;document.getElementById('totalDataSize').textContent='总数据量：'+formatBytes(totalJson.length)}
 function backFromDataView(){hideAll();document.getElementById('dataMgmtPage').style.display='flex';updateTotalDataSize()}
 
 let memCache=null;
@@ -1206,7 +1364,7 @@ async function saveStickers(arr){await ensureDB();return new Promise((r,j)=>{con
 async function getPrivateCards(){await ensureDB();return new Promise((r,j)=>{const t=db.transaction('cardLibrary','readonly');const s=t.objectStore('cardLibrary');const R=s.get('privateCardData');R.onsuccess=()=>{r(R.result&&R.result.data?R.result.data:{})};R.onerror=e=>j(e.target.error)})}
 async function savePrivateCards(d){await ensureDB();return new Promise((r,j)=>{const t=db.transaction('cardLibrary','readwrite');const s=t.objectStore('cardLibrary');s.put({key:'privateCardData',data:d});t.oncomplete=()=>r();t.onerror=e=>j(e.target.error)})}
 
-function hideAll(){['desktopPage','privateChatPage','groupChatPage','placeholderPage','cardLibraryPage','settingsPage','memoryPage','privateReplyPage','cleanLogPage','dataViewPage','songLibraryPage','musicPlayerPage','decidePage','teachFullpage','patpatLibraryPage','stateLibraryPage','smallWorldPage','dataMgmtPage','personalPage','notesPage','diaryPage','lettersPage','letterMailboxPage','letterWritePage'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none'})}
+function hideAll(){['desktopPage','privateChatPage','groupChatPage','placeholderPage','cardLibraryPage','settingsPage','memoryPage','privateReplyPage','cleanLogPage','dataViewPage','songLibraryPage','musicPlayerPage','decidePage','teachFullpage','patpatLibraryPage','stateLibraryPage','smallWorldPage','dataMgmtPage','personalPage','notesPage','diaryPage','lettersPage','letterMailboxPage','letterWritePage','tarotTransferPage'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none'})}
 function goToDesktop(){hideAll();document.getElementById('desktopPage').style.display='flex';updateTotalDataSize();updateDesktopTimeCard()}
 function showPlaceholder(t){hideAll();document.getElementById('placeholderPage').style.display='flex';document.getElementById('placeholderTitle').textContent=t+' - 待开发';document.getElementById('placeholderVersion').textContent=''}
 function openSettings(){hideAll();document.getElementById('settingsPage').style.display='flex';document.getElementById('settingsVersion').textContent=APP_VERSION;loadSettingsUI();updateTotalDataSize()}
@@ -1244,7 +1402,73 @@ function getNextNoteTime(){const v=localStorage.getItem('nextNoteTime');return v
 function setNextNoteTime(t){localStorage.setItem('nextNoteTime',t.toString())}
 function getNextDiaryTime(){const v=localStorage.getItem('nextDiaryTime');return v?parseInt(v):0}
 function setNextDiaryTime(t){localStorage.setItem('nextDiaryTime',t.toString())}
-  let notesCurrentDate='';
+function getNextTarotTime(){const v=localStorage.getItem('nextTarotTime');return v?parseInt(v):0}
+function setNextTarotTime(t){localStorage.setItem('nextTarotTime',t.toString())}
+  // ========== 传讯功能 ==========
+function getRandomTarotCard(){return TAROT_DECK[Math.floor(Math.random()*TAROT_DECK.length)]}
+function getRandomSpread(){const keys=Object.keys(TAROT_SPREADS);return TAROT_SPREADS[keys[Math.floor(Math.random()*keys.length)]]}
+function getRandomTarotSymbols(){const symbols=['ღ','☼','☾','❀','♡','✰'];const arr=[];for(let i=0;i<24;i++){arr.push(symbols[Math.floor(Math.random()*symbols.length)])}return arr.join(' ')}
+function generateCardBackHTML(){const syms=getRandomTarotSymbols();return`<div class="tarot-card-back"><div class="tb-symbols">${syms}</div></div>`}
+function generateCardFrontHTML(card,isReversed){
+  const posClass=isReversed?'reversed':'upright';
+  const posLabel=isReversed?'逆位':'正位';
+  const meaning=isReversed?card.reversed:card.upright;
+  return`<div class="tarot-card-front"><div class="tc-name">${card.name}</div><div class="tc-position ${posClass}">${posLabel}</div><div class="tc-meaning">${meaning}</div></div>`;
+}
+function generateTarotReading(isSingle){
+  const spread=getRandomSpread();
+  if(isSingle){
+    const card=getRandomTarotCard();const isReversed=Math.random()<0.5;
+    return{type:'single',card,isReversed,spread:null,text:''};
+  }else{
+    const cards=[];const used=new Set();
+    while(cards.length<3){const c=getRandomTarotCard();if(!used.has(c.id)){used.add(c.id);cards.push({card:c,isReversed:Math.random()<0.5})}}
+    return{type:'three',cards,spread,text:''};
+  }
+}
+function renderTarotReading(reading,dreamName){
+  let h='';
+  if(reading.type==='single'){
+    h+='<div class="tarot-card-front-container">'+generateCardFrontHTML(reading.card,reading.isReversed)+'</div>';
+  }else{
+    h+=`<div class="tarot-spread-label">◈ ${reading.spread.name} ◈</div>`;
+    h+='<div class="tarot-cards-row">';
+    reading.cards.forEach((c,i)=>{
+      h+=`<div style="text-align:center;"><div style="font-size:10px;color:var(--aux-light);margin-bottom:4px;">${reading.spread.positions[i]}</div>${generateCardFrontHTML(c.card,c.isReversed)}</div>`;
+    });
+    h+='</div>';
+    h+=`<div class="tarot-comprehensive"><div class="tc-comp-title">✦ 综合解读 ✦</div>${reading.spread.comprehensive}<br><br>`;
+    reading.cards.forEach((c,i)=>{
+      const meaning=c.isReversed?c.card.reversed:c.card.upright;
+      h+=`<b>${reading.spread.positions[i]}·${c.card.name}${c.isReversed?'(逆)':'(正)'}：</b>${meaning}<br>`;
+    });
+    h+='</div>';
+  }
+  if(reading.text){
+    h+=`<div class="tarot-msg-text">${escHtml(reading.text)}</div>`;
+  }
+  h+=`<div style="text-align:right;font-size:11px;color:var(--aux-light);margin-top:4px;">— ${escHtml(dreamName)} · ${formatTimestamp(Date.now())}</div>`;
+  return h;
+}
+
+async function openTarotTransfer(){hideAll();document.getElementById('tarotTransferPage').style.display='flex';ttCardMode='none';document.querySelectorAll('.tt-card-select').forEach(s=>s.classList.toggle('active',s.textContent==='无牌'));await renderTarotPage();setTimeout(()=>{const inp=document.getElementById('ttMessageInput');if(inp)inp.focus()},100)}
+async function renderTarotPage(){const msgs=await getTarotMessages();const mem=await getMem();const c=document.getElementById('ttMainContent');if(msgs.length===0){c.innerHTML='<div class="notes-empty" style="padding:60px 0;">还没有传讯<br>等待梦角给你发塔罗牌吧~</div>';return}let h='';msgs.forEach(msg=>{const dream=mem.dreams[msg.dreamId];const dn=dream?getDisplayName(mem,msg.dreamId):msg.dreamId;h+='<div style="margin-bottom:16px;">';if(msg.tarotData){const reading=msg.tarotData;reading.text=msg.content;h+=renderTarotReading(reading,dn);}else{h+=`<div class="tarot-msg-text">${escHtml(msg.content)}</div>`;h+=`<div style="text-align:right;font-size:11px;color:var(--aux-light);margin-top:4px;">— ${escHtml(dn)} · ${formatTimestamp(msg.ts)}</div>`;}h+='</div>';});c.innerHTML=h;c.scrollTop=c.scrollHeight}
+function ttSetCardMode(mode){ttCardMode=mode;document.querySelectorAll('.tt-card-select').forEach(s=>s.classList.toggle('active',s.textContent===({none:'无牌',single:'单张',three:'三张'}[mode])))}
+function onTTInputChange(){const inp=document.getElementById('ttMessageInput');const btn=document.getElementById('ttSendBtn');if(inp&&btn)btn.classList.toggle('visible',!!inp.value.trim())}
+async function sendTTMessage(){const inp=document.getElementById('ttMessageInput');const text=inp.value.trim();if(!text)return;const mem=await getMem();const ids=Object.keys(mem.dreams);if(ids.length===0){showToast('请先创建梦角');return}let tarotData=null;if(ttCardMode==='single'){tarotData=generateTarotReading(true)}else if(ttCardMode==='three'){tarotData=generateTarotReading(false)}const dreamId=ids[Math.floor(Math.random()*ids.length)];await addTarotMessage({dreamId,content:text,tarotData,sender:'me'});inp.value='';ttCardMode='none';document.querySelectorAll('.tt-card-select').forEach(s=>s.classList.toggle('active',s.textContent==='无牌'));onTTInputChange();await renderTarotPage();setTimeout(async()=>{await generateTarotReply(dreamId)},rand(3000,8000));}
+
+async function generateTarotReply(dreamId){
+  const isSingle=Math.random()<0.5;const tarotData=generateTarotReading(isSingle);
+  const cards=await getMixedCards(dreamId,rand(2,15));const content=cards.join('');
+  await addTarotMessage({dreamId,content,tarotData,sender:dreamId});
+  if(document.getElementById('tarotTransferPage').style.display==='flex')await renderTarotPage();
+}
+
+function calcNextTarotTime(){const now=new Date();const h=now.getHours();let next;if(h<6){next=new Date(now);next.setHours(rand(6,10),rand(0,60),0,0);}else{const delay=rand(3600000,28800000);const nt=now.getTime()+delay;next=new Date(nt);if(next.getHours()<6||next.getHours()>=23){next.setHours(rand(6,10),rand(0,60),0,0);if(next.getTime()<=now.getTime())next.setDate(next.getDate()+1)}}setNextTarotTime(next.getTime())}
+function checkTarotTrigger(){const now=Date.now();const next=getNextTarotTime();if(next&&now>=next){generateAutoTarot();calcNextTarotTime()}}
+async function generateAutoTarot(){const today=getTodayDateKey();const allMsgs=await getTarotMessages();const todayMsgs=allMsgs.filter(m=>getDateKey(m.ts)===today);if(todayMsgs.length>=1)return;const mem=await getMem();const ids=Object.keys(mem.dreams);if(ids.length===0)return;const dreamId=ids[Math.floor(Math.random()*ids.length)];const isSingle=Math.random()<0.5;const tarotData=generateTarotReading(isSingle);const cards=await getMixedCards(dreamId,rand(2,15));const content=cards.join('');await addTarotMessage({dreamId,content,tarotData,sender:dreamId});if(document.getElementById('tarotTransferPage').style.display==='flex')await renderTarotPage();}
+
+let notesCurrentDate='';
 let notesAllDates=[];
 async function openNotesPage(){hideAll();document.getElementById('notesPage').style.display='flex';notesCurrentDate=getTodayDateKey();await loadNotesDates();await renderNotesPage()}
 async function loadNotesDates(){const notes=await getNotes();const dateSet=new Set();notes.forEach(n=>dateSet.add(getDateKey(n.ts)));notesAllDates=Array.from(dateSet).sort();if(!notesAllDates.includes(getTodayDateKey()))notesAllDates.push(getTodayDateKey());notesAllDates.sort()}
@@ -1274,8 +1498,7 @@ function checkDiaryTrigger(){const now=Date.now();const next=getNextDiaryTime();
 async function generateDiaries(){const mem=await getMem();const ids=Object.keys(mem.dreams);if(ids.length===0)return;const today=getTodayDateKey();const allEntries=await getDiaryEntries();for(const dreamId of ids){if(Math.random()>0.5)continue;const alreadyWritten=allEntries.some(e=>e.dreamId===dreamId&&getDateKey(e.ts)===today);if(alreadyWritten)continue;const cards=await getMixedCards(dreamId,rand(5,8));const state=await getRandomState();const usePrefix=Math.random()<0.4;let content=concatCards(cards,usePrefix,state);if(Math.random()<0.3){const emojis=await getEmojis();if(emojis.length>0){const emoji=emojis[Math.floor(Math.random()*emojis.length)];const mid=Math.floor(content.length/2);content=content.slice(0,mid)+emoji+content.slice(mid);}}await addDiaryEntry(dreamId,content,state.weather,state.mood,state.daily);}if(document.getElementById('diaryPage').style.display==='flex'&&diaryCurrentDate===getTodayDateKey()){await loadDiaryDates();await renderDiaryPage();}}
 async function generateDiariesWithTs(ts){const mem=await getMem();const ids=Object.keys(mem.dreams);if(ids.length===0)return;const today=getTodayDateKey();const allEntries=await getDiaryEntries();for(const dreamId of ids){if(Math.random()>0.5)continue;const alreadyWritten=allEntries.some(e=>e.dreamId===dreamId&&getDateKey(e.ts)===today);if(alreadyWritten)continue;const cards=await getMixedCards(dreamId,rand(5,8));const state=await getRandomState();const usePrefix=Math.random()<0.4;let content=concatCards(cards,usePrefix,state);if(Math.random()<0.3){const emojis=await getEmojis();if(emojis.length>0){const emoji=emojis[Math.floor(Math.random()*emojis.length)];const mid=Math.floor(content.length/2);content=content.slice(0,mid)+emoji+content.slice(mid);}}await addDiaryEntry(dreamId,content,state.weather,state.mood,state.daily,ts);}}
 async function checkMissedDiaries(){const next=getNextDiaryTime();if(!next)return;const now=Date.now();if(now<next)return;const h=new Date().getHours();if(h<18)return;const today=getTodayDateKey();const allEntries=await getDiaryEntries();const todayEntries=allEntries.filter(e=>getDateKey(e.ts)===today);if(todayEntries.length>0)return;const randomTs=next+Math.floor(Math.random()*(now-next));await generateDiariesWithTs(randomTs);}
-
-async function openLettersPage(){hideAll();document.getElementById('lettersPage').style.display='flex';await renderLettersPage()}
+  async function openLettersPage(){hideAll();document.getElementById('lettersPage').style.display='flex';await renderLettersPage()}
 async function renderLettersPage(){const mem=await getMem();const ids=Object.keys(mem.dreams);const myName=mem.myName||'我';const c=document.getElementById('lettersMainContent');let h='';h+=`<div class="letters-mailbox-item" onclick="openMyMailbox()"><div class="letters-mailbox-avatar">${mem.myAvatar?`<img src="${mem.myAvatar}">`:myName.charAt(0)}</div><div class="letters-mailbox-info"><div class="letters-mailbox-name">${escHtml(myName)}</div><div class="letters-mailbox-preview">我的信箱</div></div></div>`;ids.forEach(id=>{const d=mem.dreams[id];const nn=getDisplayName(mem,id);const av=d.avatar?`<img src="${d.avatar}">`:nn.charAt(0);h+=`<div class="letters-mailbox-item" onclick="openDreamMailbox('${id}')"><div class="letters-mailbox-avatar">${av}</div><div class="letters-mailbox-info"><div class="letters-mailbox-name">${escHtml(nn)}</div><div class="letters-mailbox-preview">${escHtml(nn)}的信箱</div></div></div>`;});c.innerHTML=h;}
 
 let letterMailboxType='';let letterMailboxDreamId='';
@@ -1603,7 +1826,8 @@ async function dcSubmitQuick(){const input=document.getElementById('dcQuickInput
 async function dcSubmitCustom(){for(let i=0;i<dcOptions.length;i++){const v=document.getElementById('dcOpt'+i);if(v)dcOptions[i]=v.value}const question=document.getElementById('dcCustomQuestion');const qText=question?question.value.trim():'';if(!qText)return;const opts=[];for(let i=0;i<dcOptions.length;i++){if(dcOptions[i]&&dcOptions[i].trim()){opts.push(String.fromCharCode(65+i)+'.'+dcOptions[i].trim())}}if(opts.length===0)return;const selectedIds=dcGetSelectedDreamIds();if(selectedIds.length===0)return;const isGroup=selectedIds.length>=2;const optLine=opts.join(' ');const msg=isGroup?`「${qText}」\n${optLine}\n你们选哪个？`:`「${qText}」\n${optLine}`;if(!isGroup){const convId='chat_'+selectedIds[0];await addMsg(convId,'me',msg);await dcTriggerCustomReply(selectedIds[0],opts,false);if(document.getElementById('privateChatPage').style.display==='flex'&&currentDreamId===selectedIds[0]){await loadPrivateMessages()}}else{await addMsg('group_chat','me',msg);for(const id of selectedIds){await dcTriggerCustomReply(id,opts,true)}if(document.getElementById('groupChatPage').style.display==='flex'){await loadGroupMessages()}}closeDecidePage()}
 async function dcTriggerChoiceReply(dreamId,toGroup){const opts=['是','否','再想想','听你的'];const chosen=opts[Math.floor(Math.random()*opts.length)];const classes={是:'yes',否:'no',再想想:'think',听你的:'you'};const symbols={是:'✓ ',否:'✕ ',再想想:'○ ',听你的:'♡ '};let card=`<div class="msg-choice-cards"><div class="msg-choice-card ${classes[chosen]} chosen">${symbols[chosen]}${chosen}</div></div>`;const convId=toGroup?'group_chat':('chat_'+dreamId);await addMsg(convId,dreamId,card)}
 async function dcTriggerCustomReply(dreamId,opts,toGroup){const count=dcMultiMode?rand(2,Math.min(4,opts.length)):1;const shuffled=[...opts].sort(()=>Math.random()-0.5);const chosen=shuffled.slice(0,count);chosen.sort((a,b)=>opts.indexOf(a)-opts.indexOf(b));let result=dcMultiMode?chosen.join(' '):chosen[0];const convId=toGroup?'group_chat':('chat_'+dreamId);await addMsg(convId,dreamId,result)}
-  let videoCallState='idle',videoCallMode='video',videoCallTimer=null,videoCallSeconds=0,videoCallHangupTimeout=null,videoCallAnswerTimeout=null,videoCallDreamId='',floatDragging=false,lastClickTime=0,floatTimerInterval=null;
+
+let videoCallState='idle',videoCallMode='video',videoCallTimer=null,videoCallSeconds=0,videoCallHangupTimeout=null,videoCallAnswerTimeout=null,videoCallDreamId='',floatDragging=false,lastClickTime=0,floatTimerInterval=null;
 function miniVideoCall(){closeMiniPanel();getMem().then(mem=>{const ids=Object.keys(mem.dreams);if(ids.length===0){showToast('请先创建梦角');return}if(ids.length===1){startVideoCall('outgoing');return}let h='<div style="text-align:center;font-size:15px;letter-spacing:2px;margin-bottom:16px;color:var(--ink-gray);">选择拨打对象</div>';ids.forEach(id=>{const d=mem.dreams[id];const hn=d.nickname||d.name||id;h+=`<div class="dream-option" onclick="selectVideoCallTarget('${id}')"><span class="dot"></span>${escHtml(hn)}</div>`});document.getElementById('memModalPanel').innerHTML=h;document.getElementById('memModalOverlay').classList.add('show')})}
 async function selectVideoCallTarget(id){closeMemModal();const mem=await getMem();currentDreamId=id;mem.currentDreamId=id;await saveMem(mem);if(document.getElementById('privateChatPage').style.display==='flex')await updatePrivateChatUI();startVideoCall('outgoing')}
 async function startVideoCall(direction,dreamId){const mem=await getMem();let dream;if(direction==='outgoing'){dream=mem.dreams[currentDreamId];if(!dream){showToast('请先选择梦角');return}videoCallDreamId=currentDreamId}else{const ids=Object.keys(mem.dreams);if(ids.length===0)return;const id=dreamId||ids[Math.floor(Math.random()*ids.length)];dream=mem.dreams[id];videoCallDreamId=id;currentDreamId=id;await saveMem(mem)}if(!dream)return;const hn=dream.nickname||dream.name||'梦角';const avatarHtml=dream.avatar?`<img src="${dream.avatar}">`:hn.charAt(0);document.getElementById('videoAvatar').innerHTML=avatarHtml;document.getElementById('videoNickname').textContent=hn;if(direction==='outgoing'){videoCallState='calling';document.getElementById('videoStatus').textContent='等待接受邀请...';document.getElementById('videoTimer').textContent='';document.getElementById('videoBtnRow').innerHTML='<button class="video-btn" onclick="cancelVideoCall()" style="grid-column:1/-1;">✕ 取消</button>';document.getElementById('videoCallPanel').style.background='#E3F2FD';videoCallAnswerTimeout=setTimeout(()=>{if(videoCallState==='calling'){closeVideoCall()}},10000);const answerDelay=rand(1000,10000);setTimeout(()=>{if(videoCallState==='calling'){if(Math.random()<0.7){connectVideoCall()}else{closeVideoCall('busy')}}},answerDelay)}else{videoCallState='waiting';document.getElementById('videoStatus').textContent='正在请求视讯...';document.getElementById('videoTimer').textContent='';document.getElementById('videoBtnRow').innerHTML='<button class="video-btn video-btn-accept" onclick="connectVideoCall()">接听</button><button class="video-btn" onclick="closeVideoCall(\'reject\')">拒绝</button>';document.getElementById('videoCallPanel').style.background='#E3F2FD';videoCallAnswerTimeout=setTimeout(()=>{if(videoCallState==='waiting'){closeVideoCall('miss')}},30000)}document.getElementById('videoCallOverlay').classList.add('show');document.getElementById('videoAvatarWrap').classList.add('breathing');document.getElementById('floatCapsule').style.display='none';initVideoDrag()}
@@ -1632,7 +1856,7 @@ async function delDream(id){showConfirm('删除梦角','确定删除此梦角吗
 async function renderMemMe(){memEdit='';const mem=await getMem();if(!tmpMA)tmpMA=mem.myAvatar||'';if(!tmpGB)tmpGB=mem.groupBg||'';const mah=mem.myAvatar?`<img src="${mem.myAvatar}">`:'✿';const gbs=mem.groupBg?`background-image:url(${mem.groupBg})`:'';let h='';h+=`<div class="mem-form-group"><div class="mem-form-label">我的模样·头像</div><div class="mem-avatar-area"><div class="mem-avatar-preview" id="memMyAvatarPreview">${mah}</div><span class="mem-avatar-change" onclick="uploadMA('my')">更换头像</span></div></div>`;h+=`<div class="mem-form-group"><div class="mem-form-label">羁绊之名</div></div>`;h+=`<div class="mem-form-group"><div class="mem-form-label">我的名字</div><input type="text" id="memMyName" value="${escHtml(mem.myName)}" placeholder="输入你的名字"></div>`;h+=`<div class="mem-form-group"><div class="mem-form-label">群讯聊天背景</div><div class="mem-bg-preview" id="memGroupBgPreview" style="${gbs}">${mem.groupBg?'':'预览图'}</div><span class="mem-bg-change" onclick="uploadMB('group')">更换背景（全屏）</span></div>`;h+=`<div class="mem-save-btn" onclick="saveMe()">铭刻于心底</div>`;document.getElementById('memMainContent').innerHTML=h}
 async function saveMe(){const mn=document.getElementById('memMyName').value.trim();const mem=await getMem();mem.myName=mn||mem.myName;if(tmpMA)mem.myAvatar=tmpMA;if(tmpGB)mem.groupBg=tmpGB;tmpMA='';tmpGB='';await saveMem(mem);if(document.getElementById('privateChatPage').style.display==='flex')await updatePrivateChatUI();if(document.getElementById('groupChatPage').style.display==='flex')await updateGroupChatUI();await renderMemMe()}
 
-async function init(){loadMode();try{await initDB();console.log(APP_NAME+' '+APP_VERSION)}catch(e){console.error(e);showConfirm('初始化失败','数据库初始化失败，请清除浏览器数据后重试。',null,false,false)}try{const mem=await getMem();if(mem.currentDreamId&&mem.dreams[mem.currentDreamId])currentDreamId=mem.currentDreamId;else{const ids=Object.keys(mem.dreams);if(ids.length>0){currentDreamId=ids[0];mem.currentDreamId=currentDreamId;await saveMem(mem)}}}catch(e){console.error(e)}scheduleNextIncomingCall();scheduleAutoChat();scheduleAutoLetter();updateTotalDataSize();loadVinylBg();await applyPersonal();cleanOldNoticeCache();updateDesktopTimeCard();await checkPendingLetterReplies();const stData=await getST();if(!stData.weather||stData.weather.length===0){stData.weather=['晴天','雨天','多云','夜晚','星空','彩虹','起风'];await saveST(stData);}if(!stData.mood||stData.mood.length===0){stData.mood=['开心','想你','平静','元气','困困','兴奋','低落','烦躁','温柔','期待'];await saveST(stData);}if(!stData.daily||stData.daily.length===0){stData.daily=['在晒太阳','在看书','在听歌','在发呆','在睡觉','在喝咖啡','在散步','在画画','在工作','在想你'];await saveST(stData);}const noticeData=await getDailyNoticeData();if(noticeData){renderDailyNotice(noticeData,'notice');}if(!getNextNoteTime())calcNextNoteTime();if(!getNextDiaryTime())calcNextDiaryTime();await checkMissedNotes();await checkMissedDiaries();setInterval(()=>{updateDesktopTimeCard();checkNoteTrigger();checkDiaryTrigger();},1000);}
+async function init(){loadMode();try{await initDB();console.log(APP_NAME+' '+APP_VERSION)}catch(e){console.error(e);showConfirm('初始化失败','数据库初始化失败，请清除浏览器数据后重试。',null,false,false)}try{const mem=await getMem();if(mem.currentDreamId&&mem.dreams[mem.currentDreamId])currentDreamId=mem.currentDreamId;else{const ids=Object.keys(mem.dreams);if(ids.length>0){currentDreamId=ids[0];mem.currentDreamId=currentDreamId;await saveMem(mem)}}}catch(e){console.error(e)}scheduleNextIncomingCall();scheduleAutoChat();scheduleAutoLetter();updateTotalDataSize();loadVinylBg();await applyPersonal();cleanOldNoticeCache();updateDesktopTimeCard();await checkPendingLetterReplies();const stData=await getST();if(!stData.weather||stData.weather.length===0){stData.weather=['晴天','雨天','多云','夜晚','星空','彩虹','起风'];await saveST(stData);}if(!stData.mood||stData.mood.length===0){stData.mood=['开心','想你','平静','元气','困困','兴奋','低落','烦躁','温柔','期待'];await saveST(stData);}if(!stData.daily||stData.daily.length===0){stData.daily=['在晒太阳','在看书','在听歌','在发呆','在睡觉','在喝咖啡','在散步','在画画','在工作','在想你'];await saveST(stData);}const noticeData=await getDailyNoticeData();if(noticeData){renderDailyNotice(noticeData,'notice');}if(!getNextNoteTime())calcNextNoteTime();if(!getNextDiaryTime())calcNextDiaryTime();if(!getNextTarotTime())calcNextTarotTime();await checkMissedNotes();await checkMissedDiaries();setInterval(()=>{updateDesktopTimeCard();checkNoteTrigger();checkDiaryTrigger();checkTarotTrigger();},1000);}
 init();
 </script>
 </body>
