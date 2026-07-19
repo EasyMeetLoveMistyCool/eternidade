@@ -48,18 +48,8 @@ input, textarea { -webkit-user-select: text; user-select: text; }
   --note-bg: #3D3830; --note-shadow: rgba(0,0,0,0.15);
   --my-bubble-bg: #3D4248; --other-bubble-bg: #4A3F35;
 }
-body {
-  font-family: var(--font-family);
-  background: var(--desk-linen); color: var(--ink-gray); min-height: 100vh;
-  display: flex; justify-content: center; align-items: center; transition: background 0.3s, color 0.3s;
-  font-size: var(--font-size);
-}
-.app-container {
-  width: 420px; max-width: 100%; height: 100vh; max-height: 780px; min-height: 0;
-  background: var(--desk-linen); border-radius: 28px; overflow: hidden; position: relative;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
-  display: flex; flex-direction: column; transition: background 0.3s;
-}
+body { font-family: var(--font-family); background: var(--desk-linen); color: var(--ink-gray); min-height: 100vh; display: flex; justify-content: center; align-items: center; transition: background 0.3s, color 0.3s; font-size: var(--font-size); }
+.app-container { width: 420px; max-width: 100%; height: 100vh; max-height: 780px; min-height: 0; background: var(--desk-linen); border-radius: 28px; overflow: hidden; position: relative; box-shadow: 0 8px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06); display: flex; flex-direction: column; transition: background 0.3s; }
 .desktop-page { flex: 1; display: flex; flex-direction: column; padding: 20px 18px 20px; overflow-y: auto; background-image: linear-gradient(rgba(139,129,120,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(139,129,120,0.04) 1px, transparent 1px); background-size: 40px 40px; transition: background 0.3s; }
 .desktop-page::-webkit-scrollbar { width: 3px; }
 .desktop-page::-webkit-scrollbar-thumb { background: var(--aux-light); border-radius: 2px; }
@@ -572,7 +562,172 @@ body {
 .teach-input-wrapper input::placeholder { color: var(--aux-light); font-style: italic; }
 .teach-send-btn { display: none; white-space: nowrap; }
 .teach-send-btn.visible { display: flex; }
-/* 传讯样式 */
+
+.notes-date-selector { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 10px 0 16px; flex-shrink: 0; }
+.notes-date-arrow { font-size: 16px; color: var(--aux-gray); cursor: pointer; padding: 4px 8px; user-select: none; }
+.notes-date-arrow.disabled { color: var(--aux-light); opacity: 0.4; cursor: default; pointer-events: none; }
+.notes-date-text { font-size: 14px; color: var(--ink-gray); letter-spacing: 1px; min-width: 140px; text-align: center; }
+.note-card { background: var(--note-bg); border-radius: 6px; padding: 16px 14px; margin-bottom: 16px; box-shadow: 1px 2px 8px var(--note-shadow); position: relative; transition: opacity 0.3s; }
+.note-card.unread { border-left: 3px solid var(--blush-pink); }
+.note-card.read { border-left: 3px solid transparent; opacity: 0.85; }
+.note-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.note-card-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--avatar-bg); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--aux-gray); overflow: hidden; flex-shrink: 0; }
+.note-card-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.note-card-nickname { font-size: 13px; color: var(--ink-gray); letter-spacing: 1px; }
+.note-card-content { font-size: 14px; color: var(--ink-gray); line-height: 1.7; margin-bottom: 10px; }
+.note-card-footer { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--aux-light); }
+.note-card-tags { display: flex; gap: 6px; align-items: center; }
+.note-card-tag { font-size: 10px; color: var(--aux-gray); background: var(--card-cream); padding: 2px 6px; border-radius: 4px; }
+.note-card-read-btn { font-size: 11px; color: var(--blush-pink); cursor: pointer; padding: 2px 8px; border: 1px solid var(--blush-pink); border-radius: 4px; background: transparent; font-family: inherit; }
+.note-card-read-btn:active { background: rgba(232,180,184,0.15); }
+.note-card-read-btn.done { color: var(--aux-light); border-color: var(--aux-light); cursor: default; pointer-events: none; }
+.notes-empty { text-align: center; color: var(--aux-light); padding: 60px 0; font-size: 14px; letter-spacing: 2px; }
+
+.diary-date-selector { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 10px 0 16px; flex-shrink: 0; }
+.diary-date-arrow { font-size: 16px; color: var(--aux-gray); cursor: pointer; padding: 4px 8px; user-select: none; }
+.diary-date-arrow.disabled { color: var(--aux-light); opacity: 0.4; cursor: default; pointer-events: none; }
+.diary-date-text { font-size: 14px; color: var(--ink-gray); letter-spacing: 1px; min-width: 140px; text-align: center; }
+.diary-card { background: var(--card-cream); border-radius: 10px; padding: 18px 16px; margin-bottom: 16px; box-shadow: 0 2px 8px var(--shadow-brown); border: 1px solid var(--border-subtle); }
+.diary-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.diary-card-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--avatar-bg); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--aux-gray); overflow: hidden; flex-shrink: 0; }
+.diary-card-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.diary-card-nickname { font-size: 14px; color: var(--ink-gray); letter-spacing: 1px; }
+.diary-card-content { font-size: 14px; color: var(--ink-gray); line-height: 1.8; margin-bottom: 10px; }
+.diary-card-footer { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--aux-light); }
+.diary-card-tags { display: flex; gap: 6px; align-items: center; }
+.diary-card-tag { font-size: 10px; color: var(--aux-gray); background: var(--note-bg); padding: 2px 6px; border-radius: 4px; }
+.diary-write-btn { text-align: center; padding: 12px; background: var(--ink-gray); color: var(--card-cream); border-radius: 12px; font-size: 14px; letter-spacing: 2px; cursor: pointer; margin: 8px 14px 20px; }
+.diary-write-btn:active { opacity: 0.8; }
+.diary-empty { text-align: center; color: var(--aux-light); padding: 60px 0; font-size: 14px; letter-spacing: 2px; }
+
+.letters-mailbox-list { display: flex; flex-direction: column; gap: 16px; }
+.letters-mailbox-item { background: var(--card-cream); border-radius: 12px; padding: 14px; box-shadow: 0 2px 8px var(--shadow-brown); cursor: pointer; border: 1px solid var(--border-subtle); display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.letters-mailbox-item:active { transform: scale(0.98); }
+.letters-mailbox-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--avatar-bg); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--aux-gray); overflow: hidden; flex-shrink: 0; }
+.letters-mailbox-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.letters-mailbox-info { flex: 1; min-width: 0; }
+.letters-mailbox-name { font-size: 15px; color: var(--ink-gray); letter-spacing: 1px; }
+.letters-mailbox-preview { font-size: 11px; color: var(--aux-light); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.letters-mailbox-count { font-size: 11px; color: var(--aux-gray); flex-shrink: 0; }
+.letters-write-btn { text-align: center; padding: 12px 14px; background: var(--ink-gray); color: var(--card-cream); border-radius: 12px; font-size: 14px; letter-spacing: 2px; cursor: pointer; margin: 0 14px 8px; }
+.letters-write-btn:active { opacity: 0.8; }
+
+.letter-thread-card { background: var(--card-cream); border-radius: 10px; margin-bottom: 14px; box-shadow: 0 2px 8px var(--shadow-brown); border: 1px solid var(--border-subtle); overflow: hidden; cursor: pointer; }
+.letter-thread-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; }
+.letter-thread-info { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-gray); }
+.letter-thread-date { font-size: 11px; color: var(--aux-light); }
+.letter-thread-waiting { font-size: 11px; color: var(--blush-pink); margin-left: 4px; }
+.letter-thread-body { display: none; padding: 0 14px 14px; }
+.letter-thread-card.expanded .letter-thread-body { display: block; }
+.letter-content-block { background: var(--note-bg); border-radius: 8px; padding: 14px; margin-bottom: 10px; font-size: 14px; color: var(--ink-gray); line-height: 1.8; }
+.letter-content-block .letter-greeting { font-size: 15px; margin-bottom: 8px; }
+.letter-content-block .letter-body { margin-bottom: 8px; }
+.letter-content-block .letter-signature { text-align: right; color: var(--aux-gray); font-size: 13px; margin-top: 4px; }
+.letter-content-block .letter-time { text-align: right; color: var(--aux-light); font-size: 11px; margin-top: 2px; }
+.letter-divider { text-align: center; color: var(--aux-light); padding: 4px 0; font-size: 11px; letter-spacing: 2px; }
+.letter-reply-btn { text-align: center; padding: 8px; color: var(--blush-pink); font-size: 13px; cursor: pointer; border: 1px solid var(--blush-pink); border-radius: 8px; margin: 0 14px 12px; }
+.letter-reply-btn:active { background: rgba(232,180,184,0.1); }
+
+.letter-write-recipient { display: flex; align-items: center; gap: 8px; padding: 8px 0 14px; font-size: 13px; color: var(--aux-gray); }
+.letter-write-textarea { width: 100%; min-height: 180px; padding: 14px; border: 1px solid var(--border-subtle); border-radius: 10px; background: var(--note-bg); color: var(--ink-gray); font-family: inherit; font-size: 14px; line-height: 1.8; resize: none; outline: none; margin-bottom: 12px; }
+.letter-write-textarea::placeholder { color: var(--aux-light); font-style: italic; }
+.letter-write-preview { background: var(--note-bg); border-radius: 10px; padding: 18px 16px; margin-bottom: 12px; font-size: 14px; color: var(--ink-gray); line-height: 1.8; border: 1px solid var(--border-subtle); }
+.letter-write-preview .lw-greeting { font-size: 15px; margin-bottom: 10px; }
+.letter-write-preview .lw-body { margin-bottom: 10px; }
+.letter-write-preview .lw-signature { text-align: right; color: var(--aux-gray); font-size: 13px; margin-top: 4px; }
+.letter-write-preview .lw-time { text-align: right; color: var(--aux-light); font-size: 11px; margin-top: 2px; }
+.letter-send-btn { text-align: center; padding: 14px; background: var(--ink-gray); color: var(--card-cream); border-radius: 12px; font-size: 14px; letter-spacing: 2px; cursor: pointer; }
+.letter-send-btn:active { opacity: 0.8; }
+.letter-send-btn.disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+.letters-empty { text-align: center; color: var(--aux-light); padding: 60px 0; font-size: 14px; letter-spacing: 2px; }
+
+.daily-notice-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); z-index: 40; display: none; justify-content: center; align-items: center; }
+.daily-notice-overlay.show { display: flex; }
+.daily-notice-panel { background: linear-gradient(160deg, #FFF8F0 0%, #FDF0F2 40%, #F8F4E8 100%); border-radius: 20px; padding: 32px 24px 24px; width: 320px; box-shadow: 0 12px 40px rgba(0,0,0,0.18); text-align: center; animation: noticeSlideIn 0.4s ease-out; }
+[data-mode="night"] .daily-notice-panel { background: linear-gradient(160deg, #3D3530 0%, #4A3F38 40%, #3F3830 100%); }
+@keyframes noticeSlideIn { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.daily-notice-title { font-size: 14px; letter-spacing: 4px; color: var(--aux-gray); margin-bottom: 18px; }
+.daily-notice-avatar { width: 56px; height: 56px; border-radius: 50%; background: var(--avatar-bg); display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--aux-gray); margin: 0 auto 8px; overflow: hidden; clip-path: polygon(5% 0%, 95% 3%, 100% 95%, 93% 100%, 0% 97%, 2% 5%); }
+.daily-notice-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.daily-notice-nickname { font-size: 16px; color: var(--ink-gray); letter-spacing: 2px; margin-bottom: 18px; }
+.daily-notice-weather { margin-bottom: 12px; display: flex; justify-content: center; min-height: 48px; align-items: center; }
+.daily-notice-mood { font-size: 15px; color: var(--ink-gray); margin-bottom: 14px; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 36px; }
+.daily-notice-mood-icon { flex-shrink: 0; }
+.daily-notice-quote { font-size: 13px; color: var(--aux-gray); font-style: italic; margin-bottom: 20px; letter-spacing: 1px; line-height: 1.5; }
+.daily-notice-quote::before { content: '"'; } .daily-notice-quote::after { content: '" ♡'; }
+.daily-notice-btn { display: inline-block; padding: 10px 32px; border-radius: 20px; background: var(--blush-pink); color: #fff; font-size: 14px; letter-spacing: 2px; cursor: pointer; border: none; font-family: inherit; }
+.daily-notice-btn:active { transform: scale(0.95); opacity: 0.9; }
+
+.css-weather { display: inline-block; position: relative; }
+.css-weather.sunny { width: 40px; height: 40px; background: #F9A825; border-radius: 50%; box-shadow: 0 0 0 4px rgba(249,168,37,0.2), 0 0 0 10px rgba(249,168,37,0.08); }
+.css-weather.cloudy { width: 44px; height: 28px; background: #B0BEC5; border-radius: 16px; position: relative; margin-top: 10px; }
+.css-weather.cloudy::before { content: ''; position: absolute; width: 20px; height: 20px; background: #B0BEC5; border-radius: 50%; top: -10px; left: 6px; }
+.css-weather.cloudy::after { content: ''; position: absolute; width: 24px; height: 24px; background: #B0BEC5; border-radius: 50%; top: -14px; left: 16px; }
+.css-weather.rainy { width: 40px; height: 30px; background: #90A4AE; border-radius: 16px; position: relative; margin-top: 8px; }
+.css-weather.rainy::before { content: ''; position: absolute; width: 18px; height: 18px; background: #90A4AE; border-radius: 50%; top: -9px; left: 5px; }
+.css-weather.rainy::after { content: ''; position: absolute; width: 22px; height: 22px; background: #90A4AE; border-radius: 50%; top: -13px; left: 15px; }
+.css-weather.night { width: 28px; height: 28px; background: #FFE082; border-radius: 50%; box-shadow: 0 0 0 3px rgba(255,224,130,0.3); position: relative; }
+.css-weather.night::after { content: ''; position: absolute; top: 2px; left: 16px; width: 6px; height: 6px; background: #FFF8E1; border-radius: 50%; box-shadow: 3px -2px 0 1px #FFF8E1, 5px 3px 0 0px #FFF8E1; }
+.css-weather.starry { width: 36px; height: 36px; position: relative; }
+.css-weather.starry::before { content: ''; position: absolute; top: 6px; left: 6px; width: 4px; height: 4px; background: #FFE082; border-radius: 50%; box-shadow: 8px -2px 0 0 #FFE082, 16px 4px 0 0 #FFE082, 4px 12px 0 0 #FFE082, 14px 14px 0 0 #FFE082, 20px 8px 0 1px #FFE082, 2px 20px 0 0 #FFE082, 18px 20px 0 0 #FFE082; }
+.css-weather.rainbow { width: 24px; height: 14px; border-radius: 12px 12px 0 0; border: 2px solid transparent; border-top: 2px solid #E57373; box-shadow: 0 -3px 0 1px #FFB74D, 0 -6px 0 4px #FFE082, 0 -9px 0 7px #AED581, 0 -12px 0 10px #64B5F6, 0 -15px 0 13px #CE93D8; position: relative; margin-bottom: 8px; }
+.css-weather.windy { width: 36px; height: 6px; position: relative; }
+.css-weather.windy::before { content: ''; position: absolute; top: 0; left: 0; width: 24px; height: 3px; background: #90A4AE; border-radius: 2px; }
+.css-weather.windy::after { content: ''; position: absolute; top: 8px; left: 6px; width: 18px; height: 3px; background: #B0BEC5; border-radius: 2px; }
+.css-weather.thunder { width: 40px; height: 30px; background: #616161; border-radius: 16px; position: relative; margin-top: 8px; }
+.css-weather.thunder::before { content: ''; position: absolute; width: 18px; height: 18px; background: #616161; border-radius: 50%; top: -9px; left: 5px; }
+.css-weather.thunder::after { content: ''; position: absolute; width: 22px; height: 22px; background: #616161; border-radius: 50%; top: -13px; left: 15px; box-shadow: 12px 16px 0 -2px #FFD54F; }
+.css-weather.snowy { width: 40px; height: 30px; background: #B0BEC5; border-radius: 16px; position: relative; margin-top: 8px; }
+.css-weather.snowy::before { content: ''; position: absolute; width: 18px; height: 18px; background: #B0BEC5; border-radius: 50%; top: -9px; left: 5px; }
+.css-weather.snowy::after { content: ''; position: absolute; width: 6px; height: 6px; background: #fff; border-radius: 50%; top: 18px; left: 8px; box-shadow: 10px 2px 0 0 #fff, 16px -4px 0 0 #fff, 20px 6px 0 1px #fff; }
+.css-weather.foggy { width: 40px; height: 6px; position: relative; }
+.css-weather.foggy::before { content: ''; position: absolute; top: 0; left: 2px; width: 30px; height: 2px; background: #B0BEC5; border-radius: 1px; box-shadow: 0 8px 0 0 #B0BEC5, 4px 16px 0 0 #CFD8DC; }
+
+.css-mood { display: inline-block; position: relative; }
+.css-mood.smile { width: 28px; height: 28px; background: #FFCC80; border-radius: 50%; position: relative; }
+.css-mood.smile::before { content: ''; position: absolute; top: 9px; left: 7px; width: 4px; height: 4px; background: #5D4037; border-radius: 50%; box-shadow: 10px 0 0 0 #5D4037; }
+.css-mood.smile::after { content: ''; position: absolute; top: 16px; left: 10px; width: 8px; height: 4px; border: 1.5px solid #5D4037; border-top: none; border-radius: 0 0 8px 8px; }
+.css-mood.sleepy { width: 28px; height: 28px; background: #FFE082; border-radius: 50%; position: relative; }
+.css-mood.sleepy::before { content: ''; position: absolute; top: 10px; left: 7px; width: 4px; height: 2px; background: #5D4037; border-radius: 1px; box-shadow: 10px 0 0 0 #5D4037; }
+.css-mood.sleepy::after { content: ''; position: absolute; top: 17px; left: 9px; width: 6px; height: 3px; border: 1.5px solid #5D4037; border-top: none; border-radius: 0 0 6px 6px; }
+.css-mood.miss { width: 28px; height: 28px; background: #F8BBD0; border-radius: 50%; position: relative; }
+.css-mood.miss::before { content: ''; position: absolute; top: 8px; left: 5px; width: 5px; height: 5px; background: #5D4037; border-radius: 50%; box-shadow: 11px 0 0 0 #5D4037; }
+.css-mood.miss::after { content: ''; position: absolute; top: 4px; left: 6px; width: 3px; height: 2px; background: #8D6E63; border-radius: 1px; transform: rotate(15deg); box-shadow: 10px 0 0 0 #8D6E63, 5px 14px 0 1px #64B5F6; }
+.css-mood.energy { width: 28px; height: 28px; background: #FFD54F; border-radius: 50%; position: relative; }
+.css-mood.energy::before { content: ''; position: absolute; top: 8px; left: 5px; width: 6px; height: 6px; background: #5D4037; border-radius: 50%; box-shadow: 12px 0 0 0 #5D4037; }
+.css-mood.energy::after { content: ''; position: absolute; top: 16px; left: 9px; width: 10px; height: 4px; border: 1.5px solid #5D4037; border-top: none; border-radius: 0 0 10px 10px; }
+.css-mood.tsundere { width: 28px; height: 28px; background: #FFAB91; border-radius: 50%; position: relative; }
+.css-mood.tsundere::before { content: ''; position: absolute; top: 9px; left: 6px; width: 4px; height: 4px; background: #5D4037; border-radius: 50%; }
+.css-mood.tsundere::after { content: ''; position: absolute; top: 9px; left: 16px; width: 4px; height: 4px; background: #5D4037; border-radius: 50%; transform: translateY(1px); }
+.css-mood.angry { width: 28px; height: 28px; background: #EF9A9A; border-radius: 50%; position: relative; }
+.css-mood.angry::before { content: ''; position: absolute; top: 8px; left: 6px; width: 4px; height: 4px; background: #5D4037; border-radius: 50%; box-shadow: 10px 0 0 0 #5D4037; }
+.css-mood.angry::after { content: ''; position: absolute; top: 17px; left: 9px; width: 8px; height: 3px; border: 1.5px solid #5D4037; border-bottom: none; border-radius: 8px 8px 0 0; }
+.css-mood.anxious { width: 28px; height: 28px; background: #FFE082; border-radius: 50%; position: relative; }
+.css-mood.anxious::before { content: ''; position: absolute; top: 9px; left: 6px; width: 4px; height: 4px; background: #5D4037; border-radius: 50%; box-shadow: 10px 0 0 0 #5D4037; }
+.css-mood.anxious::after { content: ''; position: absolute; top: 15px; left: 8px; width: 10px; height: 4px; border: 1.5px solid #5D4037; border-top: none; border-radius: 0 0 3px 3px; box-shadow: 18px -4px 0 -1px #64B5F6; }
+.css-mood.thinking { width: 28px; height: 28px; background: #C5E1A5; border-radius: 50%; position: relative; }
+.css-mood.thinking::before { content: ''; position: absolute; top: 9px; left: 6px; width: 5px; height: 5px; background: #5D4037; border-radius: 50%; }
+.css-mood.thinking::after { content: ''; position: absolute; top: 9px; left: 16px; width: 3px; height: 3px; background: #5D4037; border-radius: 50%; box-shadow: -6px 6px 0 1px #FFCC80; }
+.css-mood.lazy { width: 32px; height: 22px; background: #FFE082; border-radius: 40%; position: relative; }
+.css-mood.lazy::before { content: ''; position: absolute; top: 8px; left: 7px; width: 3px; height: 2px; background: #5D4037; border-radius: 1px; box-shadow: 12px 0 0 0 #5D4037; }
+.css-mood.lazy::after { content: ''; position: absolute; top: 2px; left: 20px; font-size: 8px; color: #5D4037; content: 'zZz'; letter-spacing: -1px; }
+.css-mood.hungry { width: 28px; height: 28px; background: #FFCC80; border-radius: 50%; position: relative; }
+.css-mood.hungry::before { content: ''; position: absolute; top: 8px; left: 6px; width: 5px; height: 5px; background: #5D4037; border-radius: 50%; box-shadow: 10px 0 0 0 #5D4037; }
+.css-mood.hungry::after { content: ''; position: absolute; top: 15px; left: 9px; width: 10px; height: 8px; background: #5D4037; border-radius: 0 0 6px 6px; }
+
+.small-world-page { flex: 1; min-height: 0; display: none; flex-direction: column; background: var(--paper-white); overflow: hidden; }
+.sw-card { background: var(--card-cream); border-radius: 14px; padding: 18px 16px; margin-bottom: 12px; box-shadow: 0 2px 10px var(--shadow-brown); text-align: center; border: 1px solid var(--border-subtle); }
+.sw-card-header { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 14px; min-height: 48px; }
+.sw-card-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--avatar-bg); display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--aux-gray); overflow: hidden; clip-path: polygon(5% 0%, 95% 3%, 100% 95%, 93% 100%, 0% 97%, 2% 5%); }
+.sw-card-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.sw-card-nickname { font-size: 15px; color: var(--ink-gray); letter-spacing: 2px; }
+.sw-card-weather { margin-bottom: 8px; min-height: 50px; display: flex; align-items: center; justify-content: center; }
+.sw-card-mood { font-size: 14px; color: var(--ink-gray); letter-spacing: 1px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 36px; }
+.sw-card-mood-icon { flex-shrink: 0; }
+.sw-card-quote { font-size: 12px; color: var(--aux-gray); font-style: italic; letter-spacing: 1px; }
+.sw-card-quote::before { content: '"'; } .sw-card-quote::after { content: '" ♡'; }
+.sw-empty { text-align: center; color: var(--aux-light); padding: 60px 0; font-size: 14px; letter-spacing: 2px; }
+
 .tarot-card-back { width: 90px; height: 130px; background: linear-gradient(135deg, #2E1A47 0%, #4A2060 30%, #6B3A8A 60%, #4A2060 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1); cursor: pointer; position: relative; overflow: hidden; margin: 0 auto; border: 2px solid #8B6BAE; transition: transform 0.4s, box-shadow 0.3s; }
 .tarot-card-back:active { transform: scale(0.95); box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
 .tarot-card-back .tb-symbols { width: 100%; height: 100%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; padding: 10px; font-size: 14px; color: rgba(255,255,255,0.7); letter-spacing: 6px; line-height: 2; font-family: serif; }
@@ -599,7 +754,7 @@ body {
 .tt-input-wrap { display: flex; align-items: center; background: var(--moon-white); border-radius: 22px; padding: 2px 6px; box-shadow: 0 2px 8px var(--shadow-brown); }
 .tt-input-wrap input { flex: 1; border: none; background: transparent; padding: 10px 6px; font-size: 14px; color: var(--ink-gray); outline: none; font-family: inherit; min-width: 0; }
 .tt-input-wrap input::placeholder { color: var(--aux-light); font-style: italic; }
-/* 数据统计样式 */
+
 .statistics-page { flex: 1; min-height: 0; display: none; flex-direction: column; background: var(--paper-white); overflow: hidden; }
 .stt-split { display: flex; flex: 1; min-height: 0; overflow: hidden; }
 .stt-left { width: 50%; overflow-y: auto; padding: 12px 10px; border-right: 1px solid var(--border-subtle); scrollbar-width: none; }
@@ -638,6 +793,7 @@ body {
 </head>
 <body>
 <div class="app-container" id="appContainer">
+
   <div class="desktop-page" id="desktopPage">
     <div class="desktop-time-card" id="desktopTimeCard"></div>
     <div class="desktop-title">易 遇 🩷 夏 雾 凉</div>
@@ -681,7 +837,8 @@ body {
       <div class="gear-icon" onclick="openSettings()">⚙</div>
     </div>
   </div>
-    <div class="chat-page" id="privateChatPage">
+
+  <div class="chat-page" id="privateChatPage">
     <div class="chat-header" style="position:relative;"><div class="header-back-hotarea" onclick="goToDesktop()"></div><div class="header-avatar" id="chatHisAvatar" onclick="showDreamDailyNotice()">他</div><div class="hearts-row">🩷🩷🩷🩷🩷🩷🩷🩷🩷</div><div class="header-avatar" id="chatMyAvatar">我</div><div class="header-title" id="chatTitle" onclick="toggleDreamSelect()">梦角🩷我</div><div class="dream-select-dropdown" id="dreamSelectDropdown"></div></div>
     <div class="chat-messages" id="privateChatMessages"></div>
     <div class="typing-indicator" id="privateTypingIndicator">他正在输入中...</div>
@@ -703,21 +860,13 @@ body {
 
   <div class="notes-page" id="notesPage">
     <div class="notes-top-bar"><div class="notes-back-hotarea" onclick="goToDesktop()"></div><div class="notes-title">留 言 条</div></div>
-    <div class="notes-date-selector" id="notesDateSelector">
-      <span class="notes-date-arrow" id="notesPrevArrow" onclick="notesChangeDate(-1)">◀</span>
-      <span class="notes-date-text" id="notesDateText"></span>
-      <span class="notes-date-arrow" id="notesNextArrow" onclick="notesChangeDate(1)">▶</span>
-    </div>
+    <div class="notes-date-selector" id="notesDateSelector"><span class="notes-date-arrow" id="notesPrevArrow" onclick="notesChangeDate(-1)">◀</span><span class="notes-date-text" id="notesDateText"></span><span class="notes-date-arrow" id="notesNextArrow" onclick="notesChangeDate(1)">▶</span></div>
     <div class="notes-main-content" id="notesMainContent"></div>
   </div>
 
   <div class="diary-page" id="diaryPage">
     <div class="diary-top-bar"><div class="diary-back-hotarea" onclick="goToDesktop()"></div><div class="diary-title">日 记</div></div>
-    <div class="diary-date-selector" id="diaryDateSelector">
-      <span class="diary-date-arrow" id="diaryPrevArrow" onclick="diaryChangeDate(-1)">◀</span>
-      <span class="diary-date-text" id="diaryDateText"></span>
-      <span class="diary-date-arrow" id="diaryNextArrow" onclick="diaryChangeDate(1)">▶</span>
-    </div>
+    <div class="diary-date-selector" id="diaryDateSelector"><span class="diary-date-arrow" id="diaryPrevArrow" onclick="diaryChangeDate(-1)">◀</span><span class="diary-date-text" id="diaryDateText"></span><span class="diary-date-arrow" id="diaryNextArrow" onclick="diaryChangeDate(1)">▶</span></div>
     <div class="diary-write-btn" id="diaryWriteBtn" onclick="showDiaryWrite()" style="display:none;">写日记</div>
     <div class="diary-main-content" id="diaryMainContent"></div>
   </div>
@@ -774,11 +923,7 @@ body {
     <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
       <div class="music-visual" id="musicVisual" onclick="changeVinylBg()"></div>
       <div style="text-align:center;font-size:15px;color:var(--ink-gray);letter-spacing:1px;padding:8px 0;" id="mpCurrentSong">未播放</div>
-      <div class="mp-controls">
-        <button class="mp-ctrl-btn" onclick="mpPrev()">⏮</button>
-        <button class="mp-ctrl-btn" id="mpPlayBtn" onclick="mpTogglePlay()"><span class="css-play"></span></button>
-        <button class="mp-ctrl-btn" onclick="mpNext()">⏭</button>
-      </div>
+      <div class="mp-controls"><button class="mp-ctrl-btn" onclick="mpPrev()">⏮</button><button class="mp-ctrl-btn" id="mpPlayBtn" onclick="mpTogglePlay()"><span class="css-play"></span></button><button class="mp-ctrl-btn" onclick="mpNext()">⏭</button></div>
       <div class="mp-song-list" id="mpSongList"></div>
     </div>
   </div>
@@ -790,14 +935,9 @@ body {
 
   <div class="teach-fullpage" id="teachFullpage">
     <div class="teach-top-bar"><div class="teach-back-hotarea" onclick="closeTeachFullpage()"></div><div class="teach-full-title">♡ 私 教 ♡</div></div>
-    <div class="teach-header-fixed">
-      <select id="teachFullDreamSelect" onchange="switchTeachFullDream(this.value)"></select>
-      <span class="teach-count" id="teachFullCount" style="margin-left:8px;">已教 0 句</span>
-    </div>
+    <div class="teach-header-fixed"><select id="teachFullDreamSelect" onchange="switchTeachFullDream(this.value)"></select><span class="teach-count" id="teachFullCount" style="margin-left:8px;">已教 0 句</span></div>
     <div class="teach-main-content" id="teachFullMessages"></div>
-    <div class="teach-footer-fixed">
-      <div class="teach-input-wrapper"><input type="text" id="teachFullInput" placeholder="输入想让他说的话..." oninput="onTeachFullInputChange()" onkeydown="if(event.key==='Enter')sendTeachFull()"><button class="capsule-btn teach-send-btn" id="teachFullSendBtn" onclick="sendTeachFull()">Enseñar</button></div>
-    </div>
+    <div class="teach-footer-fixed"><div class="teach-input-wrapper"><input type="text" id="teachFullInput" placeholder="输入想让他说的话..." oninput="onTeachFullInputChange()" onkeydown="if(event.key==='Enter')sendTeachFull()"><button class="capsule-btn teach-send-btn" id="teachFullSendBtn" onclick="sendTeachFull()">Enseñar</button></div></div>
   </div>
 
   <div class="small-world-page" id="smallWorldPage">
@@ -817,8 +957,7 @@ body {
 
   <div class="settings-page" id="settingsPage">
     <div class="cl-back-hotarea" style="position:absolute;left:0;top:0;width:48px;height:48px;" onclick="goToDesktop()"></div>
-    <div class="settings-title">设 置</div>
-    <div class="settings-version" id="settingsVersion"></div>
+    <div class="settings-title">设 置</div><div class="settings-version" id="settingsVersion"></div>
     <div class="settings-group"><div class="settings-label">聊天回复等待</div><div class="settings-hint">（单位：秒 / 范围1~120秒）</div><div class="range-row"><input type="number" id="setWaitMin" min="1" max="120" value="3" onchange="saveSettings()"><span class="range-sep">～</span><input type="number" id="setWaitMax" min="1" max="120" value="15" onchange="saveSettings()"></div></div>
     <div class="settings-group"><div class="settings-label">每次回复条数</div><div class="settings-hint">（单位：条 / 范围1~10条）</div><div class="range-row"><input type="number" id="setReplyMin" min="1" max="10" value="1" onchange="saveSettings()"><span class="range-sep">～</span><input type="number" id="setReplyMax" min="1" max="10" value="3" onchange="saveSettings()"></div></div>
     <div class="settings-group"><div class="settings-label">字卡拼接</div><div class="toggle-switch" id="toggleConcat"><span class="active" onclick="setSetting('concat',false)">关</span><span onclick="setSetting('concat',true)">开</span></div></div>
@@ -847,58 +986,18 @@ body {
   <div class="mini-panel-overlay" id="miniPanelOverlay" onclick="closeMiniPanel(event)"><div class="mini-panel" id="miniPanel" onclick="event.stopPropagation()"></div></div>
   <div class="sticker-add-overlay" id="stickerAddOverlay" onclick="closeStickerAdd(event)"><div class="sticker-add-panel" id="stickerAddPanel" onclick="event.stopPropagation()"></div></div>
 
-  <div class="confirm-overlay" id="confirmOverlay" onclick="closeConfirm(event)">
-    <div class="confirm-panel" id="confirmPanel" onclick="event.stopPropagation()"></div>
-  </div>
-
-  <div class="import-progress-overlay" id="importProgressOverlay">
-    <div class="import-progress-panel" id="importProgressPanel"></div>
-  </div>
-
-  <div class="daily-notice-overlay" id="dailyNoticeOverlay">
-    <div class="daily-notice-panel" id="dailyNoticePanel"></div>
-  </div>
-
-  <div class="video-call-overlay" id="videoCallOverlay">
-    <div class="video-call-panel" id="videoCallPanel">
-      <div class="video-call-content">
-        <div class="video-avatar-wrap" id="videoAvatarWrap"><div class="video-avatar" id="videoAvatar"></div></div>
-        <div class="video-nickname" id="videoNickname"></div>
-        <div class="video-status" id="videoStatus"></div>
-        <div class="video-timer" id="videoTimer"></div>
-        <div class="video-btn-row" id="videoBtnRow"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="float-capsule" id="floatCapsule">
-    <div class="float-avatar" id="floatAvatar"></div>
-    <span class="float-nickname" id="floatNickname"></span>
-    <span class="float-timer" id="floatTimer"></span>
-    <span class="float-dot" id="floatDot"></span>
-    <span class="float-close" onclick="hangupFromCapsule()">✕</span>
-  </div>
-
-  <div class="music-float" id="musicFloat">
-    <span class="mf-icon">♫</span>
-    <span class="mf-name" id="mfName">未播放</span>
-    <div class="mf-progress" id="mfProgress"><div class="mf-progress-fill" id="mfProgressFill" style="width:0%"></div></div>
-    <span class="mf-time" id="mfTime">00:00/00:00</span>
-    <span class="mf-btn" onclick="event.stopPropagation();mpPrev()">⏮</span>
-    <span class="mf-btn" id="mfPlayBtn" onclick="event.stopPropagation();mpTogglePlay()"><span class="mf-play-css play"></span></span>
-    <span class="mf-btn" onclick="event.stopPropagation();mpNext()">⏭</span>
-    <span class="mf-close" onclick="event.stopPropagation();mpClose()">✕</span>
-  </div>
+  <div class="confirm-overlay" id="confirmOverlay" onclick="closeConfirm(event)"><div class="confirm-panel" id="confirmPanel" onclick="event.stopPropagation()"></div></div>
+  <div class="import-progress-overlay" id="importProgressOverlay"><div class="import-progress-panel" id="importProgressPanel"></div></div>
+  <div class="daily-notice-overlay" id="dailyNoticeOverlay"><div class="daily-notice-panel" id="dailyNoticePanel"></div></div>
+  <div class="video-call-overlay" id="videoCallOverlay"><div class="video-call-panel" id="videoCallPanel"><div class="video-call-content"><div class="video-avatar-wrap" id="videoAvatarWrap"><div class="video-avatar" id="videoAvatar"></div></div><div class="video-nickname" id="videoNickname"></div><div class="video-status" id="videoStatus"></div><div class="video-timer" id="videoTimer"></div><div class="video-btn-row" id="videoBtnRow"></div></div></div></div>
+  <div class="float-capsule" id="floatCapsule"><div class="float-avatar" id="floatAvatar"></div><span class="float-nickname" id="floatNickname"></span><span class="float-timer" id="floatTimer"></span><span class="float-dot" id="floatDot"></span><span class="float-close" onclick="hangupFromCapsule()">✕</span></div>
+  <div class="music-float" id="musicFloat"><span class="mf-icon">♫</span><span class="mf-name" id="mfName">未播放</span><div class="mf-progress" id="mfProgress"><div class="mf-progress-fill" id="mfProgressFill" style="width:0%"></div></div><span class="mf-time" id="mfTime">00:00/00:00</span><span class="mf-btn" onclick="event.stopPropagation();mpPrev()">⏮</span><span class="mf-btn" id="mfPlayBtn" onclick="event.stopPropagation();mpTogglePlay()"><span class="mf-play-css play"></span></span><span class="mf-btn" onclick="event.stopPropagation();mpNext()">⏭</span><span class="mf-close" onclick="event.stopPropagation();mpClose()">✕</span></div>
 
   <div class="tarot-transfer-page" id="tarotTransferPage">
     <div class="tt-top-bar"><div class="tt-back-hotarea" onclick="goToDesktop()"></div><div class="tt-title">传 讯</div></div>
     <div class="tt-main-content" id="ttMainContent"></div>
     <div class="tt-send-area" id="ttSendArea">
-      <div class="tt-send-row" id="ttSendRow">
-        <span class="tt-card-select active" onclick="ttSetCardMode('none')">无牌</span>
-        <span class="tt-card-select" onclick="ttSetCardMode('single')">单张</span>
-        <span class="tt-card-select" onclick="ttSetCardMode('three')">三张</span>
-      </div>
+      <div class="tt-send-row" id="ttSendRow"><span class="tt-card-select active" onclick="ttSetCardMode('none')">无牌</span><span class="tt-card-select" onclick="ttSetCardMode('single')">单张</span><span class="tt-card-select" onclick="ttSetCardMode('three')">三张</span></div>
       <div class="tt-input-wrap"><input type="text" id="ttMessageInput" placeholder="写下传讯..." oninput="onTTInputChange()" onkeydown="if(event.key==='Enter')sendTTMessage()"><button class="capsule-btn send-btn" id="ttSendBtn" onclick="sendTTMessage()">Enviar</button></div>
     </div>
   </div>
@@ -1099,7 +1198,8 @@ const TAROT_SPREADS = {
   you_relation_other:{name:'你·关系·对方',positions:['你','关系','对方'],comprehensive:'关系的本质在于两端的平衡。你在这段关系中的位置、关系的状态、对方的能量，共同描绘出这张关系的地图。'},
   start_process_result:{name:'开始·过程·结果',positions:['开始','过程','结果'],comprehensive:'万事万物皆有起始、发展、终局。开始的种子、过程中的风雨、最终结出的果实，都在牌面中一一呈现。'}
 };
-  let db; const DBN = 'YiYuDB'; const DB_VERSION = 12;
+
+let db; const DBN = 'YiYuDB'; const DB_VERSION = 12;
 function initDB(){return new Promise((r,j)=>{const R=indexedDB.open(DBN,DB_VERSION);R.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains('messages')){const s=d.createObjectStore('messages',{keyPath:'id'});s.createIndex('conv','conv',{unique:false});s.createIndex('ts','ts',{unique:false})}
 if(!d.objectStoreNames.contains('memory')){d.createObjectStore('memory',{keyPath:'key'})}
 if(!d.objectStoreNames.contains('cardLibrary')){const s=d.createObjectStore('cardLibrary',{keyPath:'key'});s.createIndex('group','group',{unique:false})}
@@ -1161,14 +1261,7 @@ async function getCleanLogs(){await ensureDB();return new Promise((r,j)=>{const 
 function openCleanLog(){hideAll();document.getElementById('cleanLogPage').style.display='flex';renderCleanLogs()}
 async function renderCleanLogs(){const logs=await getCleanLogs();const c=document.getElementById('clogMainContent');if(logs.length===0){c.innerHTML='<div class="clog-empty">暂无清理记录</div>';return}let h='';logs.forEach(log=>{const d=new Date(log.ts);const ds=d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日 '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');h+=`<div class="clog-item"><div class="clog-info"><span class="clog-time">${ds}</span><span class="clog-type">${log.type}</span></div><span class="clog-count">清理 ${log.count} 条</span></div>`});c.innerHTML=h}
 
-function showConfirm(title,msg,onConfirm,isDanger,showInput){
-  const panel=document.getElementById('confirmPanel');
-  let inputHTML='';
-  if(showInput){inputHTML='<input type="text" class="confirm-input" id="confirmInput" placeholder="请输入 确认清除" oninput="checkConfirmInput()">';}
-  panel.innerHTML=`<div class="confirm-title">${title}</div><div class="confirm-msg">${msg}</div>${inputHTML}<div class="confirm-btn-row"><button class="confirm-btn" onclick="closeConfirm()">取消</button><button class="confirm-btn${isDanger?' confirm-danger':''}" id="confirmOkBtn"${showInput?' disabled':''}>${isDanger?'确认清除':'确认'}</button></div>`;
-  document.getElementById('confirmOverlay').classList.add('show');
-  document.getElementById('confirmOkBtn').onclick=()=>{closeConfirm();if(onConfirm)onConfirm();};
-}
+function showConfirm(title,msg,onConfirm,isDanger,showInput){const panel=document.getElementById('confirmPanel');let inputHTML='';if(showInput){inputHTML='<input type="text" class="confirm-input" id="confirmInput" placeholder="请输入 确认清除" oninput="checkConfirmInput()">';}panel.innerHTML=`<div class="confirm-title">${title}</div><div class="confirm-msg">${msg}</div>${inputHTML}<div class="confirm-btn-row"><button class="confirm-btn" onclick="closeConfirm()">取消</button><button class="confirm-btn${isDanger?' confirm-danger':''}" id="confirmOkBtn"${showInput?' disabled':''}>${isDanger?'确认清除':'确认'}</button></div>`;document.getElementById('confirmOverlay').classList.add('show');document.getElementById('confirmOkBtn').onclick=()=>{closeConfirm();if(onConfirm)onConfirm();};}
 function closeConfirm(e){if(e&&e.target!==document.getElementById('confirmOverlay'))return;document.getElementById('confirmOverlay').classList.remove('show')}
 function showClearConfirm(){showConfirm('清空聊天记录','确定要清空所有聊天记录吗？此操作不可恢复。',clearAllChatRecords,true,false)}
 function showFactoryResetConfirm(){showConfirm('恢复出厂设置','⚠️此操作将永久清除所有数据',factoryReset,true,true)}
@@ -1275,8 +1368,8 @@ async function renderSttRight(){const mem=await getMem();const ids=Object.keys(m
 function toggleSttDream(id){const idx=sttSelDreams.indexOf(id);if(idx>=0)sttSelDreams.splice(idx,1);else sttSelDreams.push(id);renderSttRight();}
 async function sttChangeDate(dir){const d=new Date(sttCurrentDate);d.setDate(d.getDate()+dir);const newDate=getDateKey(d.getTime());if(newDate>getTodayDateKey())return;sttCurrentDate=newDate;await renderSttRight();}
 async function renderSttChatList(){const msgs=await getAllMessages();const mem=await getMem();const filtered=msgs.filter(m=>getDateKey(m.ts)===sttCurrentDate&&(sttSelDreams.length===0||sttSelDreams.includes(m.sender)||(m.sender==='me'&&(m.conv.startsWith('chat_')?sttSelDreams.includes(m.conv.replace('chat_','')):false)))).sort((a,b)=>a.ts-b.ts);const c=document.getElementById('sttChatList');if(filtered.length===0){c.innerHTML='<div class="stt-chat-empty">暂无聊天记录</div>';return}let h='';filtered.forEach(m=>{const isMe=m.sender==='me';let senderName='';if(m.sender==='system')return;if(isMe){senderName=mem.myName||'我';if(m.conv.startsWith('chat_')){const dreamId=m.conv.replace('chat_','');senderName+=' → '+getDisplayName(mem,dreamId);}}else{const d=mem.dreams[m.sender];senderName=d?getDisplayName(mem,m.sender):m.sender;}const content=m.content.replace(/\[表情:.*?\]/g,'[表情]').replace(/\[图片:.*?\]/g,'[图片]').replace(/\[拍一拍\].*/g,'[拍一拍]').replace(/\[戳一戳\].*/g,'[戳一戳]').replace(/<[^>]*>/g,'').substring(0,80);h+=`<div class="stt-chat-item" style="text-align:${isMe?'right':'left'};"><div class="stt-chat-sender">${escHtml(senderName)}</div><div class="stt-chat-content">${escHtml(content)}</div><div class="stt-chat-time">${formatTimestamp(m.ts)}</div></div>`;});c.innerHTML=h;}
-  let notesCurrentDate='';
-let notesAllDates=[];
+
+let notesCurrentDate='';let notesAllDates=[];
 async function openNotesPage(){hideAll();document.getElementById('notesPage').style.display='flex';notesCurrentDate=getTodayDateKey();await loadNotesDates();await renderNotesPage()}
 async function loadNotesDates(){const notes=await getNotes();const dateSet=new Set();notes.forEach(n=>dateSet.add(getDateKey(n.ts)));notesAllDates=Array.from(dateSet).sort();if(!notesAllDates.includes(getTodayDateKey()))notesAllDates.push(getTodayDateKey());notesAllDates.sort()}
 async function notesChangeDate(dir){if(notesAllDates.length===0)return;const idx=notesAllDates.indexOf(notesCurrentDate);let newIdx=idx+dir;if(newIdx<0)newIdx=0;if(newIdx>=notesAllDates.length)newIdx=notesAllDates.length-1;if(notesAllDates[newIdx]>getTodayDateKey())return;notesCurrentDate=notesAllDates[newIdx];await renderNotesPage()}
@@ -1291,8 +1384,7 @@ async function checkMissedNotes(){const next=getNextNoteTime();if(!next)return;c
 
 async function checkNoteMention(dreamId){const allNotes=await getNotes();const today=getTodayDateKey();const unmentioned=allNotes.filter(n=>n.dreamId===dreamId&&getDateKey(n.ts)===today&&n.read&&!n.mentioned);if(unmentioned.length===0)return null;if(Math.random()<(0.10+Math.random()*0.05)){const note=unmentioned[0];await markNoteMentioned(note.id);return NOTE_MENTION_REPLIES[Math.floor(Math.random()*NOTE_MENTION_REPLIES.length)];}return null;}
 
-let diaryCurrentDate='';
-let diaryAllDates=[];
+let diaryCurrentDate='';let diaryAllDates=[];
 async function openDiaryPage(){hideAll();document.getElementById('diaryPage').style.display='flex';diaryCurrentDate=getTodayDateKey();await loadDiaryDates();await renderDiaryPage()}
 async function loadDiaryDates(){const entries=await getDiaryEntries();const dateSet=new Set();entries.forEach(e=>dateSet.add(getDateKey(e.ts)));diaryAllDates=Array.from(dateSet).sort();if(!diaryAllDates.includes(getTodayDateKey()))diaryAllDates.push(getTodayDateKey());diaryAllDates.sort()}
 async function diaryChangeDate(dir){if(diaryAllDates.length===0)return;const idx=diaryAllDates.indexOf(diaryCurrentDate);let newIdx=idx+dir;if(newIdx<0)newIdx=0;if(newIdx>=diaryAllDates.length)newIdx=diaryAllDates.length-1;if(diaryAllDates[newIdx]>getTodayDateKey())return;diaryCurrentDate=diaryAllDates[newIdx];await renderDiaryPage()}
@@ -1453,7 +1545,7 @@ async function triggerPokeReply(isGroup){if(Math.random()>0.3)return;const data=
 
 async function getRandomCards(count,concat){const data=await getCL();const all=[];for(const[,cards]of Object.entries(data.groups))cards.forEach(c=>all.push(c));if(all.length===0)return['（字卡库为空）'];const cc=rand(2,3);const tc=concat?cc:count;const pool=[...all];const sel=[];for(let i=0;i<tc;i++){if(pool.length===0){sel.push(all[Math.floor(Math.random()*all.length)])}else{sel.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0])}}for(let i=sel.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[sel[i],sel[j]]=[sel[j],sel[i]]}if(concat){const puncs='。！？；…、，,.!?;';let result='';for(let i=0;i<sel.length;i++){let card=sel[i];const lc=card.charAt(card.length-1);if(i===sel.length-1){if(!puncs.includes(lc))card+='。';}else{if(!puncs.includes(lc))card+='，';}result+=card}return[result]}return sel}
 
-async function getRandomReply(dreamId,count,concat){const privData=await getPrivateCards();const privateCards=privData[dreamId]||[];if(concat){const st=getSettings();const replyCount=rand(st.replyMin,st.replyMax);const replies=[];for(let r=0;r<replyCount;r++){const allCards=[];for(const[,cards]of Object.entries((await getCL()).groups||{}))cards.forEach(c=>allCards.push(c));const pool=[...allCards,...privateCards];const shuffled=[...pool].sort(()=>Math.random()-0.5);const totalCards=rand(2,3);const sel=shuffled.slice(0,totalCards);const puncs='。！？；…、，,.!?;';let final='';for(let i=0;i<sel.length;i++){let card=sel[i];const lc=card.charAt(card.length-1);if(i===sel.length-1){if(!puncs.includes(lc))card+='。';}else{if(!puncs.includes(lc))card+='，';}final+=card;}replies.push(final);}return replies;}else{const cards=await getRandomCards(count,concat);if(cards.length===0||cards[0]==='（字卡库为空）'){if(privateCards.length===0)return['（字卡库为空）'];return[privateCards[Math.floor(Math.random()*privateCards.length)]];}if(privateCards.length>0&&Math.random()<0.3){cards[Math.floor(Math.random()*cards.length)]=privateCards[Math.floor(Math.random()*privateCards.length)];}const emojis=await getEmojis();if(emojis.length>0&&Math.random()<0.3){const rndEmoji=emojis[Math.floor(Math.random()*emojis.length)];const ti=Math.floor(Math.random()*cards.length);const text=cards[ti];const pauses=text.match(/[，。！？；…、,]/g);const pauseCount=pauses?pauses.length:0;if(pauseCount<2&&text.length>=1){const r=Math.random();if(r<0.5){cards[ti]=rndEmoji+' '+text}else{cards[ti]=text+' '+rndEmoji}}else if(pauseCount>=2&&text.length>1){const mid=Math.floor(text.length/2);cards[ti]=text.slice(0,mid)+rndEmoji+text.slice(mid);}}if(Math.random()<0.3){const convId='chat_'+dreamId;const qMsg=await getRandomQuoteMsg(convId);if(qMsg){const quoteContent=getQuoteContent(qMsg);const ti=Math.floor(Math.random()*cards.length);cards[ti]=renderQuoteHTML(qMsg.id,quoteContent)+cards[ti];}}const stickers=await getStickers();if(stickers.length>0&&Math.random()<0.3){cards.push('[表情:'+stickers[Math.floor(Math.random()*stickers.length)]+']');}return cards;}}
+async function getRandomReply(dreamId,count,concat){const privData=await getPrivateCards();const privateCards=privData[dreamId]||[];const cl=await getCL();const allCards=[];for(const[,cards]of Object.entries(cl.groups||{}))cards.forEach(c=>allCards.push(c));const fullPool=[...allCards,...privateCards];if(fullPool.length===0)return['（字卡库为空）'];if(concat){const st=getSettings();const replyCount=rand(st.replyMin,st.replyMax);const replies=[];for(let r=0;r<replyCount;r++){const shuffled=[...fullPool].sort(()=>Math.random()-0.5);const totalCards=rand(2,3);const sel=shuffled.slice(0,totalCards);const puncs='。！？；…、，,.!?;';let final='';for(let i=0;i<sel.length;i++){let card=sel[i];const lc=card.charAt(card.length-1);if(i===sel.length-1){if(!puncs.includes(lc))card+='。';}else{if(!puncs.includes(lc))card+='，';}final+=card;}replies.push(final);}return replies;}else{const cards=await getRandomCards(count,concat);if(cards.length===0||cards[0]==='（字卡库为空）'){if(privateCards.length===0)return['（字卡库为空）'];return[privateCards[Math.floor(Math.random()*privateCards.length)]];}if(privateCards.length>0&&Math.random()<0.3){cards[Math.floor(Math.random()*cards.length)]=privateCards[Math.floor(Math.random()*privateCards.length)];}const emojis=await getEmojis();if(emojis.length>0&&Math.random()<0.3){const rndEmoji=emojis[Math.floor(Math.random()*emojis.length)];const ti=Math.floor(Math.random()*cards.length);const text=cards[ti];const pauses=text.match(/[，。！？；…、,]/g);const pauseCount=pauses?pauses.length:0;if(pauseCount<2&&text.length>=1){const r=Math.random();if(r<0.5){cards[ti]=rndEmoji+' '+text}else{cards[ti]=text+' '+rndEmoji}}else if(pauseCount>=2&&text.length>1){const mid=Math.floor(text.length/2);cards[ti]=text.slice(0,mid)+rndEmoji+text.slice(mid);}}if(Math.random()<0.3){const convId='chat_'+dreamId;const qMsg=await getRandomQuoteMsg(convId);if(qMsg){const quoteContent=getQuoteContent(qMsg);const ti=Math.floor(Math.random()*cards.length);cards[ti]=renderQuoteHTML(qMsg.id,quoteContent)+cards[ti];}}const stickers=await getStickers();if(stickers.length>0&&Math.random()<0.3){cards.push('[表情:'+stickers[Math.floor(Math.random()*stickers.length)]+']');}return cards;}}
 
 const SK='yiyu_chat_settings';
 function getSettings(){const d={waitMin:3,waitMax:15,replyMin:1,replyMax:3,concat:false,autoChat:false};const raw=localStorage.getItem(SK);if(raw)try{return{...d,...JSON.parse(raw)}}catch(e){}return d}
@@ -1488,8 +1580,7 @@ async function savePatEdit(old){const nt=document.getElementById('patEditTextare
 async function patImport(){const inp=document.createElement('input');inp.type='file';inp.accept='.txt';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=async()=>{const lines=r.result.split('\n').map(l=>l.trim()).filter(l=>l);const d=await getPat();const key=patTab==='poked'?'poked':'pat';const ex=new Set(d[key]);lines.forEach(l=>ex.add(l));d[key]=Array.from(ex);await savePat(d);await renderPatPage()};r.readAsText(f)};inp.click()}
 async function patExport(){const d=await getPat();const key=patTab==='poked'?'poked':'pat';const t=d[key].join('\n');const b=new Blob([t],{type:'text/plain'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=(patTab==='poked'?'戳一戳':'拍一拍')+'_文案.txt';a.click();URL.revokeObjectURL(u)}
 
-let songV='groups',songG='',songSel=new Set(),songAll=false,songQ='';
-let songGlobalMode=false;
+let songV='groups',songG='',songSel=new Set(),songAll=false,songQ='';let songGlobalMode=false;
 async function openSongLibrary(){hideAll();document.getElementById('songLibraryPage').style.display='flex';songV='groups';songG='';songSel.clear();songAll=false;songQ='';songGlobalMode=false;await renderSongGroups()}
 async function renderSongGroups(){songV='groups';songG='';songSel.clear();songAll=false;const d=await getSL();const ns=Object.keys(d.groups);let total=0;ns.forEach(n=>{total+=(d.groups[n]||[]).length});let h='';h+='<div class="song-global-search"><input type="text" id="songGlobalSearchInput" placeholder="全局搜索歌曲..." oninput="doSongGlobalSearch()"><button onclick="clearSongGlobalSearch()">清除</button></div>';h+='<div class="song-new-group-btn" onclick="showSongNewGroup()">+ 新建分组</div>';h+=`<div class="song-total-count">共 ${total} 首</div>`;h+='<div class="song-inline-input" id="songNewGroupInput"><input type="text" id="songNewGroupNameInput" placeholder="输入新分组名称" onkeydown="if(event.key===\'Enter\')createSongGroup()"><button class="song-btn" onclick="createSongGroup()">创建</button></div>';h+='<div id="songGroupsList">';ns.forEach(n=>{const cs=d.groups[n]||[];h+=`<div class="song-group-card" data-group-name="${escAttr(n)}"><div class="song-group-header"><span class="song-group-name">${escHtml(n)}</span><span class="song-group-count">(${cs.length})</span></div><div class="song-group-preview">${escHtml(cs.slice(0,4).map(s=>s.name).join(' | '))||'暂无歌曲'}</div></div>`});if(ns.length===0)h+='<div style="text-align:center;color:var(--aux-light);padding:40px 0;">暂无分组</div>';h+='</div><div id="songGlobalResults" style="display:none;"></div>';document.getElementById('songMainContent').innerHTML=h;document.querySelectorAll('.song-group-card').forEach(card=>{card.addEventListener('click',()=>{if(!songGlobalMode)openSongGroup(card.dataset.groupName)});initGroupLongPress(card,'song',card.dataset.groupName)})}
 async function doSongGlobalSearch(){const q=document.getElementById('songGlobalSearchInput').value.trim();if(!q){clearSongGlobalSearch();return}songGlobalMode=true;document.getElementById('songGroupsList').style.display='none';const d=await getSL();const results=[];for(const[gn,cs]of Object.entries(d.groups||{})){cs.forEach(s=>{if(s.name.includes(q)||s.songId.includes(q))results.push({...s,group:gn})})}let h='';results.forEach(s=>{h+=`<div class="song-card-item"><span class="song-card-text">${escHtml(s.name)}</span><span class="song-card-id">${escHtml(s.songId)} · ${escHtml(s.group)}</span><div class="song-actions"><span onclick="editSongGlobal('${escAttr(s.name)}','${escAttr(s.songId)}','${escAttr(s.group)}')">✎</span><span onclick="delSongGlobal('${escAttr(s.name)}','${escAttr(s.group)}')">✕</span></div></div>`});if(results.length===0)h='<div style="text-align:center;color:var(--aux-light);padding:40px 0;">未找到匹配歌曲</div>';document.getElementById('songGlobalResults').innerHTML=h;document.getElementById('songGlobalResults').style.display='block'}
@@ -1539,11 +1630,9 @@ function mpNext(){if(mpSongs.length===0)return;mpCurrentIndex=(mpCurrentIndex+1)
 function updateMpProgress(){if(!mpAudio||!mpIsPlaying)return;const current=formatCallTime(Math.floor(mpAudio.currentTime));const total=formatCallTime(Math.floor(mpAudio.duration||0));const pct=mpAudio.duration?(mpAudio.currentTime/mpAudio.duration*100):0;document.getElementById('mfTime').textContent=current+'/'+total;document.getElementById('mfProgressFill').style.width=pct+'%'}
 function stopMusic(){if(mpAudio){mpAudio.pause();mpAudio=null}mpIsPlaying=false;mpCurrentIndex=-1;updateMpUI();document.getElementById('musicFloat').style.display='none';document.getElementById('mfTime').textContent='00:00/00:00';document.getElementById('mfProgressFill').style.width='0%'}
 function mpClose(){stopMusic()}
-
 (function(){const mf=document.getElementById('musicFloat');let startX,startY,initLeft,initTop,mfDragging=false;mf.addEventListener('touchstart',e=>{if(e.target.classList.contains('mf-close')||e.target.classList.contains('mf-btn'))return;mfDragging=true;const t=e.touches[0];startX=t.clientX;startY=t.clientY;initLeft=mf.offsetLeft;initTop=mf.offsetTop;mf.style.transition='none'});mf.addEventListener('touchmove',e=>{if(!mfDragging)return;e.preventDefault();const t=e.touches[0];mf.style.left=(initLeft+t.clientX-startX)+'px';mf.style.top=(initTop+t.clientY-startY)+'px';mf.style.right='auto';mf.style.bottom='auto'});mf.addEventListener('touchend',()=>{mfDragging=false;mf.style.transition=''});mf.addEventListener('click',e=>{if(mfDragging)return;if(e.target.classList.contains('mf-close')||e.target.classList.contains('mf-btn'))return;openMusicPlayer()})})();
 
-let clV='groups',clG='',clSel=new Set(),clAll=false,clQ='';
-let clGlobalMode=false;
+let clV='groups',clG='',clSel=new Set(),clAll=false,clQ='';let clGlobalMode=false;
 async function renderCLGroups(){clV='groups';clG='';clSel.clear();clAll=false;document.getElementById('clTabRow').style.display='flex';document.querySelectorAll('.cl-sub-row span').forEach((s,i)=>s.classList.toggle('active',i===0));const d=await getCL();const ns=Object.keys(d.groups);let total=0;ns.forEach(n=>{total+=(d.groups[n]||[]).length});let h='';h+='<div class="cl-global-search"><input type="text" id="clGlobalSearchInput" placeholder="全局搜索字卡..." oninput="doCLGlobalSearch()"><button onclick="clearCLGlobalSearch()">清除</button></div>';h+='<div class="cl-new-group-btn" onclick="showCLNewGroup()">+ 新建分组</div>';h+='<div class="cl-inline-input" id="clNewGroupInput"><input type="text" id="clNewGroupNameInput" placeholder="输入新分组名称" onkeydown="if(event.key===\'Enter\')createCLGroup()"><button class="cl-btn" onclick="createCLGroup()">创建</button></div>';h+=`<div class="cl-total-count">共 ${total} 条</div>`;h+='<div id="clGroupsList">';ns.forEach(n=>{const cs=d.groups[n]||[];h+=`<div class="cl-group-card" data-group-name="${escAttr(n)}"><div class="cl-group-header"><span class="cl-group-name">${escHtml(n)}</span><span class="cl-group-count">(${cs.length})</span></div><div class="cl-group-preview">${escHtml(cs.slice(0,4).join(' | '))||'暂无字卡'}</div></div>`});if(ns.length===0)h+='<div style="text-align:center;color:var(--aux-light);padding:40px 0;">暂无分组</div>';h+='</div><div id="clGlobalResults" style="display:none;"></div>';document.getElementById('clMainContent').innerHTML=h;document.querySelectorAll('.cl-group-card').forEach(card=>{card.addEventListener('click',()=>{if(!clGlobalMode)openCLGroup(card.dataset.groupName)});initGroupLongPress(card,'cl',card.dataset.groupName)})}
 async function doCLGlobalSearch(){const q=document.getElementById('clGlobalSearchInput').value.trim();if(!q){clearCLGlobalSearch();return}clGlobalMode=true;document.getElementById('clGroupsList').style.display='none';const d=await getCL();const results=[];for(const[gn,cs]of Object.entries(d.groups||{})){cs.forEach(c=>{if(c.includes(q))results.push({text:c,group:gn})})}let h='';results.forEach(r=>{h+=`<div class="cl-card-item"><span class="cl-card-text">${escHtml(r.text)}</span><span class="song-card-id">${escHtml(r.group)}</span><div class="cl-actions"><span onclick="editCLGlobal('${escAttr(r.text)}','${escAttr(r.group)}')">✎</span><span onclick="delCLGlobal('${escAttr(r.text)}','${escAttr(r.group)}')">✕</span></div></div>`});if(results.length===0)h+='<div style="text-align:center;color:var(--aux-light);padding:40px 0;">未找到匹配字卡</div>';document.getElementById('clGlobalResults').innerHTML=h;document.getElementById('clGlobalResults').style.display='block'}
 async function clearCLGlobalSearch(){clGlobalMode=false;document.getElementById('clGlobalSearchInput').value='';document.getElementById('clGroupsList').style.display='';document.getElementById('clGlobalResults').style.display='none'}
