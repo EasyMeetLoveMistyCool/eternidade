@@ -20,8 +20,6 @@ input, textarea { -webkit-user-select: text; user-select: text; }
   --music-bg: #E8F5E9; --music-bar: #A5D6A7; --music-fill: #66BB6A;
   --choice-yes: #E8F5E9; --choice-yes-border: #66BB6A; --choice-yes-active: #C8E6C9;
   --choice-no: #FCE4EC; --choice-no-border: #E57373; --choice-no-active: #F8BBD0;
-  --choice-think: #FFF3E0; --choice-think-border: #FFB74D; --choice-think-active: #FFE0B2;
-  --choice-you: #EDE7F6; --choice-you-border: #9575CD; --choice-you-active: #D1C4E9;
   --choice-custom: #BBDEFB; --choice-custom-border: #42A5F5;
   --pat-bg: #EDE7F6; --pat-color: #9575CD; --poke-color: #90CAF9;
   --note-bg: #FFFEF9; --note-shadow: rgba(139,129,120,0.1);
@@ -42,8 +40,6 @@ input, textarea { -webkit-user-select: text; user-select: text; }
   --music-bg: #3A4A3B; --music-bar: #4A5A4B; --music-fill: #66BB6A;
   --choice-yes: #2E3D2F; --choice-yes-border: #4CAF50; --choice-yes-active: #3D5A3E;
   --choice-no: #3D2E30; --choice-no-border: #D32F2F; --choice-no-active: #5A3D3F;
-  --choice-think: #3D3528; --choice-think-border: #F57C00; --choice-think-active: #5A4A35;
-  --choice-you: #312D3D; --choice-you-border: #7E57C2; --choice-you-active: #4A3D5A;
   --choice-custom: #283848; --choice-custom-border: #1E88E5;
   --pat-bg: #312D3D; --pat-color: #B095C8; --poke-color: #64B5F6;
   --note-bg: #3D3830; --note-shadow: rgba(0,0,0,0.15);
@@ -380,18 +376,12 @@ body {
 .choice-card { width: 72px; height: 72px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 14px; border: 2px solid transparent; flex-shrink: 0; }
 .choice-card.yes { background: var(--choice-yes); border-color: var(--choice-yes-border); }
 .choice-card.no { background: var(--choice-no); border-color: var(--choice-no-border); }
-.choice-card.think { background: var(--choice-think); border-color: var(--choice-think-border); }
-.choice-card.you { background: var(--choice-you); border-color: var(--choice-you-border); }
 .msg-choice-cards { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
 .msg-choice-card { width: 64px; height: 64px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; border: 2px solid transparent; }
 .msg-choice-card.yes { background: var(--choice-yes); border-color: var(--choice-yes-border); }
 .msg-choice-card.yes.chosen { background: var(--choice-yes-active); border-width: 3px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
 .msg-choice-card.no { background: var(--choice-no); border-color: var(--choice-no-border); }
 .msg-choice-card.no.chosen { background: var(--choice-no-active); border-width: 3px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
-.msg-choice-card.think { background: var(--choice-think); border-color: var(--choice-think-border); }
-.msg-choice-card.think.chosen { background: var(--choice-think-active); border-width: 3px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
-.msg-choice-card.you { background: var(--choice-you); border-color: var(--choice-you-border); }
-.msg-choice-card.you.chosen { background: var(--choice-you-active); border-width: 3px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
 .msg-choice-custom { background: var(--choice-custom); border: 2px solid var(--choice-custom-border); border-radius: 8px; padding: 8px 12px; text-align: center; font-size: 14px; color: var(--ink-gray); }
 .dc-input-wrap { margin-bottom: 12px; }
 .dc-input { width: 100%; padding: 10px 12px; border: 1px solid var(--border-subtle); border-radius: 10px; background: var(--card-cream); color: var(--ink-gray); font-family: inherit; font-size: 14px; outline: none; }
@@ -610,8 +600,17 @@ body {
 .ds-filter-row .ds-filter-btn { padding: 6px 12px; border-radius: 14px; font-size: 12px; cursor: pointer; background: var(--card-cream); border: 1px solid var(--border-subtle); color: var(--aux-gray); font-family: inherit; }
 .ds-filter-row .ds-filter-btn.active { background: var(--blush-pink); color: #fff; border-color: var(--blush-pink); }
 .ds-date-selector { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 8px 0 12px; flex-shrink: 0; }
-.ds-date-arrow { font-size: 16px; color: var(--aux-gray); cursor: pointer; padding: 4px 8px; user-select: none; }
-.ds-date-text { font-size: 14px; color: var(--ink-gray); letter-spacing: 1px; min-width: 140px; text-align: center; }
+.ds-date-text { font-size: 14px; color: var(--ink-gray); letter-spacing: 1px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.ds-date-text:hover { color: var(--blush-pink); }
+
+/* 留言条/日记日期选择器 */
+.notes-date-selector { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 10px 0 16px; flex-shrink: 0; }
+.notes-date-text { font-size: 14px; color: var(--ink-gray); letter-spacing: 1px; min-width: 140px; text-align: center; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.notes-date-text:hover { color: var(--blush-pink); }
+.diary-date-selector { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 10px 0 16px; flex-shrink: 0; }
+.diary-date-text { font-size: 14px; color: var(--ink-gray); letter-spacing: 1px; min-width: 140px; text-align: center; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.diary-date-text:hover { color: var(--blush-pink); }
+.notes-date-arrow, .diary-date-arrow, .ds-date-arrow { display: none; }
 
 /* 纪念日页样式 */
 .ann-add-btn { text-align: center; padding: 14px; font-size: 13px; color: var(--aux-gray); cursor: pointer; border: 1px dashed var(--border-subtle); border-radius: 12px; margin: 8px 14px 16px; }
@@ -629,10 +628,6 @@ body {
 .ann-empty { text-align: center; color: var(--aux-light); padding: 60px 0; font-size: 14px; letter-spacing: 2px; }
 
 /* 留言条样式 */
-.notes-date-selector { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 10px 0 16px; flex-shrink: 0; }
-.notes-date-arrow { font-size: 16px; color: var(--aux-gray); cursor: pointer; padding: 4px 8px; user-select: none; }
-.notes-date-arrow.disabled { color: var(--aux-light); opacity: 0.4; cursor: default; pointer-events: none; }
-.notes-date-text { font-size: 14px; color: var(--ink-gray); letter-spacing: 1px; min-width: 140px; text-align: center; }
 .note-card { background: var(--note-bg); border-radius: 6px; padding: 16px 14px; margin-bottom: 16px; box-shadow: 1px 2px 8px var(--note-shadow); position: relative; transition: opacity 0.3s; }
 .note-card.unread { border-left: 3px solid var(--blush-pink); }
 .note-card.read { border-left: 3px solid transparent; opacity: 0.85; }
@@ -650,10 +645,6 @@ body {
 .notes-empty { text-align: center; color: var(--aux-light); padding: 60px 0; font-size: 14px; letter-spacing: 2px; }
 
 /* 日记样式 */
-.diary-date-selector { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 10px 0 16px; flex-shrink: 0; }
-.diary-date-arrow { font-size: 16px; color: var(--aux-gray); cursor: pointer; padding: 4px 8px; user-select: none; }
-.diary-date-arrow.disabled { color: var(--aux-light); opacity: 0.4; cursor: default; pointer-events: none; }
-.diary-date-text { font-size: 14px; color: var(--ink-gray); letter-spacing: 1px; min-width: 140px; text-align: center; }
 .diary-card { background: var(--card-cream); border-radius: 10px; padding: 18px 16px; margin-bottom: 16px; box-shadow: 0 2px 8px var(--shadow-brown); border: 1px solid var(--border-subtle); }
 .diary-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
 .diary-card-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--avatar-bg); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--aux-gray); overflow: hidden; flex-shrink: 0; }
@@ -893,9 +884,7 @@ body {
   <div class="notes-page" id="notesPage">
     <div class="notes-top-bar"><div class="notes-back-hotarea" onclick="goToDesktop()"></div><div class="notes-title">留 言 条</div></div>
     <div class="notes-date-selector" id="notesDateSelector">
-      <span class="notes-date-arrow" id="notesPrevArrow" onclick="notesChangeDate(-1)">◀</span>
-      <span class="notes-date-text" id="notesDateText"></span>
-      <span class="notes-date-arrow" id="notesNextArrow" onclick="notesChangeDate(1)">▶</span>
+      <span class="notes-date-text" id="notesDateText" onclick="showNotesDatePicker()"></span>
     </div>
     <div class="notes-main-content" id="notesMainContent"></div>
   </div>
@@ -903,9 +892,7 @@ body {
   <div class="diary-page" id="diaryPage">
     <div class="diary-top-bar"><div class="diary-back-hotarea" onclick="goToDesktop()"></div><div class="diary-title">日 记</div></div>
     <div class="diary-date-selector" id="diaryDateSelector">
-      <span class="diary-date-arrow" id="diaryPrevArrow" onclick="diaryChangeDate(-1)">◀</span>
-      <span class="diary-date-text" id="diaryDateText"></span>
-      <span class="diary-date-arrow" id="diaryNextArrow" onclick="diaryChangeDate(1)">▶</span>
+      <span class="diary-date-text" id="diaryDateText" onclick="showDiaryDatePicker()"></span>
     </div>
     <div class="diary-write-btn" id="diaryWriteBtn" onclick="showDiaryWrite()" style="display:none;">写日记</div>
     <div class="diary-main-content" id="diaryMainContent"></div>
@@ -1093,7 +1080,7 @@ body {
 
 </div>
 <script>
-const APP_VERSION = 'v4.1.5';
+const APP_VERSION = 'v4.1.7';
 const APP_NAME = '易遇🩷夏雾凉';
 const MAX_MESSAGES = 1000;
 const KEEP_MESSAGES = 50;
@@ -1414,6 +1401,84 @@ function showToast(msg){
 }
 function closeMemModal(e){document.getElementById('memModalOverlay').classList.remove('show')}
 
+// ========== 年月日选择器（通用） ==========
+function showDatePicker(currentDateKey,callback){
+  const d=new Date(currentDateKey);
+  const year=d.getFullYear();const month=d.getMonth()+1;const day=d.getDate();
+  let h='<div class="cl-modal-title">选择日期</div>';
+  // 年份行
+  h+='<div style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">';
+  for(let y=year-2;y<=year;y++){
+    h+=`<div class="dc-dream-item${y===year?' selected':''}" onclick="showDatePickerMonth(${y},${month},${day},'${currentDateKey}',${callback.toString().replace(/\n/g,' ')})">${y}年</div>`;
+  }
+  h+='</div>';
+  // 月份行
+  h+='<div id="dpMonths" style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">';
+  for(let m=1;m<=12;m++){
+    h+=`<div class="dc-dream-item${m===month?' selected':''}" onclick="showDatePickerDay(${year},${m},${day},'${currentDateKey}',${callback.toString().replace(/\n/g,' ')})">${m}月</div>`;
+  }
+  h+='</div>';
+  // 日期行
+  h+='<div id="dpDays" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">';
+  const daysInMonth=new Date(year,month,0).getDate();
+  for(let dd=1;dd<=daysInMonth;dd++){
+    const dk=year+'-'+month.toString().padStart(2,'0')+'-'+dd.toString().padStart(2,'0');
+    h+=`<div class="dc-dream-item${dd===day?' selected':''}" onclick="selectDatePickerDay('${dk}',${callback.toString().replace(/\n/g,' ')})">${dd}日</div>`;
+  }
+  h+='</div>';
+  document.getElementById('memModalPanel').innerHTML=h;
+  document.getElementById('memModalOverlay').classList.add('show');
+}
+function showDatePickerMonth(y,m,d,currentDateKey,callback){
+  let h=document.getElementById('memModalPanel').querySelector('.cl-modal-title').outerHTML;
+  // 年份行保持不变，高亮选中年
+  h+='<div style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">';
+  const year=new Date(currentDateKey).getFullYear();
+  for(let yy=year-2;yy<=year;yy++){
+    h+=`<div class="dc-dream-item${yy===y?' selected':''}" onclick="showDatePickerMonth(${yy},${m},${d},'${currentDateKey}',${callback.toString().replace(/\n/g,' ')})">${yy}年</div>`;
+  }
+  h+='</div>';
+  h+='<div id="dpMonths" style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">';
+  for(let mm=1;mm<=12;mm++){
+    h+=`<div class="dc-dream-item${mm===m?' selected':''}" onclick="showDatePickerDay(${y},${mm},${d},'${currentDateKey}',${callback.toString().replace(/\n/g,' ')})">${mm}月</div>`;
+  }
+  h+='</div>';
+  h+='<div id="dpDays" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">';
+  const daysInMonth=new Date(y,m,0).getDate();
+  for(let dd=1;dd<=daysInMonth;dd++){
+    const dk=y+'-'+m.toString().padStart(2,'0')+'-'+dd.toString().padStart(2,'0');
+    h+=`<div class="dc-dream-item${dd===d&&m===new Date(currentDateKey).getMonth()+1?' selected':''}" onclick="selectDatePickerDay('${dk}',${callback.toString().replace(/\n/g,' ')})">${dd}日</div>`;
+  }
+  h+='</div>';
+  document.getElementById('memModalPanel').innerHTML=h;
+}
+function showDatePickerDay(y,m,d,currentDateKey,callback){
+  let h=document.getElementById('memModalPanel').querySelector('.cl-modal-title').outerHTML;
+  const year=new Date(currentDateKey).getFullYear();
+  h+='<div style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">';
+  for(let yy=year-2;yy<=year;yy++){
+    h+=`<div class="dc-dream-item${yy===y?' selected':''}" onclick="showDatePickerMonth(${yy},${m},${d},'${currentDateKey}',${callback.toString().replace(/\n/g,' ')})">${yy}年</div>`;
+  }
+  h+='</div>';
+  h+='<div id="dpMonths" style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">';
+  for(let mm=1;mm<=12;mm++){
+    h+=`<div class="dc-dream-item${mm===m?' selected':''}" onclick="showDatePickerDay(${y},${mm},${d},'${currentDateKey}',${callback.toString().replace(/\n/g,' ')})">${mm}月</div>`;
+  }
+  h+='</div>';
+  h+='<div id="dpDays" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">';
+  const daysInMonth=new Date(y,m,0).getDate();
+  for(let dd=1;dd<=daysInMonth;dd++){
+    const dk=y+'-'+m.toString().padStart(2,'0')+'-'+dd.toString().padStart(2,'0');
+    h+=`<div class="dc-dream-item${dd===d?' selected':''}" onclick="selectDatePickerDay('${dk}',${callback.toString().replace(/\n/g,' ')})">${dd}日</div>`;
+  }
+  h+='</div>';
+  document.getElementById('memModalPanel').innerHTML=h;
+}
+function selectDatePickerDay(dateKey,callback){
+  closeMemModal();
+  if(typeof callback==='function')callback(dateKey);
+}
+
 // ========== 消息通知（含内容预览） ==========
 function getNotifData(){const raw=localStorage.getItem('desktopNotifs');return raw?JSON.parse(raw):{items:[]}}
 function saveNotifData(d){localStorage.setItem('desktopNotifs',JSON.stringify(d))}
@@ -1523,14 +1588,10 @@ let notesCurrentDate='';
 let notesAllDates=[];
 async function openNotesPage(){hideAll();document.getElementById('notesPage').style.display='flex';notesCurrentDate=getTodayDateKey();await loadNotesDates();await renderNotesPage()}
 async function loadNotesDates(){const notes=await getNotes();const dateSet=new Set();notes.forEach(n=>dateSet.add(getDateKey(n.ts)));notesAllDates=Array.from(dateSet).sort();if(!notesAllDates.includes(getTodayDateKey()))notesAllDates.push(getTodayDateKey());notesAllDates.sort()}
-async function notesChangeDate(dir){if(notesAllDates.length===0)return;const idx=notesAllDates.indexOf(notesCurrentDate);let newIdx=idx+dir;if(newIdx<0)newIdx=0;if(newIdx>=notesAllDates.length)newIdx=notesAllDates.length-1;if(notesAllDates[newIdx]>getTodayDateKey())return;notesCurrentDate=notesAllDates[newIdx];await renderNotesPage()}
+function showNotesDatePicker(){showDatePicker(notesCurrentDate,async(dk)=>{notesCurrentDate=dk;await renderNotesPage();});}
 async function renderNotesPage(){
   const today=getTodayDateKey();
   document.getElementById('notesDateText').textContent=getDateStr(new Date(notesCurrentDate).getTime()||Date.now());
-  const prevArrow=document.getElementById('notesPrevArrow');const nextArrow=document.getElementById('notesNextArrow');
-  const idx=notesAllDates.indexOf(notesCurrentDate);
-  prevArrow.classList.toggle('disabled',idx<=0);
-  nextArrow.classList.toggle('disabled',idx>=notesAllDates.length-1||notesCurrentDate>=today);
   const allNotes=await getNotes();const mem=await getMem();
   const filtered=allNotes.filter(n=>getDateKey(n.ts)===notesCurrentDate);
   const c=document.getElementById('notesMainContent');
@@ -1548,8 +1609,7 @@ async function renderNotesPage(){
       </div>
     </div>`;
   });
-  c.innerHTML=h;
-  c.scrollTop=c.scrollHeight;
+  c.innerHTML=h;c.scrollTop=c.scrollHeight;
 }
 async function markNoteAsRead(noteId){await markNoteRead(noteId);await renderNotesPage()}
 
@@ -1597,14 +1657,10 @@ let diaryCurrentDate='';
 let diaryAllDates=[];
 async function openDiaryPage(){hideAll();document.getElementById('diaryPage').style.display='flex';diaryCurrentDate=getTodayDateKey();await loadDiaryDates();await renderDiaryPage()}
 async function loadDiaryDates(){const entries=await getDiaryEntries();const dateSet=new Set();entries.forEach(e=>dateSet.add(getDateKey(e.ts)));diaryAllDates=Array.from(dateSet).sort();if(!diaryAllDates.includes(getTodayDateKey()))diaryAllDates.push(getTodayDateKey());diaryAllDates.sort()}
-async function diaryChangeDate(dir){if(diaryAllDates.length===0)return;const idx=diaryAllDates.indexOf(diaryCurrentDate);let newIdx=idx+dir;if(newIdx<0)newIdx=0;if(newIdx>=diaryAllDates.length)newIdx=diaryAllDates.length-1;if(diaryAllDates[newIdx]>getTodayDateKey())return;diaryCurrentDate=diaryAllDates[newIdx];await renderDiaryPage()}
+function showDiaryDatePicker(){showDatePicker(diaryCurrentDate,async(dk)=>{diaryCurrentDate=dk;await renderDiaryPage();});}
 async function renderDiaryPage(){
   const today=getTodayDateKey();
   document.getElementById('diaryDateText').textContent=getDateStr(new Date(diaryCurrentDate).getTime()||Date.now());
-  const prevArrow=document.getElementById('diaryPrevArrow');const nextArrow=document.getElementById('diaryNextArrow');
-  const idx=diaryAllDates.indexOf(diaryCurrentDate);
-  prevArrow.classList.toggle('disabled',idx<=0);
-  nextArrow.classList.toggle('disabled',idx>=diaryAllDates.length-1||diaryCurrentDate>=today);
   const writeBtn=document.getElementById('diaryWriteBtn');
   writeBtn.style.display=diaryCurrentDate===today?'block':'none';
   const allEntries=await getDiaryEntries();const mem=await getMem();
@@ -1696,7 +1752,6 @@ async function renderLetterMailbox(){
     const first=thread[0];const isFromMe=first.from==='me';
     const partnerId=isFromMe?first.to:first.from;
     const myDisplay=getDisplayName(mem,'me');const partnerDisplay=getDisplayName(mem,partnerId);
-    const full=thread.length>=2;
     const waitingReply=first.from!=='me'&&thread.length===1;
     const waitingMyReply=first.from==='me'&&thread.length===1&&first.replyBy&&!first.replied;
     const dateStr=formatTimestamp(first.ts).split(' ')[0];
@@ -2005,13 +2060,7 @@ async function loadDSRecDates(){
   dsRecDates=Array.from(dateSet).sort().reverse();
   if(dsRecDates.length===0)dsRecDates=[getTodayDateKey()];
 }
-async function dsRecChangeDate(dir){
-  const idx=dsRecDates.indexOf(dsRecDate);
-  let newIdx=idx+dir;
-  if(newIdx<0)newIdx=0;if(newIdx>=dsRecDates.length)newIdx=dsRecDates.length-1;
-  dsRecDate=dsRecDates[newIdx];
-  await renderDSRecords();
-}
+function showDSDatePicker(){showDatePicker(dsRecDate,async(dk)=>{dsRecDate=dk;await renderDSRecords();});}
 function showDSDreamFilter(){
   getMem().then(mem=>{const ids=Object.keys(mem.dreams);let h='<div class="cl-modal-title">选择梦角</div>';
     h+=`<div class="dream-option" onclick="dsRecFilter='all';closeMemModal();renderDSRecords()"><span class="dot"></span>全部</div>`;
@@ -2025,7 +2074,7 @@ async function renderDSRecords(){
   dateMsgs.sort((a,b)=>a.ts-b.ts);
   const selName=dsRecFilter==='all'?'全部':getDisplayName(mem,dsRecFilter);
   let h='';
-  h+='<div class="ds-date-selector"><span class="ds-date-arrow" onclick="dsRecChangeDate(-1)">◀</span><span class="ds-date-text">'+getDateStr(new Date(dsRecDate).getTime()||Date.now())+'</span><span class="ds-date-arrow" onclick="dsRecChangeDate(1)">▶</span></div>';
+  h+='<div class="ds-date-selector"><span class="ds-date-text" onclick="showDSDatePicker()">'+getDateStr(new Date(dsRecDate).getTime()||Date.now())+'</span></div>';
   h+='<div class="ds-filter-row"><span style="font-size:12px;color:var(--aux-gray);">梦角：</span><span class="ds-filter-btn" onclick="showDSDreamFilter()">'+escHtml(selName)+' ▼</span></div>';
   if(dateMsgs.length===0){h+='<div class="ds-chat-empty">当天没有聊天记录</div>';document.getElementById('dsMainContent').innerHTML=h;return}
   let currentDate='';
@@ -2090,7 +2139,6 @@ async function renderAnnPage(){
   c.innerHTML=h;
 }
 
-let annEditId='';
 function showAnnAdd(){
   getMem().then(mem=>{const ids=Object.keys(mem.dreams);let h='<div class="cl-modal-title">选择关联梦角（可选）</div>';
     h+='<div class="dream-option" onclick="showAnnForm(\'\')"><span class="dot"></span>不关联梦角</div>';
@@ -2108,7 +2156,7 @@ async function saveAnnAdd(dreamId){
   await addAnniversary(dreamId||'none',name,date);closeMemModal();await renderAnnPage();
 }
 async function editAnn(id){
-  const anns=await getAnniversaries();const ann=anns.find(a=>a.id===id);if(!ann)return;annEditId=id;
+  const anns=await getAnniversaries();const ann=anns.find(a=>a.id===id);if(!ann)return;
   getMem().then(mem=>{const ids=Object.keys(mem.dreams);let h='<div class="cl-modal-title">选择关联梦角</div>';
     h+=`<div class="dream-option" onclick="showAnnEditForm('${id}','')"><span class="dot"></span>不关联梦角</div>`;
     ids.forEach(did=>{const d=mem.dreams[did];h+=`<div class="dream-option" onclick="showAnnEditForm('${id}','${did}')"><span class="dot"></span>${escHtml(d.nickname||d.name||did)}</div>`});
@@ -2595,7 +2643,7 @@ async function doSongGlobalSearch(){const q=document.getElementById('songGlobalS
   document.getElementById('songGroupsList').style.display='none';
   const d=await getSL();const results=[];for(const[gn,cs]of Object.entries(d.groups||{})){cs.forEach(s=>{if(s.name.includes(q)||s.songId.includes(q))results.push({...s,group:gn})})}
   let h='';results.forEach(s=>{h+=`<div class="song-card-item"><span class="song-card-text">${escHtml(s.name)}</span><span class="song-card-id">${escHtml(s.songId)} · ${escHtml(s.group)}</span><div class="song-actions"><span onclick="editSongGlobal('${escAttr(s.name)}','${escAttr(s.songId)}','${escAttr(s.group)}')">✎</span><span onclick="delSongGlobal('${escAttr(s.name)}','${escAttr(s.group)}')">✕</span></div></div>`});
-  if(results.length===0)h='<div style="text-align:center;color:var(--aux-light);padding:40px 0;">未找到匹配歌曲</div>';
+  if(results.length===0)h+='<div style="text-align:center;color:var(--aux-light);padding:40px 0;">未找到匹配歌曲</div>';
   document.getElementById('songGlobalResults').innerHTML=h;document.getElementById('songGlobalResults').style.display='block'}
 async function clearSongGlobalSearch(){songGlobalMode=false;document.getElementById('songGlobalSearchInput').value='';
   document.getElementById('songGroupsList').style.display='';document.getElementById('songGlobalResults').style.display='none'}
@@ -2781,7 +2829,7 @@ function closeMiniPanel(e){if(e&&e.target!==document.getElementById('miniPanelOv
 function miniTakePhoto(){closeMiniPanel();const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.capture='environment';inp.onchange=async e=>{const f=e.target.files[0];if(!f)return;const b=await new Promise(r=>{const reader=new FileReader();reader.onload=()=>r(reader.result);reader.readAsDataURL(f)});const content='[图片:'+b+']';if(miniPanelType==='private'){const msg=await addMsg(getPrivateConvId(),'me',content);appendPrivateMsg(msg);await triggerPrivateReply()}else{const msg=await addMsg('group_chat','me',content);appendGroupMsg(msg);await triggerGroupReply()}};inp.click()}
 function miniPickImage(){closeMiniPanel();const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.multiple=true;inp.onchange=async e=>{const files=e.target.files;if(!files||files.length===0)return;for(const f of files){const b=await new Promise(r=>{const reader=new FileReader();reader.onload=()=>r(reader.result);reader.readAsDataURL(f)});const content='[图片:'+b+']';if(miniPanelType==='private'){const msg=await addMsg(getPrivateConvId(),'me',content);appendPrivateMsg(msg)}else{const msg=await addMsg('group_chat','me',content);appendGroupMsg(msg)}}if(miniPanelType==='private')await triggerPrivateReply();else await triggerGroupReply()};inp.click()}
 
-// ========== 抉择功能 ==========
+// ========== 抉择功能（只有是/否） ==========
 function openDecidePage(){dcMultiMode=false;dcOptions=['','','',''];dcSelectedDreams=[];const currentPage=document.getElementById('privateChatPage').style.display==='flex'?'private':(document.getElementById('groupChatPage').style.display==='flex'?'group':'desktop');musicPlayerFromPage=currentPage;hideAll();document.getElementById('decidePage').style.display='flex';renderDecidePage()}
 function closeDecidePage(){document.getElementById('decidePage').style.display='none';if(musicPlayerFromPage==='private'){hideAll();document.getElementById('privateChatPage').style.display='flex'}else if(musicPlayerFromPage==='group'){hideAll();document.getElementById('groupChatPage').style.display='flex'}else{goToDesktop()}}
 let dcMultiMode=false,dcOptions=['','','',''],dcSelectedDreams=[];
@@ -2790,7 +2838,7 @@ async function renderDecidePage(){const mem=await getMem();const ids=Object.keys
   h+='<div style="text-align:center;font-size:12px;color:var(--aux-gray);margin-bottom:8px;">选择谁决定：</div>';
   h+='<div class="dc-dream-select" id="dcQuickDreams"></div>';
   h+='<div class="dc-input-wrap"><input type="text" class="dc-input" id="dcQuickInput" placeholder="输入你的纠结..."></div>';
-  h+='<div class="choice-cards"><div class="choice-card yes">✓ 是</div><div class="choice-card no">✕ 否</div><div class="choice-card think">○ 再想想</div><div class="choice-card you">♡ 听你的</div></div>';
+  h+='<div class="choice-cards"><div class="choice-card yes">✓ 是</div><div class="choice-card no">✕ 否</div></div>';
   h+='<div class="dc-submit" onclick="dcSubmitQuick()">Enviar</div>';
   h+='<hr style="border:none;border-top:1px solid var(--border-subtle);margin:20px 0;">';
   h+='<div class="dc-section-title">自定义选项</div>';
@@ -2808,7 +2856,7 @@ function dcSetMode(m){for(let i=0;i<dcOptions.length;i++){const v=document.getEl
 function dcToggleDream(id){if(id==='all'){if(dcSelectedDreams.includes('all')){dcSelectedDreams=[]}else{dcSelectedDreams=['all']}}else{const idx=dcSelectedDreams.indexOf(id);if(idx>=0)dcSelectedDreams.splice(idx,1);else{dcSelectedDreams=dcSelectedDreams.filter(x=>x!=='all');dcSelectedDreams.push(id)}}renderDecidePage()}
 function dcGetSelectedDreamIds(){const mem=memCache;if(!mem)return[];const ids=Object.keys(mem.dreams);if(dcSelectedDreams.includes('all'))return ids;return dcSelectedDreams.filter(id=>mem.dreams[id])}
 function dcAddOption(){if(dcOptions.length>=8)return;for(let i=0;i<dcOptions.length;i++){const v=document.getElementById('dcOpt'+i);if(v)dcOptions[i]=v.value}dcOptions.push('');renderDecidePage()}
-async function dcSubmitQuick(){const input=document.getElementById('dcQuickInput');const text=input?input.value.trim():'';if(!text)return;const selectedIds=dcGetSelectedDreamIds();if(selectedIds.length===0)return;const msg=`帮我决定一下：「${text}」\n✓是  ✕否  ○再想想  ♡听你的`;
+async function dcSubmitQuick(){const input=document.getElementById('dcQuickInput');const text=input?input.value.trim():'';if(!text)return;const selectedIds=dcGetSelectedDreamIds();if(selectedIds.length===0)return;const msg=`帮我决定一下：「${text}」\n✓是  ✕否`;
   const isGroup=selectedIds.length>=2;
   if(!isGroup){const convId='chat_'+selectedIds[0];await addMsg(convId,'me',msg);await dcTriggerChoiceReply(selectedIds[0],false);if(document.getElementById('privateChatPage').style.display==='flex'&&currentDreamId===selectedIds[0]){await loadPrivateMessages()}}
   else{await addMsg('group_chat','me',msg);for(const id of selectedIds){await dcTriggerChoiceReply(id,true)}if(document.getElementById('groupChatPage').style.display==='flex'){await loadGroupMessages()}}
@@ -2821,9 +2869,9 @@ async function dcSubmitCustom(){const question=document.getElementById('dcCustom
   else{await addMsg('group_chat','me',msg);for(const id of selectedIds){await dcTriggerCustomReply(id,opts,true)}if(document.getElementById('groupChatPage').style.display==='flex'){await loadGroupMessages()}}
   closeDecidePage()}
 async function dcTriggerChoiceReply(dreamId,toGroup){
-  const opts=['是','否','再想想','听你的'];const chosen=opts[Math.floor(Math.random()*opts.length)];
-  const classes={是:'yes',否:'no',再想想:'think',听你的:'you'};
-  const symbols={是:'✓ ',否:'✕ ',再想想:'○ ',听你的:'♡ '};
+  const opts=['是','否'];const chosen=opts[Math.floor(Math.random()*opts.length)];
+  const classes={是:'yes',否:'no'};
+  const symbols={是:'✓ ',否:'✕ '};
   let card=`<div class="msg-choice-cards"><div class="msg-choice-card ${classes[chosen]} chosen">${symbols[chosen]}${chosen}</div></div>`;
   const convId=toGroup?'group_chat':('chat_'+dreamId);
   await addMsg(convId,dreamId,card)
