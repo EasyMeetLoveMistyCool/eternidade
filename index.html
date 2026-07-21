@@ -569,7 +569,6 @@ body {
 .teach-send-btn { display: none; white-space: nowrap; }
 .teach-send-btn.visible { display: flex; }
 
-/* 私讯列表页样式 */
 .prv-dream-card { background: var(--card-cream); border-radius: 12px; padding: 14px; margin-bottom: 10px; box-shadow: 0 2px 8px var(--shadow-brown); cursor: pointer; border: 1px solid var(--border-subtle); display: flex; align-items: center; gap: 12px; transition: transform 0.15s; }
 .prv-dream-card:active { transform: scale(0.98); }
 .prv-dream-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--avatar-bg); display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--aux-gray); overflow: hidden; flex-shrink: 0; }
@@ -581,7 +580,6 @@ body {
 .prv-dream-preview { font-size: 12px; color: var(--aux-light); margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .prv-empty { text-align: center; color: var(--aux-light); padding: 60px 0; font-size: 14px; letter-spacing: 2px; }
 
-/* 数据统计页样式 */
 .ds-stat-card { background: var(--card-cream); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; border: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--ink-gray); }
 .ds-stat-count { font-size: 14px; color: var(--blush-pink); }
 .ds-section-label { font-size: 13px; color: var(--ink-gray); letter-spacing: 2px; margin: 16px 0 10px; padding-top: 8px; border-top: 1px solid var(--border-subtle); }
@@ -607,7 +605,6 @@ body {
 .diary-date-text { font-size: 14px; color: var(--ink-gray); letter-spacing: 1px; min-width: 140px; text-align: center; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 .notes-date-arrow, .diary-date-arrow, .ds-date-arrow { display: none; }
 
-/* 纪念日页样式 */
 .ann-add-btn { text-align: center; padding: 14px; font-size: 13px; color: var(--aux-gray); cursor: pointer; border: 1px dashed var(--border-subtle); border-radius: 12px; margin: 8px 14px 16px; }
 .ann-group-card { background: var(--card-cream); border-radius: 12px; padding: 14px; margin: 0 14px 16px; box-shadow: 0 2px 8px var(--shadow-brown); border: 1px solid var(--border-subtle); }
 .ann-group-header { display: flex; align-items: center; gap: 8px; padding-bottom: 10px; margin-bottom: 8px; border-bottom: 1px solid var(--border-subtle); }
@@ -997,7 +994,7 @@ body {
     <div class="settings-title">设 置</div>
     <div class="settings-version" id="settingsVersion"></div>
     <div class="settings-group"><div class="settings-label">聊天回复等待</div><div class="settings-hint">（单位：秒 / 范围1~120秒）</div><div class="range-row"><input type="number" id="setWaitMin" min="1" max="120" value="3" onchange="saveSettings()"><span class="range-sep">～</span><input type="number" id="setWaitMax" min="1" max="120" value="15" onchange="saveSettings()"></div></div>
-    <div class="settings-group"><div class="settings-label">每次回复条数</div><div class="settings-hint">（单位：条 / 范围1~10条）</div><div class="range-row"><input type="number" id="setReplyMin" min="1" max="10" value="1" onchange="saveSettings()"><span class="range-sep">～</span><input type="number" id="setReplyMax" min="1" max="10" value="3" onchange="saveSettings()"></div></div>
+    <div class="settings-group"><div class="settings-label">每次回复条数</div><div class="settings-hint">（单位：条 / 范围1~10条）</div><div class="range-row"><input type="number" id="setReplyMin" min="1" max="10" value="1" onchange="saveSettings()"><span class="range-sep">～</span><input type="number" id="setReplyMax" min="1" max="10" value="1" onchange="saveSettings()"></div></div>
     <div class="settings-group"><div class="settings-label">字卡拼接</div><div class="toggle-switch" id="toggleConcat"><span class="active" onclick="setSetting('concat',false)">关</span><span onclick="setSetting('concat',true)">开</span></div></div>
     <div class="settings-group"><div class="settings-label">他主动聊天</div><div class="toggle-switch" id="toggleAutoChat"><span class="active" onclick="setSetting('autoChat',false)">关</span><span onclick="setSetting('autoChat',true)">开</span></div></div>
   </div>
@@ -1069,10 +1066,11 @@ body {
 
 </div>
 <script>
-const APP_VERSION = 'v4.2.5';
+const APP_VERSION = 'v4.3.4';
 const APP_NAME = '易遇🩷夏雾凉';
 const MAX_MESSAGES = 1000;
 const KEEP_MESSAGES = 50;
+const DAILY_CLEAN_THRESHOLD = 100;
 let musicPlayerFromPage = 'desktop';
 let quoteTargetId = null;
 
@@ -1190,6 +1188,7 @@ async function addMsg(conv,sender,content,ts){await ensureDB();return new Promis
 async function getMsgs(conv){await ensureDB();return new Promise((r,j)=>{const t=db.transaction('messages','readonly');const s=t.objectStore('messages');const idx=s.index('conv');const R=idx.getAll(conv);R.onsuccess=()=>{const result=R.result||[];r(result.sort((a,b)=>a.ts-b.ts))};R.onerror=e=>j(e.target.error)})}
 async function getMsgById(id){await ensureDB();return new Promise((r,j)=>{const t=db.transaction('messages','readonly');const s=t.objectStore('messages');const R=s.get(id);R.onsuccess=()=>r(R.result);R.onerror=e=>j(e.target.error)})}
 async function autoCleanMessages(conv){await ensureDB();const t=db.transaction('messages','readonly');const s=t.objectStore('messages');const idx=s.index('conv');const R=idx.getAll(conv);R.onsuccess=async()=>{const msgs=R.result||[];if(msgs.length>MAX_MESSAGES){const sorted=msgs.sort((a,b)=>a.ts-b.ts);const toDeleteCount=msgs.length-KEEP_MESSAGES;const toDelete=sorted.slice(0,toDeleteCount);const wt=db.transaction('messages','readwrite');const ws=wt.objectStore('messages');toDelete.forEach(m=>ws.delete(m.id));wt.oncomplete=async()=>{const type=conv.startsWith('chat_')?'私讯':'群讯';await addCleanLog(type,toDeleteCount)}}}}
+async function dailyCleanMessages(){await ensureDB();const t=db.transaction('messages','readonly');const s=t.objectStore('messages');const all=s.getAll();all.onsuccess=async()=>{const msgs=all.result||[];const convMap={};msgs.forEach(m=>{if(!convMap[m.conv])convMap[m.conv]=[];convMap[m.conv].push(m)});let totalCleaned=0;for(const[conv,convMsgs]of Object.entries(convMap)){if(convMsgs.length>DAILY_CLEAN_THRESHOLD){const sorted=convMsgs.sort((a,b)=>a.ts-b.ts);const toDeleteCount=convMsgs.length-KEEP_MESSAGES;const toDelete=sorted.slice(0,toDeleteCount);const wt=db.transaction('messages','readwrite');const ws=wt.objectStore('messages');toDelete.forEach(m=>ws.delete(m.id));totalCleaned+=toDeleteCount;}}if(totalCleaned>0)await addCleanLog('每日自动清理',totalCleaned);};}
 async function clearAllMessages(){await ensureDB();return new Promise((r,j)=>{const t=db.transaction('messages','readwrite');const s=t.objectStore('messages');const R=s.clear();R.onsuccess=()=>r();R.onerror=e=>j(e.target.error)})}
 async function getAllMessages(){await ensureDB();return new Promise((r,j)=>{const t=db.transaction('messages','readonly');const s=t.objectStore('messages');const R=s.getAll();R.onsuccess=()=>{r(R.result||[])};R.onerror=e=>j(e.target.error)})}
 
@@ -1247,14 +1246,7 @@ function openCleanLog(){hideAll();document.getElementById('cleanLogPage').style.
 async function renderCleanLogs(){const logs=await getCleanLogs();const c=document.getElementById('clogMainContent');if(logs.length===0){c.innerHTML='<div class="clog-empty">暂无清理记录</div>';return}let h='';logs.forEach(log=>{const d=new Date(log.ts);const ds=d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日 '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');h+=`<div class="clog-item"><div class="clog-info"><span class="clog-time">${ds}</span><span class="clog-type">${log.type}</span></div><span class="clog-count">清理 ${log.count} 条</span></div>`});c.innerHTML=h}
 
 // ========== 自定义确认弹窗 ==========
-function showConfirm(title,msg,onConfirm,isDanger,showInput){
-  const panel=document.getElementById('confirmPanel');
-  let inputHTML='';
-  if(showInput){inputHTML='<input type="text" class="confirm-input" id="confirmInput" placeholder="请输入 确认清除" oninput="checkConfirmInput()">';}
-  panel.innerHTML=`<div class="confirm-title">${title}</div><div class="confirm-msg">${msg}</div>${inputHTML}<div class="confirm-btn-row"><button class="confirm-btn" onclick="closeConfirm()">取消</button><button class="confirm-btn${isDanger?' confirm-danger':''}" id="confirmOkBtn"${showInput?' disabled':''}>${isDanger?'确认清除':'确认'}</button></div>`;
-  document.getElementById('confirmOverlay').classList.add('show');
-  document.getElementById('confirmOkBtn').onclick=()=>{closeConfirm();if(onConfirm)onConfirm();};
-}
+function showConfirm(title,msg,onConfirm,isDanger,showInput){const panel=document.getElementById('confirmPanel');let inputHTML='';if(showInput){inputHTML='<input type="text" class="confirm-input" id="confirmInput" placeholder="请输入 确认清除" oninput="checkConfirmInput()">';}panel.innerHTML=`<div class="confirm-title">${title}</div><div class="confirm-msg">${msg}</div>${inputHTML}<div class="confirm-btn-row"><button class="confirm-btn" onclick="closeConfirm()">取消</button><button class="confirm-btn${isDanger?' confirm-danger':''}" id="confirmOkBtn"${showInput?' disabled':''}>${isDanger?'确认清除':'确认'}</button></div>`;document.getElementById('confirmOverlay').classList.add('show');document.getElementById('confirmOkBtn').onclick=()=>{closeConfirm();if(onConfirm)onConfirm();};}
 function closeConfirm(e){if(e&&e.target!==document.getElementById('confirmOverlay'))return;document.getElementById('confirmOverlay').classList.remove('show')}
 function showClearConfirm(){showConfirm('清空聊天记录','确定要清空所有聊天记录吗？此操作不可恢复。',clearAllChatRecords,true,false)}
 function showClearAllRecordsConfirm(){showConfirm('清空所有记录','确定要清空所有聊天记录、留言条、日记、信件和清档日志吗？此操作不可恢复。',clearAllRecords,true,false)}
@@ -1304,56 +1296,55 @@ function showPlaceholder(t){hideAll();document.getElementById('placeholderPage')
 function openSettings(){hideAll();document.getElementById('settingsPage').style.display='flex';document.getElementById('settingsVersion').textContent=APP_VERSION;loadSettingsUI();updateTotalDataSize()}
 async function openMemoryPage(){hideAll();document.getElementById('memoryPage').style.display='flex';document.querySelectorAll('.mem-tab').forEach((t,i)=>t.classList.toggle('active',i===0));memV='him';memEdit='';await renderMemHim()}
 
-// ========== 私讯列表页（预加载消息） ==========
+// ========== 私讯列表页（并行查询+缓存+一次性渲染） ==========
 let prvMsgCache={};
+let prvListCache=null;
+let prvListCacheTime=0;
 async function openPrivateList(){hideAll();document.getElementById('privateListPage').style.display='flex';await renderPrivateList()}
 async function renderPrivateList(){
+  const now=Date.now();
+  if(prvListCache&&(now-prvListCacheTime)<30000){
+    document.getElementById('prvMainContent').innerHTML=prvListCache;
+    const mem=await getMem();const ids=Object.keys(mem.dreams);
+    const msgsList=await Promise.all(ids.map(id=>getMsgs('chat_'+id)));
+    ids.forEach((id,i)=>{prvMsgCache['chat_'+id]=msgsList[i];});
+    return;
+  }
   const mem=await getMem();const ids=Object.keys(mem.dreams);const c=document.getElementById('prvMainContent');
   if(ids.length===0){c.innerHTML='<div class="prv-empty">还没有梦角<br>去记忆库创建吧</div>';return}
+  const msgsList=await Promise.all(ids.map(id=>getMsgs('chat_'+id)));
   let h='';
-  for(const id of ids){
+  ids.forEach((id,i)=>{
     const d=mem.dreams[id];const nn=d.nickname||d.name||id;const name=d.name||'';
     const av=d.avatar?`<img src="${d.avatar}">`:nn.charAt(0);
-    // 预加载消息
-    const msgs=await getMsgs('chat_'+id);prvMsgCache['chat_'+id]=msgs;
+    const msgs=msgsList[i];prvMsgCache['chat_'+id]=msgs;
     const lastMsg=msgs.length>0?msgs[msgs.length-1]:null;
     let preview='暂无消息';
-    if(lastMsg){
-      const sender=lastMsg.sender==='me'?'我':nn;
-      let content=lastMsg.content;
-      if(content.startsWith('[表情:'))content='[表情]';
-      else if(content.startsWith('[图片:'))content='[图片]';
-      else if(content.startsWith('[拍一拍]'))content='[拍一拍]';
-      else if(content.startsWith('[戳一戳]'))content='[戳一戳]';
-      else if(content.startsWith('<div class="msg-quote"'))content='[引用]';
-      else if(content.length>20)content=content.substring(0,20)+'...';
-      preview=sender+'：'+content;
-    }
-    h+=`<div class="prv-dream-card" onclick="openPrivateChatWith('${id}')">
-      <div class="prv-dream-avatar">${av}</div>
-      <div class="prv-dream-info">
-        <div class="prv-dream-name-row">
-          <span class="prv-dream-name">${escHtml(name||nn)}</span>
-          ${name?`<span class="prv-dream-nickname">${escHtml(nn)}</span>`:''}
-        </div>
-        <div class="prv-dream-preview">${escHtml(preview)}</div>
-      </div>
-    </div>`;
-  }
-  c.innerHTML=h;
+    if(lastMsg){const sender=lastMsg.sender==='me'?'我':nn;let content=lastMsg.content;if(content.startsWith('[表情:'))content='[表情]';else if(content.startsWith('[图片:'))content='[图片]';else if(content.startsWith('[拍一拍]'))content='[拍一拍]';else if(content.startsWith('[戳一戳]'))content='[戳一戳]';else if(content.startsWith('<div class="msg-quote"'))content='[引用]';else if(content.length>20)content=content.substring(0,20)+'...';preview=sender+'：'+content;}
+    h+=`<div class="prv-dream-card" onclick="openPrivateChatWith('${id}')"><div class="prv-dream-avatar">${av}</div><div class="prv-dream-info"><div class="prv-dream-name-row"><span class="prv-dream-name">${escHtml(name||nn)}</span>${name?`<span class="prv-dream-nickname">${escHtml(nn)}</span>`:''}</div><div class="prv-dream-preview">${escHtml(preview)}</div></div></div>`;
+  });
+  c.innerHTML=h;prvListCache=h;prvListCacheTime=now;
 }
 async function openPrivateChatWith(id){
   currentDreamId=id;const mem=await getMem();mem.currentDreamId=id;await saveMem(mem);
   hideAll();document.getElementById('privateChatPage').style.display='flex';await updatePrivateChatUI();
-  // 使用预加载的消息直接渲染
-  const cached=prvMsgCache['chat_'+id];
   const c=document.getElementById('privateChatMessages');c.innerHTML='';
-  if(cached&&cached.length>0){cached.forEach(m=>appendPrivateMsg(m));}
-  else{const msgs=await getMsgs('chat_'+id);if(msgs&&msgs.length>0)msgs.forEach(m=>appendPrivateMsg(m));}
+  const cached=prvMsgCache['chat_'+id];
+  if(cached&&cached.length>0){
+    let h='';cached.forEach(m=>{h+=renderMsgRowHTML(m);});c.innerHTML=h;
+  }else{const msgs=await getMsgs('chat_'+id);if(msgs&&msgs.length>0){let h='';msgs.forEach(m=>{h+=renderMsgRowHTML(m);});c.innerHTML=h;}}
   requestAnimationFrame(()=>{requestAnimationFrame(()=>{c.scrollTop=c.scrollHeight})});
-  const mentionText=await checkNoteMention(currentDreamId);
-  if(mentionText){setTimeout(async()=>{const rm=await addMsg(getPrivateConvId(),currentDreamId,mentionText);appendPrivateMsg(rm);c.scrollTop=c.scrollHeight},rand(1000,3000));}
+  const mentionText=await checkNoteMention(currentDreamId);if(mentionText){setTimeout(async()=>{const rm=await addMsg(getPrivateConvId(),currentDreamId,mentionText);c.innerHTML+=renderMsgRowHTML(rm);c.scrollTop=c.scrollHeight},rand(1000,3000));}
   setTimeout(()=>{const inp=document.getElementById('privateMessageInput');if(inp)inp.focus()},100);
+}
+function renderMsgRowHTML(msg){
+  if(msg.sender==='system'){return`<div class="msg-row system"><div class="msg-content-wrapper"><div class="msg-bubble system-call ${getCallModeClassByContent(msg.content)}">${escHtml(msg.content)}</div><div class="msg-time">${formatTimestamp(msg.ts||Date.now())}</div></div></div>`;}
+  const isMine=msg.sender==='me';const mem=memCache;const d=mem?mem.dreams[currentDreamId]:null;const hn=d?(d.nickname||d.name||'梦角'):'他';
+  let ch=msg.content;let isPatMsg=false;if(ch.startsWith('[拍一拍]')){ch=ch.replace('[拍一拍]','');isPatMsg=true}else if(ch.startsWith('[戳一戳]')){ch=ch.replace('[戳一戳]','');isPatMsg=true}
+  if(!isPatMsg){if(ch.startsWith('<div class="msg-quote"')||ch.includes('msg-choice-cards')){ch=ch.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"')}else{ch=renderMsgContent(ch)}}
+  const ts=formatTimestamp(msg.ts);
+  if(isMine){const ma=mem&&mem.myAvatar?`<img src="${mem.myAvatar}">`:(mem&&mem.myName||'我').charAt(0);return`<div class="msg-row mine" data-msg-id="${msg.id}"><div class="msg-avatar">${ma}</div><div class="msg-content-wrapper"><div class="msg-bubble mine${isPatMsg?' system-pat':''}">${ch}<span class="deco-star">☆</span></div><div class="msg-time"><span class="msg-read">✓✓</span>${ts}</div></div></div>`;}
+  else{const ha=d&&d.avatar?`<img src="${d.avatar}">`:hn.charAt(0);return`<div class="msg-row" data-msg-id="${msg.id}"><div class="msg-avatar">${ha}</div><div class="msg-content-wrapper"><div class="msg-bubble other${isPatMsg?' system-poke':''}">${ch}<span class="deco-heart">♡</span></div><div class="msg-time">${ts}</div></div></div>`;}
 }
 function goToPrivateList(){hideAll();document.getElementById('privateListPage').style.display='flex';renderPrivateList()}
 
@@ -1362,144 +1353,42 @@ function escHtml(t){const d=document.createElement('div');d.textContent=t;return
 function escAttr(s){return s.replace(/'/g,"\\'").replace(/"/g,'&quot;')}
 function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min}
 function slp(ms){return new Promise(r=>setTimeout(r,ms))}
-function getChineseHour(h){
-  if(h>=0&&h<3)return'凌晨';if(h>=3&&h<6)return'清晨';if(h>=6&&h<9)return'早晨';if(h>=9&&h<12)return'上午';if(h>=12&&h<13)return'中午';if(h>=13&&h<18)return'下午';if(h>=18&&h<21)return'傍晚';return'夜晚';
-}
-function formatTimestamp(ts){
-  const d=new Date(ts);const month=(d.getMonth()+1)+'月';const day=d.getDate()+'日';const h=d.getHours();const m=d.getMinutes().toString().padStart(2,'0');
-  const p=getPersonal();
-  if(p.timeFormat==='12h'){
-    const dh=h%12||12;const period=getChineseHour(h);
-    return month+day+' '+period+dh+':'+m;
-  }
-  return month+day+' '+h+':'+m;
-}
-function getTimeDisplay(){
-  const now=new Date();const h=now.getHours();const m=now.getMinutes().toString().padStart(2,'0');
-  const p=getPersonal();
-  if(p.timeFormat==='12h'){
-    const dh=h%12||12;const period=getChineseHour(h);
-    const digits=['零','一','二','三','四','五','六','七','八','九','十','十一','十二'];
-    return period+digits[dh]+'点'+digits[parseInt(m[0])]+digits[parseInt(m[1])]+'分';
-  }
-  return h+':'+m;
-}
-function renderMsgContent(content){
-  let html=escHtml(content);
-  html=html.replace(/\[表情:(.*?)\]/g,(m,src)=>`<img src="${src}" class="sticker-img">`);
-  html=html.replace(/\[图片:(.*?)\]/g,(m,src)=>`<img src="${src}" class="photo-img">`);
-  return html;
-}
-function formatCallTime(sec){
-  if(sec<3600){const m=Math.floor(sec/60).toString().padStart(2,'0');const s=(sec%60).toString().padStart(2,'0');return m+':'+s}
-  const h=Math.floor(sec/3600);const m=Math.floor((sec%3600)/60).toString().padStart(2,'0');const s=(sec%60).toString().padStart(2,'0');return h+':'+m+':'+s;
-}
+function getChineseHour(h){if(h>=0&&h<3)return'凌晨';if(h>=3&&h<6)return'清晨';if(h>=6&&h<9)return'早晨';if(h>=9&&h<12)return'上午';if(h>=12&&h<13)return'中午';if(h>=13&&h<18)return'下午';if(h>=18&&h<21)return'傍晚';return'夜晚';}
+function formatTimestamp(ts){const d=new Date(ts);const month=(d.getMonth()+1)+'月';const day=d.getDate()+'日';const h=d.getHours();const m=d.getMinutes().toString().padStart(2,'0');const p=getPersonal();if(p.timeFormat==='12h'){const dh=h%12||12;const period=getChineseHour(h);return month+day+' '+period+dh+':'+m;}return month+day+' '+h+':'+m;}
+function getTimeDisplay(){const now=new Date();const h=now.getHours();const m=now.getMinutes().toString().padStart(2,'0');const p=getPersonal();if(p.timeFormat==='12h'){const dh=h%12||12;const period=getChineseHour(h);const digits=['零','一','二','三','四','五','六','七','八','九','十','十一','十二'];return period+digits[dh]+'点'+digits[parseInt(m[0])]+digits[parseInt(m[1])]+'分';}return h+':'+m;}
+function renderMsgContent(content){let html=escHtml(content);html=html.replace(/\[表情:(.*?)\]/g,(m,src)=>`<img src="${src}" class="sticker-img">`);html=html.replace(/\[图片:(.*?)\]/g,(m,src)=>`<img src="${src}" class="photo-img">`);return html;}
+function formatCallTime(sec){if(sec<3600){const m=Math.floor(sec/60).toString().padStart(2,'0');const s=(sec%60).toString().padStart(2,'0');return m+':'+s}const h=Math.floor(sec/3600);const m=Math.floor((sec%3600)/60).toString().padStart(2,'0');const s=(sec%60).toString().padStart(2,'0');return h+':'+m+':'+s;}
 function getCallModeClass(){if(videoCallMode==='accompany')return'call-accompany';if(videoCallMode==='sleep')return'call-sleep';return'call-video'}
 function getCallModeLabel(){if(videoCallMode==='accompany')return'陪伴';if(videoCallMode==='sleep')return'陪睡';return'视讯'}
 async function updateTotalDataSize(){try{const data=await collectAllData();const json=JSON.stringify(data);const el=document.getElementById('totalDataSize');if(el)el.textContent='总数据量：'+formatBytes(json.length)}catch(e){}}
-function showToast(msg){
-  const panel=document.getElementById('confirmPanel');
-  panel.innerHTML=`<div class="confirm-title">提示</div><div class="confirm-msg">${msg}</div><div class="confirm-btn-row"><button class="confirm-btn confirm-danger" id="confirmOkBtn">确定</button></div>`;
-  document.getElementById('confirmOverlay').classList.add('show');
-  document.getElementById('confirmOkBtn').onclick=()=>closeConfirm();
-}
+function showToast(msg){const panel=document.getElementById('confirmPanel');panel.innerHTML=`<div class="confirm-title">提示</div><div class="confirm-msg">${msg}</div><div class="confirm-btn-row"><button class="confirm-btn confirm-danger" id="confirmOkBtn">确定</button></div>`;document.getElementById('confirmOverlay').classList.add('show');document.getElementById('confirmOkBtn').onclick=()=>closeConfirm();}
 function closeMemModal(e){document.getElementById('memModalOverlay').classList.remove('show')}
 
 // ========== 年月日选择器 ==========
-function showDatePicker(currentDateKey,callback){
-  const d=new Date(currentDateKey);const year=d.getFullYear();const month=d.getMonth()+1;const day=d.getDate();
-  let h='<div class="cl-modal-title">选择日期</div>';
-  h+='<div style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">';
-  for(let y=year-2;y<=year;y++){h+=`<div class="dc-dream-item${y===year?' selected':''}" onclick="showDatePickerMonth(${y},${month},${day},'${currentDateKey}',${callback.toString().replace(/\n/g,' ')})">${y}年</div>`}
-  h+='</div><div id="dpMonths" style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">';
-  for(let m=1;m<=12;m++){h+=`<div class="dc-dream-item${m===month?' selected':''}" onclick="showDatePickerDay(${year},${m},${day},'${currentDateKey}',${callback.toString().replace(/\n/g,' ')})">${m}月</div>`}
-  h+='</div><div id="dpDays" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">';
-  const daysInMonth=new Date(year,month,0).getDate();
-  for(let dd=1;dd<=daysInMonth;dd++){const dk=year+'-'+month.toString().padStart(2,'0')+'-'+dd.toString().padStart(2,'0');h+=`<div class="dc-dream-item${dd===day?' selected':''}" onclick="selectDatePickerDay('${dk}',${callback.toString().replace(/\n/g,' ')})">${dd}日</div>`}
-  h+='</div>';
-  document.getElementById('memModalPanel').innerHTML=h;document.getElementById('memModalOverlay').classList.add('show');
-}
-function showDatePickerMonth(y,m,d,currentDateKey,callback){
-  let h=document.getElementById('memModalPanel').querySelector('.cl-modal-title').outerHTML;
-  const year=new Date(currentDateKey).getFullYear();
-  h+='<div style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">';
-  for(let yy=year-2;yy<=year;yy++){h+=`<div class="dc-dream-item${yy===y?' selected':''}" onclick="showDatePickerMonth(${yy},${m},${d},'${currentDateKey}',${callback.toString().replace(/\n/g,' ')})">${yy}年</div>`}
-  h+='</div><div id="dpMonths" style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">';
-  for(let mm=1;mm<=12;mm++){h+=`<div class="dc-dream-item${mm===m?' selected':''}" onclick="showDatePickerDay(${y},${mm},${d},'${currentDateKey}',${callback.toString().replace(/\n/g,' ')})">${mm}月</div>`}
-  h+='</div><div id="dpDays" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">';
-  const daysInMonth=new Date(y,m,0).getDate();
-  for(let dd=1;dd<=daysInMonth;dd++){const dk=y+'-'+m.toString().padStart(2,'0')+'-'+dd.toString().padStart(2,'0');h+=`<div class="dc-dream-item${dd===d&&m===new Date(currentDateKey).getMonth()+1?' selected':''}" onclick="selectDatePickerDay('${dk}',${callback.toString().replace(/\n/g,' ')})">${dd}日</div>`}
-  h+='</div>';document.getElementById('memModalPanel').innerHTML=h;
-}
-function showDatePickerDay(y,m,d,currentDateKey,callback){
-  let h=document.getElementById('memModalPanel').querySelector('.cl-modal-title').outerHTML;
-  const year=new Date(currentDateKey).getFullYear();
-  h+='<div style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">';
-  for(let yy=year-2;yy<=year;yy++){h+=`<div class="dc-dream-item${yy===y?' selected':''}" onclick="showDatePickerMonth(${yy},${m},${d},'${currentDateKey}',${callback.toString().replace(/\n/g,' ')})">${yy}年</div>`}
-  h+='</div><div id="dpMonths" style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">';
-  for(let mm=1;mm<=12;mm++){h+=`<div class="dc-dream-item${mm===m?' selected':''}" onclick="showDatePickerDay(${y},${mm},${d},'${currentDateKey}',${callback.toString().replace(/\n/g,' ')})">${mm}月</div>`}
-  h+='</div><div id="dpDays" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">';
-  const daysInMonth=new Date(y,m,0).getDate();
-  for(let dd=1;dd<=daysInMonth;dd++){const dk=y+'-'+m.toString().padStart(2,'0')+'-'+dd.toString().padStart(2,'0');h+=`<div class="dc-dream-item${dd===d?' selected':''}" onclick="selectDatePickerDay('${dk}',${callback.toString().replace(/\n/g,' ')})">${dd}日</div>`}
-  h+='</div>';document.getElementById('memModalPanel').innerHTML=h;
-}
+function showDatePicker(currentDateKey,callback){const d=new Date(currentDateKey);const year=d.getFullYear();const month=d.getMonth()+1;const day=d.getDate();let h='<div class="cl-modal-title">选择日期</div>';h+='<div style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">';for(let y=year-2;y<=year;y++){h+=`<div class="dc-dream-item${y===year?' selected':''}" onclick="showDatePickerMonth(${y},${month},${day},'${currentDateKey}',${callback.toString().replace(/\n/g,' ')})">${y}年</div>`}h+='</div><div id="dpMonths" style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">';for(let m=1;m<=12;m++){h+=`<div class="dc-dream-item${m===month?' selected':''}" onclick="showDatePickerDay(${year},${m},${day},'${currentDateKey}',${callback.toString().replace(/\n/g,' ')})">${m}月</div>`}h+='</div><div id="dpDays" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">';const daysInMonth=new Date(year,month,0).getDate();for(let dd=1;dd<=daysInMonth;dd++){const dk=year+'-'+month.toString().padStart(2,'0')+'-'+dd.toString().padStart(2,'0');h+=`<div class="dc-dream-item${dd===day?' selected':''}" onclick="selectDatePickerDay('${dk}',${callback.toString().replace(/\n/g,' ')})">${dd}日</div>`}h+='</div>';document.getElementById('memModalPanel').innerHTML=h;document.getElementById('memModalOverlay').classList.add('show');}
+function showDatePickerMonth(y,m,d,currentDateKey,callback){let h=document.getElementById('memModalPanel').querySelector('.cl-modal-title').outerHTML;const year=new Date(currentDateKey).getFullYear();h+='<div style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">';for(let yy=year-2;yy<=year;yy++){h+=`<div class="dc-dream-item${yy===y?' selected':''}" onclick="showDatePickerMonth(${yy},${m},${d},'${currentDateKey}',${callback.toString().replace(/\n/g,' ')})">${yy}年</div>`}h+='</div><div id="dpMonths" style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">';for(let mm=1;mm<=12;mm++){h+=`<div class="dc-dream-item${mm===m?' selected':''}" onclick="showDatePickerDay(${y},${mm},${d},'${currentDateKey}',${callback.toString().replace(/\n/g,' ')})">${mm}月</div>`}h+='</div><div id="dpDays" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">';const daysInMonth=new Date(y,m,0).getDate();for(let dd=1;dd<=daysInMonth;dd++){const dk=y+'-'+m.toString().padStart(2,'0')+'-'+dd.toString().padStart(2,'0');h+=`<div class="dc-dream-item${dd===d&&m===new Date(currentDateKey).getMonth()+1?' selected':''}" onclick="selectDatePickerDay('${dk}',${callback.toString().replace(/\n/g,' ')})">${dd}日</div>`}h+='</div>';document.getElementById('memModalPanel').innerHTML=h;}
+function showDatePickerDay(y,m,d,currentDateKey,callback){let h=document.getElementById('memModalPanel').querySelector('.cl-modal-title').outerHTML;const year=new Date(currentDateKey).getFullYear();h+='<div style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">';for(let yy=year-2;yy<=year;yy++){h+=`<div class="dc-dream-item${yy===y?' selected':''}" onclick="showDatePickerMonth(${yy},${m},${d},'${currentDateKey}',${callback.toString().replace(/\n/g,' ')})">${yy}年</div>`}h+='</div><div id="dpMonths" style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">';for(let mm=1;mm<=12;mm++){h+=`<div class="dc-dream-item${mm===m?' selected':''}" onclick="showDatePickerDay(${y},${mm},${d},'${currentDateKey}',${callback.toString().replace(/\n/g,' ')})">${mm}月</div>`}h+='</div><div id="dpDays" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">';const daysInMonth=new Date(y,m,0).getDate();for(let dd=1;dd<=daysInMonth;dd++){const dk=y+'-'+m.toString().padStart(2,'0')+'-'+dd.toString().padStart(2,'0');h+=`<div class="dc-dream-item${dd===d?' selected':''}" onclick="selectDatePickerDay('${dk}',${callback.toString().replace(/\n/g,' ')})">${dd}日</div>`}h+='</div>';document.getElementById('memModalPanel').innerHTML=h;}
 function selectDatePickerDay(dateKey,callback){closeMemModal();if(typeof callback==='function')callback(dateKey);}
 
-// ========== 消息通知（含内容预览） ==========
+// ========== 消息通知 ==========
 function getNotifData(){const raw=localStorage.getItem('desktopNotifs');return raw?JSON.parse(raw):{items:[]}}
 function saveNotifData(d){localStorage.setItem('desktopNotifs',JSON.stringify(d))}
-async function addDesktopNotif(type,dreamId,content,preview){
-  const d=getNotifData();d.items.push({type,dreamId,content,preview,ts:Date.now()});saveNotifData(d);
-  if(document.getElementById('desktopPage').style.display==='flex')renderDesktopNotifs();
-}
+async function addDesktopNotif(type,dreamId,content,preview){const d=getNotifData();d.items.push({type,dreamId,content,preview,ts:Date.now()});saveNotifData(d);if(document.getElementById('desktopPage').style.display==='flex')renderDesktopNotifs();}
 function dismissNotif(index){const d=getNotifData();d.items.splice(index,1);saveNotifData(d);renderDesktopNotifs();}
-function renderDesktopNotifs(){
-  const card=document.getElementById('desktopNotifCard');const list=document.getElementById('desktopNotifList');
-  if(!card||!list)return;const d=getNotifData();
-  if(d.items.length===0){card.classList.remove('show');return}card.classList.add('show');
-  let h='';d.items.forEach((item,i)=>{
-    let text='';
-    if(item.type==='private'&&item.preview){const mem=memCache;const dd=mem?mem.dreams[item.dreamId]:null;const nn=dd?(dd.nickname||dd.name||item.dreamId):item.dreamId;text=escHtml(nn)+'：'+escHtml(item.preview);}
-    else if(item.type==='group'&&item.preview){text='群讯：'+escHtml(item.preview);}
-    else if(item.type==='notes'&&item.preview){const mem=memCache;const dd=mem?mem.dreams[item.dreamId]:null;const nn=dd?(dd.nickname||dd.name||item.dreamId):item.dreamId;text=escHtml(nn)+'的留言：'+escHtml(item.preview);}
-    else if(item.type==='diary'&&item.preview){const mem=memCache;const dd=mem?mem.dreams[item.dreamId]:null;const nn=dd?(dd.nickname||dd.name||item.dreamId):item.dreamId;text=escHtml(nn)+'的日记：'+escHtml(item.preview);}
-    else if(item.type==='letters'&&item.preview){const mem=memCache;const dd=mem?mem.dreams[item.dreamId]:null;const nn=dd?(dd.nickname||dd.name||item.dreamId):item.dreamId;text=escHtml(nn)+'的信：'+escHtml(item.preview);}
-    else{text=item.content}
-    h+=`<div class="desktop-notif-item"><span class="notif-text">${text}</span><span class="notif-read-btn" onclick="dismissNotif(${i})">已读</span></div>`;
-  });list.innerHTML=h;
-}
+function renderDesktopNotifs(){const card=document.getElementById('desktopNotifCard');const list=document.getElementById('desktopNotifList');if(!card||!list)return;const d=getNotifData();if(d.items.length===0){card.classList.remove('show');return}card.classList.add('show');let h='';d.items.forEach((item,i)=>{let text='';if(item.type==='private'&&item.preview){const mem=memCache;const dd=mem?mem.dreams[item.dreamId]:null;const nn=dd?(dd.nickname||dd.name||item.dreamId):item.dreamId;text=escHtml(nn)+'：'+escHtml(item.preview);}else if(item.type==='group'&&item.preview){text='群讯：'+escHtml(item.preview);}else if(item.type==='notes'&&item.preview){const mem=memCache;const dd=mem?mem.dreams[item.dreamId]:null;const nn=dd?(dd.nickname||dd.name||item.dreamId):item.dreamId;text=escHtml(nn)+'的留言：'+escHtml(item.preview);}else if(item.type==='diary'&&item.preview){const mem=memCache;const dd=mem?mem.dreams[item.dreamId]:null;const nn=dd?(dd.nickname||dd.name||item.dreamId):item.dreamId;text=escHtml(nn)+'的日记：'+escHtml(item.preview);}else if(item.type==='letters'&&item.preview){const mem=memCache;const dd=mem?mem.dreams[item.dreamId]:null;const nn=dd?(dd.nickname||dd.name||item.dreamId):item.dreamId;text=escHtml(nn)+'的信：'+escHtml(item.preview);}else{text=item.content}h+=`<div class="desktop-notif-item"><span class="notif-text">${text}</span><span class="notif-read-btn" onclick="dismissNotif(${i})">已读</span></div>`;});list.innerHTML=h;}
 
 // ========== 获取显示名称 ==========
-function getDisplayName(mem,dreamId){
-  if(dreamId==='me'||dreamId==='none'){return dreamId==='me'?(mem.myName||'我'):'其他'}
-  const d=mem.dreams[dreamId];if(!d)return dreamId;return d.nickname||d.name||dreamId;
-}
-function getFormalName(mem,dreamId){
-  if(dreamId==='me'){return mem.myName||'我'}if(dreamId==='none')return'其他';
-  const d=mem.dreams[dreamId];if(!d)return dreamId;return d.name||d.nickname||dreamId;
-}
+function getDisplayName(mem,dreamId){if(dreamId==='me'||dreamId==='none'){return dreamId==='me'?(mem.myName||'我'):'其他'}const d=mem.dreams[dreamId];if(!d)return dreamId;return d.nickname||d.name||dreamId;}
+function getFormalName(mem,dreamId){if(dreamId==='me'){return mem.myName||'我'}if(dreamId==='none')return'其他';const d=mem.dreams[dreamId];if(!d)return dreamId;return d.name||d.nickname||dreamId;}
 
 // ========== 获取当天随机状态 ==========
-async function getRandomState(){
-  const st=await getST();const w=st.weather&&st.weather.length>0?st.weather[Math.floor(Math.random()*st.weather.length)]:'';
-  const m=st.mood&&st.mood.length>0?st.mood[Math.floor(Math.random()*st.mood.length)]:'';
-  const d=st.daily&&st.daily.length>0?st.daily[Math.floor(Math.random()*st.daily.length)]:'';return {weather:w,mood:m,daily:d};
-}
+async function getRandomState(){const st=await getST();const w=st.weather&&st.weather.length>0?st.weather[Math.floor(Math.random()*st.weather.length)]:'';const m=st.mood&&st.mood.length>0?st.mood[Math.floor(Math.random()*st.mood.length)]:'';const d=st.daily&&st.daily.length>0?st.daily[Math.floor(Math.random()*st.daily.length)]:'';return {weather:w,mood:m,daily:d};}
 
 // ========== 字卡抽取 ==========
-async function getMixedCards(dreamId,count){
-  const cl=await getCL();const allCards=[];for(const[,cards]of Object.entries(cl.groups||{}))cards.forEach(c=>allCards.push(c));
-  const privData=await getPrivateCards();const privateCards=privData[dreamId]||[];const pool=[...allCards,...privateCards];
-  if(pool.length===0)return['（字卡库为空）'];const shuffled=[...pool].sort(()=>Math.random()-0.5);return shuffled.slice(0,Math.min(count,shuffled.length));
-}
+async function getMixedCards(dreamId,count){const cl=await getCL();const allCards=[];for(const[,cards]of Object.entries(cl.groups||{}))cards.forEach(c=>allCards.push(c));const privData=await getPrivateCards();const privateCards=privData[dreamId]||[];const pool=[...allCards,...privateCards];if(pool.length===0)return['（字卡库为空）'];const shuffled=[...pool].sort(()=>Math.random()-0.5);return shuffled.slice(0,Math.min(count,shuffled.length));}
 
 // ========== 拼接字卡 ==========
-function concatCards(cards,prefixWithState,state){
-  let result='';for(let i=0;i<cards.length;i++){let card=cards[i];const lc=card.charAt(card.length-1);
-    if(i===cards.length-1){if(!'。！？；…、，,.!?;'.includes(lc))card+='。';}else{if(!'。！？；…、，,.!?;'.includes(lc))card+='，';}result+=card;}
-  if(prefixWithState&&state){const pre=[];if(state.weather)pre.push(state.weather+'天');if(state.mood)pre.push(state.mood);if(state.daily)pre.push(state.daily+'的时候');
-    if(pre.length>0){const p=pre[Math.floor(Math.random()*pre.length)];result=p+'，'+result;}}return result;
-}
+function concatCards(cards,prefixWithState,state){let result='';for(let i=0;i<cards.length;i++){let card=cards[i];const lc=card.charAt(card.length-1);if(i===cards.length-1){if(!'。！？；…、，,.!?;'.includes(lc))card+='。';}else{if(!'。！？；…、，,.!?;'.includes(lc))card+='，';}result+=card;}if(prefixWithState&&state){const pre=[];if(state.weather)pre.push(state.weather+'天');if(state.mood)pre.push(state.mood);if(state.daily)pre.push(state.daily+'的时候');if(pre.length>0){const p=pre[Math.floor(Math.random()*pre.length)];result=p+'，'+result;}}return result;}
 
 // ========== 获取日期字符串 ==========
 function getDateStr(ts){const d=new Date(ts);return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日'}
@@ -1517,109 +1406,39 @@ let notesCurrentDate='';let notesAllDates=[];
 async function openNotesPage(){hideAll();document.getElementById('notesPage').style.display='flex';notesCurrentDate=getTodayDateKey();await loadNotesDates();await renderNotesPage()}
 async function loadNotesDates(){const notes=await getNotes();const dateSet=new Set();notes.forEach(n=>dateSet.add(getDateKey(n.ts)));notesAllDates=Array.from(dateSet).sort();if(!notesAllDates.includes(getTodayDateKey()))notesAllDates.push(getTodayDateKey());notesAllDates.sort()}
 function showNotesDatePicker(){showDatePicker(notesCurrentDate,async(dk)=>{notesCurrentDate=dk;await renderNotesPage();});}
-async function renderNotesPage(){
-  const today=getTodayDateKey();document.getElementById('notesDateText').textContent=getDateStr(new Date(notesCurrentDate).getTime()||Date.now());
-  const allNotes=await getNotes();const mem=await getMem();const filtered=allNotes.filter(n=>getDateKey(n.ts)===notesCurrentDate);
-  const c=document.getElementById('notesMainContent');if(filtered.length===0){c.innerHTML='<div class="notes-empty">还没有留言<br>梦角们还没给你写纸条呢~</div>';return}
-  let h='';filtered.forEach(n=>{const dream=mem.dreams[n.dreamId];const nn=dream?getDisplayName(mem,n.dreamId):n.dreamId;
-    const avatarHtml=dream&&dream.avatar?`<img src="${dream.avatar}">`:nn.charAt(0);
-    h+=`<div class="note-card${n.read?' read':' unread'}"><div class="note-card-header"><div class="note-card-avatar">${avatarHtml}</div><div class="note-card-nickname">${escHtml(nn)}</div></div>
-      <div class="note-card-content">${escHtml(n.content)}</div><div class="note-card-footer"><div class="note-card-tags">${n.weather?`<span class="note-card-tag">${escHtml(n.weather)}</span>`:''}${n.mood?`<span class="note-card-tag">${escHtml(n.mood)}</span>`:''}${n.daily?`<span class="note-card-tag">${escHtml(n.daily)}</span>`:''}<span style="margin-left:4px;">${formatTimestamp(n.ts)}</span></div>${n.read?`<span class="note-card-read-btn done">已读</span>`:`<span class="note-card-read-btn" onclick="markNoteAsRead('${n.id}')">标记已读</span>`}</div></div>`});
-  c.innerHTML=h;c.scrollTop=c.scrollHeight;
-}
+async function renderNotesPage(){const today=getTodayDateKey();document.getElementById('notesDateText').textContent=getDateStr(new Date(notesCurrentDate).getTime()||Date.now());const allNotes=await getNotes();const mem=await getMem();const filtered=allNotes.filter(n=>getDateKey(n.ts)===notesCurrentDate);const c=document.getElementById('notesMainContent');if(filtered.length===0){c.innerHTML='<div class="notes-empty">还没有留言<br>梦角们还没给你写纸条呢~</div>';return}let h='';filtered.forEach(n=>{const dream=mem.dreams[n.dreamId];const nn=dream?getDisplayName(mem,n.dreamId):n.dreamId;const avatarHtml=dream&&dream.avatar?`<img src="${dream.avatar}">`:nn.charAt(0);h+=`<div class="note-card${n.read?' read':' unread'}"><div class="note-card-header"><div class="note-card-avatar">${avatarHtml}</div><div class="note-card-nickname">${escHtml(nn)}</div></div><div class="note-card-content">${escHtml(n.content)}</div><div class="note-card-footer"><div class="note-card-tags">${n.weather?`<span class="note-card-tag">${escHtml(n.weather)}</span>`:''}${n.mood?`<span class="note-card-tag">${escHtml(n.mood)}</span>`:''}${n.daily?`<span class="note-card-tag">${escHtml(n.daily)}</span>`:''}<span style="margin-left:4px;">${formatTimestamp(n.ts)}</span></div>${n.read?`<span class="note-card-read-btn done">已读</span>`:`<span class="note-card-read-btn" onclick="markNoteAsRead('${n.id}')">标记已读</span>`}</div></div>`});c.innerHTML=h;c.scrollTop=c.scrollHeight;}
 async function markNoteAsRead(noteId){await markNoteRead(noteId);await renderNotesPage()}
 
 // ========== 留言条自动生成 ==========
-function calcNextNoteTime(){const now=new Date();const h=now.getHours();let next;
-  if(h<6){next=new Date(now);next.setHours(6,rand(0,30),0,0);}else if(h>=23){next=new Date(now);next.setDate(next.getDate()+1);next.setHours(6,rand(0,30),0,0);}
-  else{const delay=rand(3600000,14400000);const nt=now.getTime()+delay;next=new Date(nt);if(next.getHours()>=23){next.setHours(6,rand(0,30),0,0);next.setDate(next.getDate()+1);}}setNextNoteTime(next.getTime());}
+function calcNextNoteTime(){const now=new Date();const h=now.getHours();let next;if(h<6){next=new Date(now);next.setHours(6,rand(0,30),0,0);}else if(h>=23){next=new Date(now);next.setDate(next.getDate()+1);next.setHours(6,rand(0,30),0,0);}else{const delay=rand(3600000,14400000);const nt=now.getTime()+delay;next=new Date(nt);if(next.getHours()>=23){next.setHours(6,rand(0,30),0,0);next.setDate(next.getDate()+1);}}setNextNoteTime(next.getTime());}
 function checkNoteTrigger(){const now=Date.now();const next=getNextNoteTime();if(next&&now>=next){generateNote();calcNextNoteTime();}}
-async function generateNote(){
-  const today=getTodayDateKey();const allNotes=await getNotes();const todayNotes=allNotes.filter(n=>getDateKey(n.ts)===today);
-  const maxPerDay=rand(3,4);if(todayNotes.length>=maxPerDay){calcNextNoteTime();return}
-  const mem=await getMem();const ids=Object.keys(mem.dreams);if(ids.length===0)return;
-  const dreamCount={};todayNotes.forEach(n=>{dreamCount[n.dreamId]=(dreamCount[n.dreamId]||0)+1});
-  const eligible=ids.filter(id=>(dreamCount[id]||0)<2);if(eligible.length===0){calcNextNoteTime();return}
-  const dreamId=eligible[Math.floor(Math.random()*eligible.length)];const cards=await getMixedCards(dreamId,rand(2,3));
-  const state=await getRandomState();const usePrefix=Math.random()<0.4;const content=concatCards(cards,usePrefix,state);
-  await addNote(dreamId,content,state.weather,state.mood,state.daily);
-  const preview=content.length>20?content.substring(0,20)+'...':content;await addDesktopNotif('notes',dreamId,'',preview);
-  if(document.getElementById('notesPage').style.display==='flex'&&notesCurrentDate===today){await loadNotesDates();await renderNotesPage();}
-}
+async function generateNote(){const today=getTodayDateKey();const allNotes=await getNotes();const todayNotes=allNotes.filter(n=>getDateKey(n.ts)===today);const maxPerDay=rand(3,4);if(todayNotes.length>=maxPerDay){calcNextNoteTime();return}const mem=await getMem();const ids=Object.keys(mem.dreams);if(ids.length===0)return;const dreamCount={};todayNotes.forEach(n=>{dreamCount[n.dreamId]=(dreamCount[n.dreamId]||0)+1});const eligible=ids.filter(id=>(dreamCount[id]||0)<2);if(eligible.length===0){calcNextNoteTime();return}const dreamId=eligible[Math.floor(Math.random()*eligible.length)];const cards=await getMixedCards(dreamId,rand(2,3));const state=await getRandomState();const usePrefix=Math.random()<0.4;const content=concatCards(cards,usePrefix,state);await addNote(dreamId,content,state.weather,state.mood,state.daily);const preview=content.length>20?content.substring(0,20)+'...':content;await addDesktopNotif('notes',dreamId,'',preview);if(document.getElementById('notesPage').style.display==='flex'&&notesCurrentDate===today){await loadNotesDates();await renderNotesPage();}}
 
 // ========== 查看反馈触发 ==========
-async function checkNoteMention(dreamId){const allNotes=await getNotes();const today=getTodayDateKey();
-  const unmentioned=allNotes.filter(n=>n.dreamId===dreamId&&getDateKey(n.ts)===today&&n.read&&!n.mentioned);
-  if(unmentioned.length===0)return null;if(Math.random()<0.18){const note=unmentioned[0];await markNoteMentioned(note.id);return NOTE_MENTION_REPLIES[Math.floor(Math.random()*NOTE_MENTION_REPLIES.length)];}return null;}
+async function checkNoteMention(dreamId){const allNotes=await getNotes();const today=getTodayDateKey();const unmentioned=allNotes.filter(n=>n.dreamId===dreamId&&getDateKey(n.ts)===today&&n.read&&!n.mentioned);if(unmentioned.length===0)return null;if(Math.random()<0.18){const note=unmentioned[0];await markNoteMentioned(note.id);return NOTE_MENTION_REPLIES[Math.floor(Math.random()*NOTE_MENTION_REPLIES.length)];}return null;}
 
 // ========== 日记功能 ==========
 let diaryCurrentDate='';let diaryAllDates=[];
 async function openDiaryPage(){hideAll();document.getElementById('diaryPage').style.display='flex';diaryCurrentDate=getTodayDateKey();await loadDiaryDates();await renderDiaryPage()}
 async function loadDiaryDates(){const entries=await getDiaryEntries();const dateSet=new Set();entries.forEach(e=>dateSet.add(getDateKey(e.ts)));diaryAllDates=Array.from(dateSet).sort();if(!diaryAllDates.includes(getTodayDateKey()))diaryAllDates.push(getTodayDateKey());diaryAllDates.sort()}
 function showDiaryDatePicker(){showDatePicker(diaryCurrentDate,async(dk)=>{diaryCurrentDate=dk;await renderDiaryPage();});}
-async function renderDiaryPage(){
-  const today=getTodayDateKey();document.getElementById('diaryDateText').textContent=getDateStr(new Date(diaryCurrentDate).getTime()||Date.now());
-  const writeBtn=document.getElementById('diaryWriteBtn');writeBtn.style.display=diaryCurrentDate===today?'block':'none';
-  const allEntries=await getDiaryEntries();const mem=await getMem();const filtered=allEntries.filter(e=>getDateKey(e.ts)===diaryCurrentDate);
-  const c=document.getElementById('diaryMainContent');if(filtered.length===0){c.innerHTML='<div class="diary-empty">还没有日记</div>';return}
-  let h='';filtered.forEach(e=>{const isMe=e.dreamId==='me';const nn=isMe?(mem.myName||'我'):getDisplayName(mem,e.dreamId);
-    const av=isMe?(mem.myAvatar?`<img src="${mem.myAvatar}">`:nn.charAt(0)):((mem.dreams[e.dreamId]&&mem.dreams[e.dreamId].avatar)?`<img src="${mem.dreams[e.dreamId].avatar}">`:nn.charAt(0));
-    h+=`<div class="diary-card"><div class="diary-card-header"><div class="diary-card-avatar">${av}</div><div class="diary-card-nickname">${escHtml(nn)}</div></div>
-      <div class="diary-card-content">${escHtml(e.content)}</div><div class="diary-card-footer"><div class="diary-card-tags">${e.weather?`<span class="diary-card-tag">${escHtml(e.weather)}</span>`:''}${e.mood?`<span class="diary-card-tag">${escHtml(e.mood)}</span>`:''}${e.daily?`<span class="diary-card-tag">${escHtml(e.daily)}</span>`:''}<span style="margin-left:4px;">${formatTimestamp(e.ts)}</span></div></div></div>`});
-  c.innerHTML=h;c.scrollTop=c.scrollHeight;
-}
+async function renderDiaryPage(){const today=getTodayDateKey();document.getElementById('diaryDateText').textContent=getDateStr(new Date(diaryCurrentDate).getTime()||Date.now());const writeBtn=document.getElementById('diaryWriteBtn');writeBtn.style.display=diaryCurrentDate===today?'block':'none';const allEntries=await getDiaryEntries();const mem=await getMem();const filtered=allEntries.filter(e=>getDateKey(e.ts)===diaryCurrentDate);const c=document.getElementById('diaryMainContent');if(filtered.length===0){c.innerHTML='<div class="diary-empty">还没有日记</div>';return}let h='';filtered.forEach(e=>{const isMe=e.dreamId==='me';const nn=isMe?(mem.myName||'我'):getDisplayName(mem,e.dreamId);const av=isMe?(mem.myAvatar?`<img src="${mem.myAvatar}">`:nn.charAt(0)):((mem.dreams[e.dreamId]&&mem.dreams[e.dreamId].avatar)?`<img src="${mem.dreams[e.dreamId].avatar}">`:nn.charAt(0));h+=`<div class="diary-card"><div class="diary-card-header"><div class="diary-card-avatar">${av}</div><div class="diary-card-nickname">${escHtml(nn)}</div></div><div class="diary-card-content">${escHtml(e.content)}</div><div class="diary-card-footer"><div class="diary-card-tags">${e.weather?`<span class="diary-card-tag">${escHtml(e.weather)}</span>`:''}${e.mood?`<span class="diary-card-tag">${escHtml(e.mood)}</span>`:''}${e.daily?`<span class="diary-card-tag">${escHtml(e.daily)}</span>`:''}<span style="margin-left:4px;">${formatTimestamp(e.ts)}</span></div></div></div>`});c.innerHTML=h;c.scrollTop=c.scrollHeight;}
 function showDiaryWrite(){document.getElementById('memModalPanel').innerHTML=`<div class="cl-modal-title">写日记</div><textarea id="diaryWriteTextarea" placeholder="写下今天的日记..." style="width:100%;min-height:150px;padding:12px;border:1px solid var(--border-subtle);border-radius:10px;background:var(--card-cream);color:var(--ink-gray);font-family:inherit;font-size:14px;line-height:1.8;resize:none;outline:none;"></textarea><div class="cl-btn-row" style="margin-top:12px;"><button class="cl-btn cl-btn-secondary" onclick="closeMemModal()">取消</button><button class="cl-btn cl-btn-primary" onclick="saveDiaryWrite()">保存日记</button></div>`;document.getElementById('memModalOverlay').classList.add('show');setTimeout(()=>{const t=document.getElementById('diaryWriteTextarea');if(t)t.focus()},100);}
 async function saveDiaryWrite(){const t=document.getElementById('diaryWriteTextarea');const content=t.value.trim();if(!content)return;await addDiaryEntry('me',content,'','','');closeMemModal();await loadDiaryDates();await renderDiaryPage();}
 
-// ========== 日记自动生成（修复补写时间戳） ==========
-function calcNextDiaryTime(){const now=new Date();const h=now.getHours();let next;
-  if(h<18){next=new Date(now);next.setHours(18,rand(0,60),0,0);}else if(h<23){next=new Date(now);next.setHours(23,rand(0,60),0,0);}
-  else{next=new Date(now);next.setDate(next.getDate()+1);next.setHours(18,rand(0,60),0,0);}setNextDiaryTime(next.getTime());}
-function checkDiaryTrigger(){const now=Date.now();const next=getNextDiaryTime();
-  if(next&&now>=next){generateDiaries(next);calcNextDiaryTime();}} // ← 传入应该写日记的时间戳
-async function generateDiaries(diaryTs){
-  const mem=await getMem();const ids=Object.keys(mem.dreams);if(ids.length===0)return;
-  const today=getTodayDateKey();const allEntries=await getDiaryEntries();const ts=diaryTs||Date.now(); // 使用传入的时间戳
-  let diaryCount=0;
-  for(const dreamId of ids){
-    if(Math.random()>0.5)continue;const alreadyWritten=allEntries.some(e=>e.dreamId===dreamId&&getDateKey(e.ts)===today);
-    if(alreadyWritten)continue;const cards=await getMixedCards(dreamId,rand(5,8));const state=await getRandomState();const usePrefix=Math.random()<0.4;
-    let content=concatCards(cards,usePrefix,state);
-    // emoji插入改为替换最后一个标点
-    const emojis=await getEmojis();if(emojis.length>0&&Math.random()<0.3){const rndEmoji=emojis[Math.floor(Math.random()*emojis.length)];
-      const puncRegex=/[，。！？；…、,]/g;let lastIdx=-1;let match;while((match=puncRegex.exec(content))!==null){lastIdx=match.index;}
-      if(lastIdx>=0){content=content.slice(0,lastIdx)+rndEmoji+content.slice(lastIdx+1);}else{content=content+rndEmoji;}}
-    await addDiaryEntry(dreamId,content,state.weather,state.mood,state.daily,ts);
-    const preview=content.length>20?content.substring(0,20)+'...':content;await addDesktopNotif('diary',dreamId,'',preview);diaryCount++;
-  }
-  if(document.getElementById('diaryPage').style.display==='flex'&&diaryCurrentDate===getTodayDateKey()){await loadDiaryDates();await renderDiaryPage();}
-}
+// ========== 日记自动生成 ==========
+function calcNextDiaryTime(){const now=new Date();const h=now.getHours();let next;if(h<18){next=new Date(now);next.setHours(18,rand(0,60),0,0);}else if(h<23){next=new Date(now);next.setHours(23,rand(0,60),0,0);}else{next=new Date(now);next.setDate(next.getDate()+1);next.setHours(18,rand(0,60),0,0);}setNextDiaryTime(next.getTime());}
+function checkDiaryTrigger(){const now=Date.now();const next=getNextDiaryTime();if(next&&now>=next){generateDiaries(next);calcNextDiaryTime();}}
+async function generateDiaries(diaryTs){const mem=await getMem();const ids=Object.keys(mem.dreams);if(ids.length===0)return;const today=getTodayDateKey();const allEntries=await getDiaryEntries();const ts=diaryTs||Date.now();for(const dreamId of ids){if(Math.random()>0.5)continue;const alreadyWritten=allEntries.some(e=>e.dreamId===dreamId&&getDateKey(e.ts)===today);if(alreadyWritten)continue;const cards=await getMixedCards(dreamId,rand(5,8));const state=await getRandomState();const usePrefix=Math.random()<0.4;let content=concatCards(cards,usePrefix,state);const emojis=await getEmojis();if(emojis.length>0&&Math.random()<0.3){const rndEmoji=emojis[Math.floor(Math.random()*emojis.length)];const puncRegex=/[，。！？；…、,]/g;let lastIdx=-1;let match;while((match=puncRegex.exec(content))!==null){lastIdx=match.index;}if(lastIdx>=0){content=content.slice(0,lastIdx)+rndEmoji+content.slice(lastIdx+1);}else{content=content+rndEmoji;}}await addDiaryEntry(dreamId,content,state.weather,state.mood,state.daily,ts);const preview=content.length>20?content.substring(0,20)+'...':content;await addDesktopNotif('diary',dreamId,'',preview);}if(document.getElementById('diaryPage').style.display==='flex'&&diaryCurrentDate===getTodayDateKey()){await loadDiaryDates();await renderDiaryPage();}}
 
 // ========== 信件功能 ==========
 async function openLettersPage(){hideAll();document.getElementById('lettersPage').style.display='flex';await renderLettersPage()}
-async function renderLettersPage(){const mem=await getMem();const ids=Object.keys(mem.dreams);const myName=mem.myName||'我';const c=document.getElementById('lettersMainContent');let h='';
-  h+=`<div class="letters-mailbox-item" onclick="openMyMailbox()"><div class="letters-mailbox-avatar">${mem.myAvatar?`<img src="${mem.myAvatar}">`:myName.charAt(0)}</div><div class="letters-mailbox-info"><div class="letters-mailbox-name">${escHtml(myName)}</div><div class="letters-mailbox-preview">我的信箱</div></div></div>`;
-  ids.forEach(id=>{const d=mem.dreams[id];const nn=getDisplayName(mem,id);const av=d.avatar?`<img src="${d.avatar}">`:nn.charAt(0);h+=`<div class="letters-mailbox-item" onclick="openDreamMailbox('${id}')"><div class="letters-mailbox-avatar">${av}</div><div class="letters-mailbox-info"><div class="letters-mailbox-name">${escHtml(nn)}</div><div class="letters-mailbox-preview">${escHtml(nn)}的信箱</div></div></div>`});c.innerHTML=h;}
-
+async function renderLettersPage(){const mem=await getMem();const ids=Object.keys(mem.dreams);const myName=mem.myName||'我';const c=document.getElementById('lettersMainContent');let h='';h+=`<div class="letters-mailbox-item" onclick="openMyMailbox()"><div class="letters-mailbox-avatar">${mem.myAvatar?`<img src="${mem.myAvatar}">`:myName.charAt(0)}</div><div class="letters-mailbox-info"><div class="letters-mailbox-name">${escHtml(myName)}</div><div class="letters-mailbox-preview">我的信箱</div></div></div>`;ids.forEach(id=>{const d=mem.dreams[id];const nn=getDisplayName(mem,id);const av=d.avatar?`<img src="${d.avatar}">`:nn.charAt(0);h+=`<div class="letters-mailbox-item" onclick="openDreamMailbox('${id}')"><div class="letters-mailbox-avatar">${av}</div><div class="letters-mailbox-info"><div class="letters-mailbox-name">${escHtml(nn)}</div><div class="letters-mailbox-preview">${escHtml(nn)}的信箱</div></div></div>`});c.innerHTML=h;}
 let letterMailboxType='';let letterMailboxDreamId='';
 async function openMyMailbox(){letterMailboxType='my';letterMailboxDreamId='';hideAll();document.getElementById('letterMailboxPage').style.display='flex';document.getElementById('letterMailboxTitle').textContent='我的信箱';await renderLetterMailbox()}
 async function openDreamMailbox(dreamId){letterMailboxType='dream';letterMailboxDreamId=dreamId;const mem=await getMem();const nn=getDisplayName(mem,dreamId);hideAll();document.getElementById('letterMailboxPage').style.display='flex';document.getElementById('letterMailboxTitle').textContent=nn+'的信箱';await renderLetterMailbox()}
 function closeLetterMailbox(){hideAll();document.getElementById('lettersPage').style.display='flex';renderLettersPage()}
-
-async function renderLetterMailbox(){const mem=await getMem();const letters=await getLetters();const c=document.getElementById('letterMailboxMainContent');
-  let relevantLetters=[];if(letterMailboxType==='my'){relevantLetters=letters.filter(l=>(l.from==='me'&&l.to!=='me')||(l.to==='me'&&l.from!=='me'));}else{relevantLetters=letters.filter(l=>l.from===letterMailboxDreamId||l.to===letterMailboxDreamId);}
-  const threadMap={};relevantLetters.forEach(l=>{if(!threadMap[l.threadId])threadMap[l.threadId]=[];threadMap[l.threadId].push(l)});const threads=Object.values(threadMap).sort((a,b)=>a[0].ts-b[0].ts);let h='';
-  const writeTarget=letterMailboxType==='dream'?letterMailboxDreamId:'';h+=`<div class="letters-write-btn" onclick="${writeTarget?`openLetterWriteTo('${writeTarget}')`:'openLetterWrite()'}">写信</div>`;
-  if(threads.length===0){h+='<div class="letters-empty">还没有信件</div>';c.innerHTML=h;return}
-  threads.forEach(thread=>{const first=thread[0];const isFromMe=first.from==='me';const partnerId=isFromMe?first.to:first.from;
-    const myDisplay=getDisplayName(mem,'me');const partnerDisplay=getDisplayName(mem,partnerId);const waitingReply=first.from!=='me'&&thread.length===1;
-    const waitingMyReply=first.from==='me'&&thread.length===1&&first.replyBy&&!first.replied;const dateStr=formatTimestamp(first.ts).split(' ')[0];
-    h+=`<div class="letter-thread-card" id="thread-${first.threadId}" onclick="toggleLetterThread('${first.threadId}')"><div class="letter-thread-header"><div class="letter-thread-info">${isFromMe?`${escHtml(myDisplay)} → ${escHtml(partnerDisplay)}`:`${escHtml(partnerDisplay)} → ${escHtml(myDisplay)}`}${waitingMyReply?` <span class="letter-thread-waiting">⏳ 预计${formatTimestamp(first.replyBy)}回信</span>`:''}</div><div class="letter-thread-date">${dateStr}</div></div><div class="letter-thread-body" id="thread-body-${first.threadId}">`;
-    thread.forEach(l=>{const isMe=l.from==='me';const toName=getFormalName(mem,isMe?l.to:'me');const signName=getFormalName(mem,isMe?'me':l.from);
-      const greeting=isMe?`亲爱的${escHtml(toName)}`:`亲爱的${escHtml(toName)}`;const opening=isMe?'展信安，见字如面。':'见字如晤，展信舒颜。';
-      const signature=isMe?`你的妻子：${escHtml(signName)}`:`你的丈夫：${escHtml(signName)}`;
-      h+=`<div class="letter-content-block"><div class="letter-greeting">${greeting}</div><div class="letter-body">${opening}<br>${escHtml(l.content)}</div><div class="letter-signature">${signature}</div><div class="letter-time">${formatTimestamp(l.ts)}</div></div>`});h+='</div>';
-    if(waitingReply){h+=`<div class="letter-reply-btn" onclick="event.stopPropagation();openLetterWriteTo('${partnerId}')">回信</div>`}h+='</div>';});c.innerHTML=h;}
+async function renderLetterMailbox(){const mem=await getMem();const letters=await getLetters();const c=document.getElementById('letterMailboxMainContent');let relevantLetters=[];if(letterMailboxType==='my'){relevantLetters=letters.filter(l=>(l.from==='me'&&l.to!=='me')||(l.to==='me'&&l.from!=='me'));}else{relevantLetters=letters.filter(l=>l.from===letterMailboxDreamId||l.to===letterMailboxDreamId);}const threadMap={};relevantLetters.forEach(l=>{if(!threadMap[l.threadId])threadMap[l.threadId]=[];threadMap[l.threadId].push(l)});const threads=Object.values(threadMap).sort((a,b)=>a[0].ts-b[0].ts);let h='';const writeTarget=letterMailboxType==='dream'?letterMailboxDreamId:'';h+=`<div class="letters-write-btn" onclick="${writeTarget?`openLetterWriteTo('${writeTarget}')`:'openLetterWrite()'}">写信</div>`;if(threads.length===0){h+='<div class="letters-empty">还没有信件</div>';c.innerHTML=h;return}threads.forEach(thread=>{const first=thread[0];const isFromMe=first.from==='me';const partnerId=isFromMe?first.to:first.from;const myDisplay=getDisplayName(mem,'me');const partnerDisplay=getDisplayName(mem,partnerId);const waitingReply=first.from!=='me'&&thread.length===1;const waitingMyReply=first.from==='me'&&thread.length===1&&first.replyBy&&!first.replied;const dateStr=formatTimestamp(first.ts).split(' ')[0];h+=`<div class="letter-thread-card" id="thread-${first.threadId}" onclick="toggleLetterThread('${first.threadId}')"><div class="letter-thread-header"><div class="letter-thread-info">${isFromMe?`${escHtml(myDisplay)} → ${escHtml(partnerDisplay)}`:`${escHtml(partnerDisplay)} → ${escHtml(myDisplay)}`}${waitingMyReply?` <span class="letter-thread-waiting">⏳ 预计${formatTimestamp(first.replyBy)}回信</span>`:''}</div><div class="letter-thread-date">${dateStr}</div></div><div class="letter-thread-body" id="thread-body-${first.threadId}">`;thread.forEach(l=>{const isMe=l.from==='me';const toName=getFormalName(mem,isMe?l.to:'me');const signName=getFormalName(mem,isMe?'me':l.from);const greeting=isMe?`亲爱的${escHtml(toName)}`:`亲爱的${escHtml(toName)}`;const opening=isMe?'展信安，见字如面。':'见字如晤，展信舒颜。';const signature=isMe?`你的妻子：${escHtml(signName)}`:`你的丈夫：${escHtml(signName)}`;h+=`<div class="letter-content-block"><div class="letter-greeting">${greeting}</div><div class="letter-body">${opening}<br>${escHtml(l.content)}</div><div class="letter-signature">${signature}</div><div class="letter-time">${formatTimestamp(l.ts)}</div></div>`});h+='</div>';if(waitingReply){h+=`<div class="letter-reply-btn" onclick="event.stopPropagation();openLetterWriteTo('${partnerId}')">回信</div>`}h+='</div>';});c.innerHTML=h;}
 function toggleLetterThread(threadId){document.getElementById('thread-'+threadId).classList.toggle('expanded')}
 
 // ========== 写信功能 ==========
@@ -1629,37 +1448,19 @@ function openLetterWriteTo(dreamId){letterWriteTo=dreamId;openLetterWritePage()}
 function showLetterRecipientSelect(){getMem().then(mem=>{const ids=Object.keys(mem.dreams);let h='<div class="cl-modal-title">选择写给谁</div>';ids.forEach(id=>{const nn=getDisplayName(mem,id);h+=`<div class="dream-option" onclick="selectLetterRecipient('${id}')"><span class="dot"></span>${escHtml(nn)}</div>`});document.getElementById('memModalPanel').innerHTML=h;document.getElementById('memModalOverlay').classList.add('show')});}
 async function selectLetterRecipient(id){closeMemModal();letterWriteTo=id;openLetterWritePage()}
 function openLetterWritePage(){hideAll();document.getElementById('letterWritePage').style.display='flex';renderLetterWritePage()}
-async function renderLetterWritePage(){const mem=await getMem();const dream=mem.dreams[letterWriteTo];const nn=getDisplayName(mem,letterWriteTo);const fn=getFormalName(mem,letterWriteTo);const myName=getFormalName(mem,'me');const now=new Date();const timeStr=formatTimestamp(now.getTime());const c=document.getElementById('letterWriteMainContent');
-  c.innerHTML=`<div class="letter-write-recipient">写给：${escHtml(nn)}</div><div class="letter-write-preview"><div class="lw-greeting">亲爱的${escHtml(fn)}</div><div class="lw-body">展信安，见字如面。</div><div id="lwBodyPreview" style="margin-top:10px;color:var(--aux-light);font-style:italic;">写下你想说的话...</div><div class="lw-signature">你的妻子：${escHtml(myName)}</div><div class="lw-time">${timeStr}</div></div><textarea class="letter-write-textarea" id="letterWriteTextarea" placeholder="写下你想说的话..." oninput="onLetterWriteInput()"></textarea><div class="letter-send-btn" id="letterSendBtn" onclick="sendLetter()">寄出信件</div>`;}
+async function renderLetterWritePage(){const mem=await getMem();const dream=mem.dreams[letterWriteTo];const nn=getDisplayName(mem,letterWriteTo);const fn=getFormalName(mem,letterWriteTo);const myName=getFormalName(mem,'me');const now=new Date();const timeStr=formatTimestamp(now.getTime());const c=document.getElementById('letterWriteMainContent');c.innerHTML=`<div class="letter-write-recipient">写给：${escHtml(nn)}</div><div class="letter-write-preview"><div class="lw-greeting">亲爱的${escHtml(fn)}</div><div class="lw-body">展信安，见字如面。</div><div id="lwBodyPreview" style="margin-top:10px;color:var(--aux-light);font-style:italic;">写下你想说的话...</div><div class="lw-signature">你的妻子：${escHtml(myName)}</div><div class="lw-time">${timeStr}</div></div><textarea class="letter-write-textarea" id="letterWriteTextarea" placeholder="写下你想说的话..." oninput="onLetterWriteInput()"></textarea><div class="letter-send-btn" id="letterSendBtn" onclick="sendLetter()">寄出信件</div>`;}
 function onLetterWriteInput(){const t=document.getElementById('letterWriteTextarea');const preview=document.getElementById('lwBodyPreview');if(t&&preview){preview.textContent=t.value||'写下你想说的话...';preview.style.color=t.value?'var(--ink-gray)':'var(--aux-light)';preview.style.fontStyle=t.value?'normal':'italic'}}
 function closeLetterWrite(){hideAll();if(letterMailboxType==='my'){document.getElementById('letterMailboxPage').style.display='flex';renderLetterMailbox()}else if(letterMailboxType==='dream'){document.getElementById('letterMailboxPage').style.display='flex';renderLetterMailbox()}else{document.getElementById('lettersPage').style.display='flex';renderLettersPage()}}
 async function sendLetter(){const t=document.getElementById('letterWriteTextarea');const content=t.value.trim();if(!content)return;const threadId='thread_'+Date.now().toString(36);const replyBy=Date.now()+rand(18000000,28800000);await addLetter(threadId,'me',letterWriteTo,content,Date.now(),replyBy);closeLetterWrite();}
 
-// ========== 信件回信（改为每秒轮询） ==========
+// ========== 信件回信（每秒轮询） ==========
 function checkLetterReplyTrigger(){getLetters().then(letters=>{const now=Date.now();for(const l of letters){if(l.from==='me'&&!l.replied&&l.replyBy&&l.replyBy<=now){generateLetterReply(l.threadId,l.to);}}})}
-async function generateLetterReply(threadId,dreamId){
-  const cards=await getMixedCards(dreamId,rand(8,15));const state=await getRandomState();const usePrefix=Math.random()<0.4;let content=concatCards(cards,usePrefix,state);
-  // emoji插入改为替换最后一个标点
-  const emojis=await getEmojis();if(emojis.length>0&&Math.random()<0.5){const rndEmoji=emojis[Math.floor(Math.random()*emojis.length)];
-    const puncRegex=/[，。！？；…、,]/g;let lastIdx=-1;let match;while((match=puncRegex.exec(content))!==null){lastIdx=match.index;}
-    if(lastIdx>=0){content=content.slice(0,lastIdx)+rndEmoji+content.slice(lastIdx+1);}else{content=content+rndEmoji;}}
-  await addLetter(threadId,dreamId,'me',content);const preview=content.length>20?content.substring(0,20)+'...':content;await addDesktopNotif('letters',dreamId,'',preview);
-  const letters=await getLetters();const firstLetter=letters.find(l=>l.threadId===threadId&&l.from==='me');if(firstLetter)await markLetterReplied(firstLetter.id);
-  if(document.getElementById('letterMailboxPage').style.display==='flex')await renderLetterMailbox();
-}
+async function generateLetterReply(threadId,dreamId){const cards=await getMixedCards(dreamId,rand(8,15));const state=await getRandomState();const usePrefix=Math.random()<0.4;let content=concatCards(cards,usePrefix,state);const emojis=await getEmojis();if(emojis.length>0&&Math.random()<0.5){const rndEmoji=emojis[Math.floor(Math.random()*emojis.length)];const puncRegex=/[，。！？；…、,]/g;let lastIdx=-1;let match;while((match=puncRegex.exec(content))!==null){lastIdx=match.index;}if(lastIdx>=0){content=content.slice(0,lastIdx)+rndEmoji+content.slice(lastIdx+1);}else{content=content+rndEmoji;}}await addLetter(threadId,dreamId,'me',content);const preview=content.length>20?content.substring(0,20)+'...':content;await addDesktopNotif('letters',dreamId,'',preview);const letters=await getLetters();const firstLetter=letters.find(l=>l.threadId===threadId&&l.from==='me');if(firstLetter)await markLetterReplied(firstLetter.id);if(document.getElementById('letterMailboxPage').style.display==='flex')await renderLetterMailbox();}
 
 // ========== 梦角主动写信 ==========
 let letterAutoTimeout=null;
 function scheduleAutoLetter(){if(letterAutoTimeout)clearTimeout(letterAutoTimeout);const delay=rand(259200000,432000000);letterAutoTimeout=setTimeout(generateAutoLetters,delay);}
-async function generateAutoLetters(){const mem=await getMem();const ids=Object.keys(mem.dreams);if(ids.length===0){scheduleAutoLetter();return}
-  const count=rand(1,2);const shuffled=[...ids].sort(()=>Math.random()-0.5);
-  for(let i=0;i<Math.min(count,shuffled.length);i++){const dreamId=shuffled[i];const cards=await getMixedCards(dreamId,rand(8,15));const state=await getRandomState();const usePrefix=Math.random()<0.4;let content=concatCards(cards,usePrefix,state);
-    const emojis=await getEmojis();if(emojis.length>0&&Math.random()<0.5){const rndEmoji=emojis[Math.floor(Math.random()*emojis.length)];
-      const puncRegex=/[，。！？；…、,]/g;let lastIdx=-1;let match;while((match=puncRegex.exec(content))!==null){lastIdx=match.index;}
-      if(lastIdx>=0){content=content.slice(0,lastIdx)+rndEmoji+content.slice(lastIdx+1);}else{content=content+rndEmoji;}}
-    const threadId='thread_'+Date.now().toString(36)+'_'+i;await addLetter(threadId,dreamId,'me',content);const preview=content.length>20?content.substring(0,20)+'...':content;await addDesktopNotif('letters',dreamId,'',preview);}scheduleAutoLetter();}
-
-// ========== 信件回信补救（已改为轮询，此函数保留用于初始化检查） ==========
+async function generateAutoLetters(){const mem=await getMem();const ids=Object.keys(mem.dreams);if(ids.length===0){scheduleAutoLetter();return}const count=rand(1,2);const shuffled=[...ids].sort(()=>Math.random()-0.5);for(let i=0;i<Math.min(count,shuffled.length);i++){const dreamId=shuffled[i];const cards=await getMixedCards(dreamId,rand(8,15));const state=await getRandomState();const usePrefix=Math.random()<0.4;let content=concatCards(cards,usePrefix,state);const emojis=await getEmojis();if(emojis.length>0&&Math.random()<0.5){const rndEmoji=emojis[Math.floor(Math.random()*emojis.length)];const puncRegex=/[，。！？；…、,]/g;let lastIdx=-1;let match;while((match=puncRegex.exec(content))!==null){lastIdx=match.index;}if(lastIdx>=0){content=content.slice(0,lastIdx)+rndEmoji+content.slice(lastIdx+1);}else{content=content+rndEmoji;}}const threadId='thread_'+Date.now().toString(36)+'_'+i;await addLetter(threadId,dreamId,'me',content);const preview=content.length>20?content.substring(0,20)+'...':content;await addDesktopNotif('letters',dreamId,'',preview);}scheduleAutoLetter();}
 async function checkPendingLetterReplies(){const letters=await getLetters();const now=Date.now();for(const l of letters){if(l.from==='me'&&!l.replied&&l.replyBy&&l.replyBy<=now){await generateLetterReply(l.threadId,l.to);}}}
   // ========== 每日公告 ==========
 function getTodayKey(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
@@ -1688,10 +1489,9 @@ function showDSDatePicker(){showDatePicker(dsRecDate,async(dk)=>{dsRecDate=dk;aw
 function showDSDreamFilter(){getMem().then(mem=>{const ids=Object.keys(mem.dreams);let h='<div class="cl-modal-title">选择梦角</div>';h+=`<div class="dream-option" onclick="dsRecFilter='all';closeMemModal();renderDSRecords()"><span class="dot"></span>全部</div>`;ids.forEach(id=>{const d=mem.dreams[id];const nn=d.nickname||d.name||id;h+=`<div class="dream-option" onclick="dsRecFilter='${id}';closeMemModal();renderDSRecords()"><span class="dot"></span>${escHtml(nn)}</div>`});document.getElementById('memModalPanel').innerHTML=h;document.getElementById('memModalOverlay').classList.add('show')});}
 async function renderDSRecords(){const mem=await getMem();const msgs=await getAllMessages();const dateMsgs=msgs.filter(m=>getDateKey(m.ts)===dsRecDate&&(dsRecFilter==='all'||(m.conv==='chat_'+dsRecFilter)||(m.conv==='group_chat'&&dsRecFilter==='all')));dateMsgs.sort((a,b)=>a.ts-b.ts);const selName=dsRecFilter==='all'?'全部':getDisplayName(mem,dsRecFilter);let h='';h+='<div class="ds-date-selector"><span class="ds-date-text" onclick="showDSDatePicker()">'+getDateStr(new Date(dsRecDate).getTime()||Date.now())+'</span></div>';h+='<div class="ds-filter-row"><span style="font-size:12px;color:var(--aux-gray);">梦角：</span><span class="ds-filter-btn" onclick="showDSDreamFilter()">'+escHtml(selName)+' ▼</span></div>';if(dateMsgs.length===0){h+='<div class="ds-chat-empty">当天没有聊天记录</div>';document.getElementById('dsMainContent').innerHTML=h;return}let currentDate='';dateMsgs.forEach(m=>{const dk=getDateKey(m.ts);if(dk!==currentDate){currentDate=dk;h+=`<div class="ds-chat-record-date">${getDateStr(m.ts)}</div>`}const isMe=m.sender==='me';const senderName=isMe?(mem.myName||'我'):getDisplayName(mem,m.sender);let content=m.content;content=content.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"');if(content.startsWith('[表情:'))content='[表情]';else if(content.startsWith('[图片:'))content='[图片]';else if(content.startsWith('[拍一拍]'))content='[拍一拍]';else if(content.startsWith('[戳一戳]'))content='[戳一戳]';else if(content.startsWith('<div class="msg-quote"'))content='[引用消息]';else if(content.includes('msg-choice-cards'))content='[抉择卡片]';else{content=content.replace(/<[^>]*>/g,'');if(content.length>30)content=content.substring(0,30)+'...';}const d=new Date(m.ts);const timeStr=d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');h+=`<div class="ds-chat-record-item"><span class="ds-record-content">${escHtml(senderName)}：${escHtml(content)}</span><span class="ds-record-time">${timeStr}</span></div>`;});document.getElementById('dsMainContent').innerHTML=h;}
 
-// ========== 纪念日页面（大卡片包裹） ==========
+// ========== 纪念日页面 ==========
 async function openAnniversaryPage(){hideAll();document.getElementById('anniversaryPage').style.display='flex';await renderAnnPage()}
 async function renderAnnPage(){const mem=await getMem();const anns=await getAnniversaries();const c=document.getElementById('annMainContent');if(anns.length===0){c.innerHTML='<div class="ann-empty">还没有纪念日<br>点击上方添加吧</div>';return}const grouped={};anns.forEach(a=>{const key=a.dreamId||'none';if(!grouped[key])grouped[key]=[];grouped[key].push(a)});const today=new Date();today.setHours(0,0,0,0);let h='';Object.keys(grouped).sort().forEach(key=>{const items=grouped[key];if(key==='none'){h+='<div class="ann-group-card">';items.forEach(a=>{const ad=new Date(a.date);ad.setHours(0,0,0,0);const thisYear=new Date(today.getFullYear(),ad.getMonth(),ad.getDate());if(thisYear<today)thisYear.setFullYear(thisYear.getFullYear()+1);const diffDays=Math.ceil((thisYear-today)/(1000*60*60*24));let countdownText;if(diffDays===0||diffDays===365||diffDays===366){countdownText='就是今天🎉'}else if(diffDays>0){countdownText='还有 '+diffDays+' 天'}else{countdownText='已过 '+Math.abs(diffDays)+' 天'}const cdClass=(diffDays===0||diffDays===365||diffDays===366)?' today':'';const dateStr=(ad.getMonth()+1)+'月'+ad.getDate()+'日';h+=`<div class="ann-card"><div class="ann-card-header"><div><span class="ann-card-name">${escHtml(a.name)}</span><span class="ann-card-date">  ${dateStr}</span></div><div class="ann-card-actions"><span onclick="editAnn('${a.id}')">✎</span><span onclick="delAnn('${a.id}')">✕</span></div></div><div class="ann-card-countdown${cdClass}">${countdownText}</div></div>`});h+='</div>';}else{const d=mem.dreams[key];const nn=d?(d.nickname||d.name||key):key;const av=d&&d.avatar?`<img src="${d.avatar}">`:nn.charAt(0);h+='<div class="ann-group-card">';h+=`<div class="ann-group-header"><div class="ann-dream-avatar">${av}</div><span class="ann-group-name">${escHtml(nn)}</span></div>`;items.forEach(a=>{const ad=new Date(a.date);ad.setHours(0,0,0,0);const thisYear=new Date(today.getFullYear(),ad.getMonth(),ad.getDate());if(thisYear<today)thisYear.setFullYear(thisYear.getFullYear()+1);const diffDays=Math.ceil((thisYear-today)/(1000*60*60*24));let countdownText;if(diffDays===0||diffDays===365||diffDays===366){countdownText='就是今天🎉'}else if(diffDays>0){countdownText='还有 '+diffDays+' 天'}else{countdownText='已过 '+Math.abs(diffDays)+' 天'}const cdClass=(diffDays===0||diffDays===365||diffDays===366)?' today':'';const dateStr=(ad.getMonth()+1)+'月'+ad.getDate()+'日';h+=`<div class="ann-card"><div class="ann-card-header"><div><span class="ann-card-name">${escHtml(a.name)}</span><span class="ann-card-date">  ${dateStr}</span></div><div class="ann-card-actions"><span onclick="editAnn('${a.id}')">✎</span><span onclick="delAnn('${a.id}')">✕</span></div></div><div class="ann-card-countdown${cdClass}">${countdownText}</div></div>`});h+='</div>';}});c.innerHTML=h;}
-
 function showAnnAdd(){getMem().then(mem=>{const ids=Object.keys(mem.dreams);let h='<div class="cl-modal-title">选择关联梦角（可选）</div>';h+='<div class="dream-option" onclick="showAnnForm(\'\')"><span class="dot"></span>不关联梦角</div>';ids.forEach(id=>{const d=mem.dreams[id];h+=`<div class="dream-option" onclick="showAnnForm('${id}')"><span class="dot"></span>${escHtml(d.nickname||d.name||id)}</div>`});document.getElementById('memModalPanel').innerHTML=h;document.getElementById('memModalOverlay').classList.add('show')});}
 function showAnnForm(dreamId){const mem=memCache;const label=dreamId&&mem.dreams[dreamId]?(mem.dreams[dreamId].nickname||mem.dreams[dreamId].name||dreamId):'不关联梦角';document.getElementById('memModalPanel').innerHTML=`<div class="cl-modal-title">添加纪念日</div><div style="text-align:center;font-size:12px;color:var(--aux-gray);margin-bottom:12px;">关联：${escHtml(label)}</div><label>纪念日名称：</label><input type="text" id="annAddName" placeholder="如：他的生日" style="width:100%;padding:10px;border:1px solid var(--border-subtle);border-radius:10px;background:var(--card-cream);color:var(--ink-gray);font-family:inherit;font-size:14px;outline:none;margin-bottom:12px;"><label>日期：</label><input type="date" id="annAddDate" style="width:100%;padding:10px;border:1px solid var(--border-subtle);border-radius:10px;background:var(--card-cream);color:var(--ink-gray);font-family:inherit;font-size:14px;outline:none;margin-bottom:12px;"><div class="cl-btn-row"><button class="cl-btn cl-btn-secondary" onclick="closeMemModal()">取消</button><button class="cl-btn cl-btn-primary" onclick="saveAnnAdd('${dreamId}')">保存</button></div>`;}
 async function saveAnnAdd(dreamId){const name=document.getElementById('annAddName').value.trim();const date=document.getElementById('annAddDate').value;if(!name||!date)return;await addAnniversary(dreamId||'none',name,date);closeMemModal();await renderAnnPage();}
@@ -1759,8 +1559,8 @@ async function removeDesktopBgImage(){const p=getPersonal();p.hasDesktopBg=false
 function getDailyWordsData(){const today=getTodayKey();const saved=localStorage.getItem('dailyWordsData');if(saved){const d=JSON.parse(saved);if(d.date===today)return d.text}const text=DAILY_WORDS[Math.floor(Math.random()*DAILY_WORDS.length)];localStorage.setItem('dailyWordsData',JSON.stringify({date:today,text}));return text;}
 function updateDesktopTimeCard(){const card=document.getElementById('desktopTimeCard');if(!card)return;const now=new Date();const timeStr=getTimeDisplay();const dateStr=now.getFullYear()+'年'+(now.getMonth()+1)+'月'+now.getDate()+'日';const words=getDailyWordsData();card.innerHTML=`<div class="desktop-time-big">${timeStr}</div><div class="desktop-time-date">${dateStr}</div><div class="desktop-time-quote">"${escHtml(words)}"</div>`;}
 
-// ========== 群讯拍一拍（修复为追加模式） ==========
-let groupPatTarget = null;
+// ========== 群讯拍一拍（追加模式） ==========
+let groupPatTarget=null;
 function openGroupPatSelect(){const mem=memCache;if(!mem)return;const ids=Object.keys(mem.dreams);if(ids.length===0){showToast('请先创建梦角');return}let h='<div class="pat-pat-title">✰ 选择拍谁</div><div class="pat-pat-grid">';ids.forEach(id=>{const d=mem.dreams[id];const n=d.nickname||d.name||id;h+=`<div class="pat-pat-item" onclick="selectGroupPatTarget('${id}')">${escHtml(n)}</div>`;});h+='</div>';document.getElementById('patSelectPanel').innerHTML=h;document.getElementById('patSelectOverlay').classList.add('show');}
 async function selectGroupPatTarget(id){groupPatTarget=id;document.getElementById('patSelectOverlay').classList.remove('show');const data=await getPat();const items=data.pat||[];let h='<div class="pat-pat-title">✰ 拍一拍</div><div class="pat-pat-grid">';if(items.length===0){h+='<div class="pat-pat-empty">还没有拍一拍文案<br>去拍一拍库添加吧</div>';}else{items.forEach(t=>{h+=`<div class="pat-pat-item" onclick="sendGroupPat('${escAttr(t)}')">${escHtml(t)}</div>`;});}h+='</div>';document.getElementById('patSelectPanel').innerHTML=h;document.getElementById('patSelectOverlay').classList.add('show');}
 async function sendGroupPat(text){document.getElementById('patSelectOverlay').classList.remove('show');if(!groupPatTarget)return;var targetId=groupPatTarget;groupPatTarget=null;var mem=await getMem();var d=mem.dreams[targetId];if(!d)return;var targetName=d.nickname||d.name||targetId;const msg=await addMsg('group_chat','me','[拍一拍] @'+targetName+' '+text);appendGroupMsg(msg);groupAtTarget=targetId;await triggerGroupReply();}
@@ -1768,7 +1568,7 @@ function openPatSelect(){const isPrivate=document.getElementById('privateChatPag
 function closePatSelect(e){if(e&&e.target!==document.getElementById('patSelectOverlay'))return;document.getElementById('patSelectOverlay').classList.remove('show');groupPatTarget=null}
 async function sendPat(text){document.getElementById('patSelectOverlay').classList.remove('show');const isPrivate=document.getElementById('privateChatPage').style.display==='flex';if(isPrivate){const msg=await addMsg(getPrivateConvId(),'me','[拍一拍]'+text);appendPrivateMsg(msg);await triggerPrivateReply();}}
 
-// ========== 引用功能（修复群讯引用预览） ==========
+// ========== 引用功能 ==========
 function getQuoteContent(msg){let c=msg.content;c=c.replace(/\[表情:(.*?)\]/g,(m,src)=>`<img src="${src}" class="sticker-img" style="width:20px;height:20px;display:inline-block;vertical-align:middle;">`);c=c.replace(/\[图片:(.*?)\]/g,(m,src)=>`<img src="${src}" class="photo-img" style="width:20px;height:20px;display:inline-block;vertical-align:middle;">`);return c;}
 function renderQuoteHTML(quoteId,quoteContent){if(!quoteId)return'';return`<div class="msg-quote" onclick="scrollToMsg('${quoteId}')" data-quote-id="${quoteId}">${quoteContent}</div>`}
 async function scrollToMsg(msgId){const msg=await getMsgById(msgId);if(!msg){showToast('原消息已清理，无法定位');return}const c=document.getElementById('privateChatMessages')||document.getElementById('groupChatMessages');if(!c)return;const rows=c.querySelectorAll('.msg-row');for(const row of rows){if(row.dataset&&row.dataset.msgId===msgId){row.scrollIntoView({behavior:'smooth',block:'center'});row.style.background='rgba(232,180,184,0.2)';setTimeout(()=>{row.style.background=''},1500);return}}showToast('原消息已清理，无法定位')}
@@ -1777,46 +1577,62 @@ let longPressTimer=null;
 function initLongPress(el,msgId,msgContent){el.addEventListener('touchstart',e=>{longPressTimer=setTimeout(()=>{quoteTargetId=msgId;const isPrivate=document.getElementById('privateChatPage').style.display==='flex';const previewEl=isPrivate?document.getElementById('privateQuotePreview'):document.getElementById('groupQuotePreview');if(previewEl){previewEl.querySelector('.quote-preview-text').innerHTML=getQuoteContent({content:msgContent});previewEl.style.display='flex'}},500)});el.addEventListener('touchend',()=>{clearTimeout(longPressTimer)});el.addEventListener('touchmove',()=>{clearTimeout(longPressTimer)});}
 function clearQuote(type){quoteTargetId=null;const previewEl=document.getElementById(type==='private'?'privateQuotePreview':'groupQuotePreview');if(previewEl)previewEl.style.display='none'}
 
-// ========== 私讯（预加载优化） ==========
-async function openPrivateChat(){const mem=await getMem();if(!mem.currentDreamId||!mem.dreams[mem.currentDreamId]){const ids=Object.keys(mem.dreams);if(ids.length===0){showToast('请先在记忆库中创建梦角');return}mem.currentDreamId=ids[0];await saveMem(mem)}currentDreamId=mem.currentDreamId;hideAll();document.getElementById('privateChatPage').style.display='flex';await updatePrivateChatUI();
-  const convId=getPrivateConvId();const cached=prvMsgCache[convId];const c=document.getElementById('privateChatMessages');c.innerHTML='';
-  if(cached&&cached.length>0){cached.forEach(m=>appendPrivateMsg(m));}else{await loadPrivateMessages();}
-  requestAnimationFrame(()=>{requestAnimationFrame(()=>{c.scrollTop=c.scrollHeight})});
-  const mentionText=await checkNoteMention(currentDreamId);if(mentionText){setTimeout(async()=>{const rm=await addMsg(convId,currentDreamId,mentionText);appendPrivateMsg(rm);c.scrollTop=c.scrollHeight},rand(1000,3000));}
-  setTimeout(()=>{const inp=document.getElementById('privateMessageInput');if(inp)inp.focus()},100);}
+// ========== 私讯（一次性渲染，回复逻辑优化） ==========
+async function openPrivateChat(){const mem=await getMem();if(!mem.currentDreamId||!mem.dreams[mem.currentDreamId]){const ids=Object.keys(mem.dreams);if(ids.length===0){showToast('请先在记忆库中创建梦角');return}mem.currentDreamId=ids[0];await saveMem(mem)}currentDreamId=mem.currentDreamId;hideAll();document.getElementById('privateChatPage').style.display='flex';await updatePrivateChatUI();const c=document.getElementById('privateChatMessages');c.innerHTML='';const cached=prvMsgCache[getPrivateConvId()];if(cached&&cached.length>0){let h='';cached.forEach(m=>{h+=renderMsgRowHTML(m);});c.innerHTML=h;}else{await loadPrivateMessages();}requestAnimationFrame(()=>{requestAnimationFrame(()=>{c.scrollTop=c.scrollHeight})});const mentionText=await checkNoteMention(currentDreamId);if(mentionText){setTimeout(async()=>{const rm=await addMsg(getPrivateConvId(),currentDreamId,mentionText);c.innerHTML+=renderMsgRowHTML(rm);c.scrollTop=c.scrollHeight},rand(1000,3000));}setTimeout(()=>{const inp=document.getElementById('privateMessageInput');if(inp)inp.focus()},100);}
 function getPrivateConvId(){return'chat_'+(currentDreamId||'default')}
 async function updatePrivateChatUI(){const mem=await getMem();const d=mem.dreams[currentDreamId];if(!d)return;const hn=d.nickname||d.name||'梦角',mn=d.callMe||'我',mdn=mem.myName||'我';document.getElementById('chatTitle').textContent=hn+'🩷'+mn;document.getElementById('privateMessageInput').placeholder='对'+hn+'说点什么...';const ha=document.getElementById('chatHisAvatar');if(d.avatar)ha.innerHTML=`<img src="${d.avatar}">`;else ha.innerHTML=hn.charAt(0);const ma=document.getElementById('chatMyAvatar');if(mem.myAvatar)ma.innerHTML=`<img src="${mem.myAvatar}">`;else ma.innerHTML=mdn.charAt(0);const pg=document.getElementById('privateChatPage');if(d.privateBg)pg.style.backgroundImage=`url(${d.privateBg})`;else pg.style.backgroundImage=''}
-async function loadPrivateMessages(){const c=document.getElementById('privateChatMessages');c.innerHTML='';try{const convId=getPrivateConvId();const msgs=await getMsgs(convId);if(msgs&&msgs.length>0){msgs.forEach(m=>appendPrivateMsg(m))}}catch(e){console.error(e);c.innerHTML='<div style="text-align:center;color:var(--aux-light);padding:40px;">加载失败</div>'}requestAnimationFrame(()=>{requestAnimationFrame(()=>{c.scrollTop=c.scrollHeight})})}
-function appendPrivateMsg(msg){const c=document.getElementById('privateChatMessages');if(msg.sender==='system'){appendPrivateSystemMsg(msg.content,msg.ts);return}const isMine=msg.sender==='me';const row=document.createElement('div');row.className='msg-row'+(isMine?' mine':'');row.dataset.msgId=msg.id;const mem=memCache;const d=mem?mem.dreams[currentDreamId]:null;const hn=d?(d.nickname||d.name||'梦角'):'他';let ch=msg.content;let isPatMsg=false;if(ch.startsWith('[拍一拍]')){ch=ch.replace('[拍一拍]','');isPatMsg=true}else if(ch.startsWith('[戳一戳]')){ch=ch.replace('[戳一戳]','');isPatMsg=true}if(!isPatMsg){if(ch.startsWith('<div class="msg-quote"')||ch.includes('msg-choice-cards')){ch=ch.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"')}else{ch=renderMsgContent(ch)}}const ts=formatTimestamp(msg.ts);if(isMine){const ma=mem&&mem.myAvatar?`<img src="${mem.myAvatar}">`:(mem&&mem.myName||'我').charAt(0);const bubbleClass=isPatMsg?' system-pat':'';row.innerHTML=`<div class="msg-avatar">${ma}</div><div class="msg-content-wrapper"><div class="msg-bubble mine${bubbleClass}">${ch}<span class="deco-star">☆</span></div><div class="msg-time"><span class="msg-read">✓✓</span>${ts}</div></div>`}else{const ha=d&&d.avatar?`<img src="${d.avatar}">`:hn.charAt(0);const bubbleClass=isPatMsg?' system-poke':'';row.innerHTML=`<div class="msg-avatar">${ha}</div><div class="msg-content-wrapper"><div class="msg-bubble other${bubbleClass}">${ch}<span class="deco-heart">♡</span></div><div class="msg-time">${ts}</div></div>`}c.appendChild(row);initLongPress(row.querySelector('.msg-bubble'),msg.id,msg.content)}
+async function loadPrivateMessages(){const c=document.getElementById('privateChatMessages');c.innerHTML='';try{const convId=getPrivateConvId();const msgs=await getMsgs(convId);if(msgs&&msgs.length>0){let h='';msgs.forEach(m=>{h+=renderMsgRowHTML(m);});c.innerHTML=h;}}catch(e){console.error(e);c.innerHTML='<div style="text-align:center;color:var(--aux-light);padding:40px;">加载失败</div>'}requestAnimationFrame(()=>{requestAnimationFrame(()=>{c.scrollTop=c.scrollHeight})})}
+function appendPrivateMsg(msg){const c=document.getElementById('privateChatMessages');c.innerHTML+=renderMsgRowHTML(msg);}
 function getCallModeClassByContent(content){if(!content)return'call-video';if(content.includes('陪伴'))return'call-accompany';if(content.includes('陪睡'))return'call-sleep';return'call-video'}
-function appendPrivateSystemMsg(content,ts){const c=document.getElementById('privateChatMessages');const row=document.createElement('div');row.className='msg-row system';row.innerHTML=`<div class="msg-content-wrapper"><div class="msg-bubble system-call ${getCallModeClassByContent(content)}">${content}</div><div class="msg-time">${formatTimestamp(ts||Date.now())}</div></div>`;c.appendChild(row)}
+function appendPrivateSystemMsg(content,ts){const c=document.getElementById('privateChatMessages');c.innerHTML+=`<div class="msg-row system"><div class="msg-content-wrapper"><div class="msg-bubble system-call ${getCallModeClassByContent(content)}">${escHtml(content)}</div><div class="msg-time">${formatTimestamp(ts||Date.now())}</div></div></div>`;}
 async function sendPrivateMessage(){const inp=document.getElementById('privateMessageInput');let ct=inp.value.trim();if(!ct)return;let quoteId=quoteTargetId;let fullContent;if(quoteId){const qMsg=await getMsgById(quoteId);if(qMsg){fullContent=renderQuoteHTML(quoteId,getQuoteContent(qMsg))+ct}else{fullContent=ct}}else{fullContent=ct}try{const msg=await addMsg(getPrivateConvId(),'me',fullContent);appendPrivateMsg(msg);inp.value='';clearQuote('private');onPrivateInputChange();await triggerPrivateReply()}catch(e){console.error(e);showToast('发送失败')}}
-async function triggerPrivateReply(){const c=document.getElementById('privateChatMessages');c.scrollTop=c.scrollHeight;const myMsgs=c.querySelectorAll('.msg-row.mine .msg-time');myMsgs.forEach(el=>{if(!el.querySelector('.msg-read')){el.innerHTML='<span class="msg-read">✓✓</span>'+el.textContent}});const st=getSettings();const wt=rand(st.waitMin,st.waitMax)*1000;setTimeout(()=>{document.getElementById('privateTypingIndicator').style.display='block';c.scrollTop=c.scrollHeight},Math.min(1500,wt*0.3));setTimeout(async()=>{document.getElementById('privateTypingIndicator').style.display='none';const reps=await getRandomReply(currentDreamId,st.replyMin,st.concat);for(let i=0;i<reps.length;i++){const rm=await addMsg(getPrivateConvId(),currentDreamId,reps[i]);rm.read=true;appendPrivateMsg(rm);const preview=rm.content.length>20?rm.content.substring(0,20)+'...':rm.content;await addDesktopNotif('private',currentDreamId,'',preview);c.scrollTop=c.scrollHeight;if(i<reps.length-1)await slp(rand(300,800))}await triggerPokeReply(false)},wt)}
+async function triggerPrivateReply(){const c=document.getElementById('privateChatMessages');c.scrollTop=c.scrollHeight;const st=getSettings();const wt=rand(st.waitMin,st.waitMax)*1000;
+  // 偶尔已读不回 15%
+  if(Math.random()<0.15){setTimeout(()=>{document.getElementById('privateTypingIndicator').style.display='block';c.scrollTop=c.scrollHeight},Math.min(1500,wt*0.3));setTimeout(()=>{document.getElementById('privateTypingIndicator').style.display='none'},wt+1500);return;}
+  setTimeout(()=>{document.getElementById('privateTypingIndicator').style.display='block';c.scrollTop=c.scrollHeight},Math.min(1500,wt*0.3));
+  setTimeout(async()=>{document.getElementById('privateTypingIndicator').style.display='none';
+    const reps=await getRandomReply(currentDreamId,st.replyMin,st.concat);
+    for(let i=0;i<reps.length;i++){const rm=await addMsg(getPrivateConvId(),currentDreamId,reps[i]);rm.read=true;appendPrivateMsg(rm);const preview=rm.content.length>20?rm.content.substring(0,20)+'...':rm.content;await addDesktopNotif('private',currentDreamId,'',preview);c.scrollTop=c.scrollHeight;if(i<reps.length-1)await slp(rand(300,800));}await triggerPokeReply(false);},wt);}
 function onPrivateInputChange(){const inp=document.getElementById('privateMessageInput');const btn=document.getElementById('privateSendBtn');if(inp&&btn)btn.classList.toggle('visible',!!inp.value.trim())}
 
-// ========== 群讯（预加载优化 + 通知） ==========
-let groupMsgCache=null;
-let groupAtTarget=null;
-async function openGroupChat(){const mem=await getMem();if(Object.keys(mem.dreams).length===0){showToast('请先在记忆库中创建梦角');return}hideAll();document.getElementById('groupChatPage').style.display='flex';await updateGroupChatUI();const msgs=await getMsgs('group_chat');groupMsgCache=msgs;const c=document.getElementById('groupChatMessages');c.innerHTML='';if(msgs&&msgs.length>0){msgs.forEach(m=>appendGroupMsg(m));}requestAnimationFrame(()=>{requestAnimationFrame(()=>{c.scrollTop=c.scrollHeight})});}
+// ========== 群讯（预加载+错开回复+通知） ==========
+let groupMsgCache=null;let groupAtTarget=null;
+async function openGroupChat(){const mem=await getMem();if(Object.keys(mem.dreams).length===0){showToast('请先在记忆库中创建梦角');return}hideAll();document.getElementById('groupChatPage').style.display='flex';await updateGroupChatUI();const msgs=await getMsgs('group_chat');groupMsgCache=msgs;const c=document.getElementById('groupChatMessages');c.innerHTML='';if(msgs&&msgs.length>0){let h='';msgs.forEach(m=>{h+=renderMsgRowHTML(m);});c.innerHTML=h;}requestAnimationFrame(()=>{requestAnimationFrame(()=>{c.scrollTop=c.scrollHeight})});}
 async function updateGroupChatUI(){const mem=await getMem();const ids=Object.keys(mem.dreams);let h='';ids.forEach(id=>{const d=mem.dreams[id];const a=d.avatar?`<img src="${d.avatar}">`:(d.nickname||'?').charAt(0);h+=`<div class="ga-item" onclick="showGroupDreamDailyNotice('${id}')">${a}</div>`});document.getElementById('groupAvatarList').innerHTML=h;const pg=document.getElementById('groupChatPage');if(mem.groupBg)pg.style.backgroundImage=`url(${mem.groupBg})`;else pg.style.backgroundImage=''}
 async function toggleGroupAt(){const mem=await getMem();const ids=Object.keys(mem.dreams);if(ids.length===0){showToast('请先创建梦角');return}let h='<div style="text-align:center;font-size:15px;letter-spacing:2px;margin-bottom:16px;color:var(--ink-gray);">选择艾特对象</div>';h+='<div class="dream-option" onclick="selectGroupAt(\'__all__\');closeMemModal()"><span class="dot"></span>所有人</div>';ids.forEach(id=>{const d=mem.dreams[id];h+=`<div class="dream-option" onclick="selectGroupAt('${id}');closeMemModal()"><span class="dot"></span>${escHtml(d.nickname||d.name||id)}</div>`});document.getElementById('memModalPanel').innerHTML=h;document.getElementById('memModalOverlay').classList.add('show')}
 async function selectGroupAt(id){groupAtTarget=id;const mem=await getMem();const inp=document.getElementById('groupMessageInput');if(id==='__all__'){inp.value='@所有人 ';inp.focus();onGroupInputChange()}else if(id&&mem.dreams[id]){const atName=mem.dreams[id].nickname||mem.dreams[id].name||id;inp.value='@'+atName+' ';inp.focus();onGroupInputChange()}else{inp.value='';inp.placeholder='来聊聊天吧...'}closeMemModal()}
-async function loadGroupMessages(){const c=document.getElementById('groupChatMessages');c.innerHTML='';try{const msgs=groupMsgCache||await getMsgs('group_chat');if(msgs&&msgs.length>0){msgs.forEach(m=>appendGroupMsg(m))}}catch(e){console.error(e);c.innerHTML='<div style="text-align:center;color:var(--aux-light);padding:40px;">加载失败</div>'}requestAnimationFrame(()=>{requestAnimationFrame(()=>{c.scrollTop=c.scrollHeight})})}
-function appendGroupMsg(msg){const c=document.getElementById('groupChatMessages');const isMine=msg.sender==='me';const row=document.createElement('div');row.className='msg-row'+(isMine?' mine':'');row.dataset.msgId=msg.id;const mem=memCache;let ch=msg.content;let isPatMsg=false;if(ch.startsWith('[拍一拍]')){ch=ch.replace('[拍一拍]','');isPatMsg=true}else if(ch.startsWith('[戳一戳]')){ch=ch.replace('[戳一戳]','');isPatMsg=true}if(!isPatMsg){if(ch.startsWith('<div class="msg-quote"')||ch.includes('msg-choice-cards')){ch=ch.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"')}else{ch=renderMsgContent(ch)}}const ts=formatTimestamp(msg.ts);if(isMine){const ma=mem&&mem.myAvatar?`<img src="${mem.myAvatar}">`:(mem&&mem.myName||'我').charAt(0);const bubbleClass=isPatMsg?' system-pat':'';row.innerHTML=`<div class="msg-avatar">${ma}</div><div class="msg-content-wrapper"><div class="msg-bubble mine${bubbleClass}">${ch}<span class="deco-star">☆</span></div><div class="msg-time">${ts}</div></div>`}else{const d=mem?mem.dreams[msg.sender]:null;const hn=d?(d.nickname||d.name||msg.sender):msg.sender;const ha=d&&d.avatar?`<img src="${d.avatar}">`:hn.charAt(0);const bubbleClass=isPatMsg?' system-poke':'';row.innerHTML=`<div class="msg-avatar">${ha}</div><div class="msg-content-wrapper"><div class="msg-sender-name">${escHtml(hn)}</div><div class="msg-bubble other${bubbleClass}">${ch}<span class="deco-heart">♡</span></div><div class="msg-time">${ts}</div></div>`}c.appendChild(row);initLongPress(row.querySelector('.msg-bubble'),msg.id,msg.content)}
-function appendGroupSystemMsg(content,callClass){const c=document.getElementById('groupChatMessages');const row=document.createElement('div');row.className='msg-row system';row.innerHTML=`<div class="msg-content-wrapper"><div class="msg-bubble system-call ${callClass}">${content}</div></div>`;c.appendChild(row)}
+async function loadGroupMessages(){const c=document.getElementById('groupChatMessages');c.innerHTML='';try{const msgs=groupMsgCache||await getMsgs('group_chat');if(msgs&&msgs.length>0){let h='';msgs.forEach(m=>{h+=renderMsgRowHTML(m);});c.innerHTML=h;}}catch(e){console.error(e);c.innerHTML='<div style="text-align:center;color:var(--aux-light);padding:40px;">加载失败</div>'}requestAnimationFrame(()=>{requestAnimationFrame(()=>{c.scrollTop=c.scrollHeight})})}
+function appendGroupMsg(msg){const c=document.getElementById('groupChatMessages');c.innerHTML+=renderMsgRowHTML(msg);}
+function appendGroupSystemMsg(content,callClass){const c=document.getElementById('groupChatMessages');c.innerHTML+=`<div class="msg-row system"><div class="msg-content-wrapper"><div class="msg-bubble system-call ${callClass}">${escHtml(content)}</div></div></div>`;}
 async function sendGroupMessage(){const inp=document.getElementById('groupMessageInput');let ct=inp.value.trim();if(!ct)return;let quoteId=quoteTargetId;let fullContent;if(quoteId){const qMsg=await getMsgById(quoteId);if(qMsg){fullContent=renderQuoteHTML(quoteId,getQuoteContent(qMsg))+ct}else{fullContent=ct}}else{fullContent=ct}try{const msg=await addMsg('group_chat','me',fullContent);appendGroupMsg(msg);inp.value='';inp.placeholder='来聊聊天吧...';clearQuote('group');onGroupInputChange();await triggerGroupReply()}catch(e){console.error(e);showToast('发送失败')}}
-async function triggerGroupReply(){const c=document.getElementById('groupChatMessages');c.scrollTop=c.scrollHeight;const st=getSettings();const wt=rand(st.waitMin,st.waitMax)*1000;const mem=await getMem();const ids=Object.keys(mem.dreams);if(ids.length===0)return;let replierIds=[];if(groupAtTarget==='__all__'){replierIds=[...ids]}else if(groupAtTarget&&mem.dreams[groupAtTarget]){replierIds=[groupAtTarget]}else{const numRepliers=Math.min(rand(1,Math.min(5,ids.length)),ids.length);const shuffled=[...ids].sort(()=>Math.random()-0.5);replierIds=shuffled.slice(0,numRepliers)}groupAtTarget=null;const replierNames=replierIds.map(rid=>{const r=mem.dreams[rid];return r?(r.nickname||r.name||rid):rid});const typingText=replierNames.length===1?replierNames[0]+' 正在输入中...':replierNames.slice(0,2).join('、')+(replierNames.length>2?'等'+replierNames.length+'人':'')+' 正在输入中...';const typingEl=document.getElementById('groupTypingIndicator');setTimeout(()=>{typingEl.textContent=typingText;typingEl.style.display='block';c.scrollTop=c.scrollHeight},Math.min(1500,wt*0.3));setTimeout(async()=>{typingEl.style.display='none';for(const replierId of replierIds){if(!mem.dreams[replierId])continue;const reps=await getRandomReply(replierId,st.replyMin,st.concat);for(let i=0;i<reps.length;i++){const rm=await addMsg('group_chat',replierId,reps[i]);rm.read=true;appendGroupMsg(rm);const preview=rm.content.length>20?rm.content.substring(0,20)+'...':rm.content;await addDesktopNotif('group','','',preview);c.scrollTop=c.scrollHeight;if(i<reps.length-1)await slp(rand(300,800))}await slp(rand(500,1500))}await triggerPokeReply(true)},wt)}
+async function triggerGroupReply(){const c=document.getElementById('groupChatMessages');c.scrollTop=c.scrollHeight;const st=getSettings();const wt=rand(st.waitMin,st.waitMax)*1000;const mem=await getMem();const ids=Object.keys(mem.dreams);if(ids.length===0)return;
+  // 偶尔已读不回 15%
+  if(Math.random()<0.15){setTimeout(()=>{const typingEl=document.getElementById('groupTypingIndicator');typingEl.textContent='正在输入中...';typingEl.style.display='block';c.scrollTop=c.scrollHeight},Math.min(1500,wt*0.3));setTimeout(()=>{document.getElementById('groupTypingIndicator').style.display='none'},wt+1500);return;}
+  let replierIds=[];if(groupAtTarget==='__all__'){replierIds=[...ids]}else if(groupAtTarget&&mem.dreams[groupAtTarget]){replierIds=[groupAtTarget]}else{const numRepliers=Math.min(rand(1,Math.min(5,ids.length)),ids.length);const shuffled=[...ids].sort(()=>Math.random()-0.5);replierIds=shuffled.slice(0,numRepliers)}groupAtTarget=null;
+  const replierNames=replierIds.map(rid=>{const r=mem.dreams[rid];return r?(r.nickname||r.name||rid):rid});const typingText=replierNames.length===1?replierNames[0]+' 正在输入中...':replierNames.slice(0,2).join('、')+(replierNames.length>2?'等'+replierNames.length+'人':'')+' 正在输入中...';const typingEl=document.getElementById('groupTypingIndicator');
+  setTimeout(()=>{typingEl.textContent=typingText;typingEl.style.display='block';c.scrollTop=c.scrollHeight},Math.min(1500,wt*0.3));
+  setTimeout(async()=>{typingEl.style.display='none';
+    for(let ri=0;ri<replierIds.length;ri++){const replierId=replierIds[ri];if(!mem.dreams[replierId])continue;
+      // 群讯每梦角只回1条
+      const reps=await getRandomReply(replierId,1,st.concat);
+      for(let i=0;i<reps.length;i++){const rm=await addMsg('group_chat',replierId,reps[i]);rm.read=true;appendGroupMsg(rm);const preview=rm.content.length>20?rm.content.substring(0,20)+'...':rm.content;await addDesktopNotif('group','','',preview);c.scrollTop=c.scrollHeight;}
+      // 群讯回复错开5~15秒
+      if(ri<replierIds.length-1)await slp(rand(5000,15000));}
+    await triggerPokeReply(true);},wt);}
 function onGroupInputChange(){const inp=document.getElementById('groupMessageInput');const btn=document.getElementById('groupSendBtn');if(inp&&btn)btn.classList.toggle('visible',!!inp.value.trim())}
 
 // ========== 戳一戳回复 ==========
 async function triggerPokeReply(isGroup){if(Math.random()>0.3)return;const data=await getPat();const items=data.poked||[];if(items.length===0)return;const mem=await getMem();const ids=Object.keys(mem.dreams);if(ids.length===0)return;if(isGroup){const shuffled=[...ids].sort(()=>Math.random()-0.5);const selected=shuffled[0];const text=items[Math.floor(Math.random()*items.length)];await addMsg('group_chat',selected,'[戳一戳]'+text);if(document.getElementById('groupChatPage').style.display==='flex')await loadGroupMessages()}else{const text=items[Math.floor(Math.random()*items.length)];await addMsg(getPrivateConvId(),currentDreamId,'[戳一戳]'+text);if(document.getElementById('privateChatPage').style.display==='flex'){const rm={id:'',conv:getPrivateConvId(),sender:currentDreamId,content:'[戳一戳]'+text,ts:Date.now()};appendPrivateMsg(rm)}}}
-  // ========== 回复 ==========
+  // ========== 回复（回复数量1条为主） ==========
 async function getRandomReply(dreamId,count,concat){
   const privData=await getPrivateCards();const privateCards=privData[dreamId]||[];
   const cl=await getCL();const allCards=[...privateCards];
   for(const[,cards]of Object.entries(cl.groups||{}))cards.forEach(c=>allCards.push(c));
   if(allCards.length===0)return['（字卡库为空）'];
-  const st=getSettings();const replyCount=rand(st.replyMin,st.replyMax);const results=[];
+  const st=getSettings();
+  // 默认1条，15%概率2条
+  const replyCount=Math.random()<0.15?2:1;
+  const results=[];
   for(let r=0;r<replyCount;r++){
     const cardCount=concat?rand(2,3):1;const pool=[...allCards];const sel=[];
     for(let i=0;i<Math.min(cardCount,pool.length);i++){sel.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);}
@@ -1832,8 +1648,8 @@ async function getRandomReply(dreamId,count,concat){
 
 // ========== 设置 ==========
 const SK='yiyu_chat_settings';
-function getSettings(){const d={waitMin:3,waitMax:15,replyMin:1,replyMax:3,concat:false,autoChat:false};const raw=localStorage.getItem(SK);if(raw)try{return{...d,...JSON.parse(raw)}}catch(e){}return d}
-function saveSettings(){const s={waitMin:parseInt(document.getElementById('setWaitMin').value)||3,waitMax:parseInt(document.getElementById('setWaitMax').value)||15,replyMin:parseInt(document.getElementById('setReplyMin').value)||1,replyMax:parseInt(document.getElementById('setReplyMax').value)||3,concat:getSettings().concat,autoChat:getSettings().autoChat};s.waitMin=Math.max(1,Math.min(120,s.waitMin));s.waitMax=Math.max(1,Math.min(120,s.waitMax));s.replyMin=Math.max(1,Math.min(10,s.replyMin));s.replyMax=Math.max(1,Math.min(10,s.replyMax));if(s.waitMin>s.waitMax)s.waitMax=s.waitMin;if(s.replyMin>s.replyMax)s.replyMax=s.replyMin;localStorage.setItem(SK,JSON.stringify(s))}
+function getSettings(){const d={waitMin:3,waitMax:15,replyMin:1,replyMax:1,concat:false,autoChat:false};const raw=localStorage.getItem(SK);if(raw)try{return{...d,...JSON.parse(raw)}}catch(e){}return d}
+function saveSettings(){const s={waitMin:parseInt(document.getElementById('setWaitMin').value)||3,waitMax:parseInt(document.getElementById('setWaitMax').value)||15,replyMin:parseInt(document.getElementById('setReplyMin').value)||1,replyMax:parseInt(document.getElementById('setReplyMax').value)||1,concat:getSettings().concat,autoChat:getSettings().autoChat};s.waitMin=Math.max(1,Math.min(120,s.waitMin));s.waitMax=Math.max(1,Math.min(120,s.waitMax));s.replyMin=Math.max(1,Math.min(10,s.replyMin));s.replyMax=Math.max(1,Math.min(10,s.replyMax));if(s.waitMin>s.waitMax)s.waitMax=s.waitMin;if(s.replyMin>s.replyMax)s.replyMax=s.replyMin;localStorage.setItem(SK,JSON.stringify(s))}
 function setSetting(k,v){const s=getSettings();s[k]=v;localStorage.setItem(SK,JSON.stringify(s));updateSettingsUI();if(k==='autoChat')scheduleAutoChat()}
 function loadSettingsUI(){const s=getSettings();document.getElementById('setWaitMin').value=s.waitMin;document.getElementById('setWaitMax').value=s.waitMax;document.getElementById('setReplyMin').value=s.replyMin;document.getElementById('setReplyMax').value=s.replyMax;updateSettingsUI()}
 function updateSettingsUI(){const s=getSettings();const tc=document.getElementById('toggleConcat'),ta=document.getElementById('toggleAutoChat');if(tc){tc.children[0].classList.toggle('active',!s.concat);tc.children[1].classList.toggle('active',s.concat)}if(ta){ta.children[0].classList.toggle('active',!s.autoChat);ta.children[1].classList.toggle('active',s.autoChat)}}
@@ -1844,9 +1660,9 @@ function setMode(m){localStorage.setItem('mode',m);applyMode(m)}
 function applyMode(m){document.documentElement.setAttribute('data-mode',m);const de=document.getElementById('modeDay'),ne=document.getElementById('modeNight');if(de&&ne){de.classList.toggle('active',m==='day');ne.classList.toggle('active',m==='night')}}
 function loadMode(){applyMode(localStorage.getItem('mode')||'day')}
 
-// ========== 他主动聊天（带通知） ==========
+// ========== 他主动聊天 ==========
 let autoChatTimeout=null;
-function scheduleAutoChat(){if(autoChatTimeout){clearTimeout(autoChatTimeout)}const st=getSettings();if(!st.autoChat)return;const delay=rand(1800000,3600000);autoChatTimeout=setTimeout(async()=>{if(Math.random()>0.3){scheduleAutoChat();return}const mem=await getMem();const ids=Object.keys(mem.dreams);if(ids.length===0){scheduleAutoChat();return}const numDreams=rand(1,Math.min(3,ids.length));const shuffled=[...ids].sort(()=>Math.random()-0.5);const selected=shuffled.slice(0,numDreams);for(const dreamId of selected){const reps=await getRandomReply(dreamId,rand(1,3),st.concat);const toGroup=Math.random()<0.5;for(const r of reps){await addMsg(toGroup?'group_chat':('chat_'+dreamId),dreamId,r);const preview=r.length>20?r.substring(0,20)+'...':r;await addDesktopNotif(toGroup?'group':'private',toGroup?'':dreamId,'',preview)}}scheduleAutoChat()},delay)}
+function scheduleAutoChat(){if(autoChatTimeout){clearTimeout(autoChatTimeout)}const st=getSettings();if(!st.autoChat)return;const delay=rand(1800000,3600000);autoChatTimeout=setTimeout(async()=>{if(Math.random()>0.3){scheduleAutoChat();return}const mem=await getMem();const ids=Object.keys(mem.dreams);if(ids.length===0){scheduleAutoChat();return}const numDreams=rand(1,Math.min(3,ids.length));const shuffled=[...ids].sort(()=>Math.random()-0.5);const selected=shuffled.slice(0,numDreams);for(const dreamId of selected){const reps=await getRandomReply(dreamId,1,st.concat);const toGroup=Math.random()<0.5;for(const r of reps){await addMsg(toGroup?'group_chat':('chat_'+dreamId),dreamId,r);const preview=r.length>20?r.substring(0,20)+'...':r;await addDesktopNotif(toGroup?'group':'private',toGroup?'':dreamId,'',preview)}}scheduleAutoChat()},delay)}
 
 // ========== 拍一拍库管理 ==========
 let patTab='poked',patSel=new Set(),patAll=false,patQ='';
@@ -2024,19 +1840,19 @@ async function dcSubmitCustom(){const question=document.getElementById('dcCustom
 async function dcTriggerChoiceReply(dreamId,toGroup){const opts=['是','否'];const chosen=opts[Math.floor(Math.random()*opts.length)];const classes={是:'yes',否:'no'};const symbols={是:'✓ ',否:'✕ '};let card=`<div class="msg-choice-cards"><div class="msg-choice-card ${classes[chosen]} chosen">${symbols[chosen]}${chosen}</div></div>`;const convId=toGroup?'group_chat':('chat_'+dreamId);await addMsg(convId,dreamId,card)}
 async function dcTriggerCustomReply(dreamId,opts,toGroup){const count=dcMultiMode?rand(2,Math.min(4,opts.length)):1;const shuffled=[...opts].sort(()=>Math.random()-0.5);const chosen=shuffled.slice(0,count);chosen.sort((a,b)=>opts.indexOf(a)-opts.indexOf(b));let result=dcMultiMode?chosen.join(' '):chosen[0];const convId=toGroup?'group_chat':('chat_'+dreamId);await addMsg(convId,dreamId,result)}
 
-// ========== 视讯 ==========
-let videoCallState='idle',videoCallMode='video',videoCallTimer=null,videoCallSeconds=0,videoCallHangupTimeout=null,videoCallAnswerTimeout=null,videoCallDreamId='',floatDragging=false,lastClickTime=0,floatTimerInterval=null;
-function miniVideoCall(){closeMiniPanel();getMem().then(mem=>{const ids=Object.keys(mem.dreams);if(ids.length===0){showToast('请先创建梦角');return}if(ids.length===1){startVideoCall('outgoing');return}let h='<div style="text-align:center;font-size:15px;letter-spacing:2px;margin-bottom:16px;color:var(--ink-gray);">选择拨打对象</div>';ids.forEach(id=>{const d=mem.dreams[id];const hn=d.nickname||d.name||id;h+=`<div class="dream-option" onclick="selectVideoCallTarget('${id}')"><span class="dot"></span>${escHtml(hn)}</div>`});document.getElementById('memModalPanel').innerHTML=h;document.getElementById('memModalOverlay').classList.add('show')})}
+// ========== 视讯（修复计时+私讯直接拨打） ==========
+let videoCallState='idle',videoCallMode='video',videoCallTimer=null,videoCallSeconds=0,videoCallStartTime=0,videoCallHangupTimeout=null,videoCallAnswerTimeout=null,videoCallDreamId='',floatDragging=false,lastClickTime=0,floatTimerInterval=null;
+function miniVideoCall(){closeMiniPanel();const isPrivate=document.getElementById('privateChatPage').style.display==='flex';if(isPrivate){startVideoCall('outgoing');return;}getMem().then(mem=>{const ids=Object.keys(mem.dreams);if(ids.length===0){showToast('请先创建梦角');return}let h='<div style="text-align:center;font-size:15px;letter-spacing:2px;margin-bottom:16px;color:var(--ink-gray);">选择拨打对象</div>';ids.forEach(id=>{const d=mem.dreams[id];const hn=d.nickname||d.name||id;h+=`<div class="dream-option" onclick="selectVideoCallTarget('${id}')"><span class="dot"></span>${escHtml(hn)}</div>`});document.getElementById('memModalPanel').innerHTML=h;document.getElementById('memModalOverlay').classList.add('show')});}
 async function selectVideoCallTarget(id){closeMemModal();const mem=await getMem();currentDreamId=id;mem.currentDreamId=id;await saveMem(mem);if(document.getElementById('privateChatPage').style.display==='flex')await updatePrivateChatUI();startVideoCall('outgoing')}
 async function startVideoCall(direction,dreamId){const mem=await getMem();let dream;if(direction==='outgoing'){dream=mem.dreams[currentDreamId];if(!dream){showToast('请先选择梦角');return}videoCallDreamId=currentDreamId}else{const ids=Object.keys(mem.dreams);if(ids.length===0)return;const id=dreamId||ids[Math.floor(Math.random()*ids.length)];dream=mem.dreams[id];videoCallDreamId=id;currentDreamId=id;await saveMem(mem)}if(!dream)return;const hn=dream.nickname||dream.name||'梦角';const avatarHtml=dream.avatar?`<img src="${dream.avatar}">`:hn.charAt(0);document.getElementById('videoAvatar').innerHTML=avatarHtml;document.getElementById('videoNickname').textContent=hn;if(direction==='outgoing'){videoCallState='calling';document.getElementById('videoStatus').textContent='等待接受邀请...';document.getElementById('videoTimer').textContent='';document.getElementById('videoBtnRow').innerHTML='<button class="video-btn" onclick="cancelVideoCall()" style="grid-column:1/-1;">✕ 取消</button>';document.getElementById('videoCallPanel').style.background='#E3F2FD';videoCallAnswerTimeout=setTimeout(()=>{if(videoCallState==='calling'){closeVideoCall()}},10000);const answerDelay=rand(1000,10000);setTimeout(()=>{if(videoCallState==='calling'){if(Math.random()<0.7){connectVideoCall()}else{closeVideoCall('busy')}}},answerDelay)}else{videoCallState='waiting';document.getElementById('videoStatus').textContent='正在请求视讯...';document.getElementById('videoTimer').textContent='';document.getElementById('videoBtnRow').innerHTML='<button class="video-btn video-btn-accept" onclick="connectVideoCall()">接听</button><button class="video-btn" onclick="closeVideoCall(\'reject\')">拒绝</button>';document.getElementById('videoCallPanel').style.background='#E3F2FD';videoCallAnswerTimeout=setTimeout(()=>{if(videoCallState==='waiting'){closeVideoCall('miss')}},30000)}document.getElementById('videoCallOverlay').classList.add('show');document.getElementById('videoAvatarWrap').classList.add('breathing');document.getElementById('floatCapsule').style.display='none';initVideoDrag()}
-function connectVideoCall(){if(videoCallAnswerTimeout){clearTimeout(videoCallAnswerTimeout);videoCallAnswerTimeout=null}videoCallState='connected';videoCallMode='video';videoCallSeconds=0;document.getElementById('videoStatus').textContent='';document.getElementById('videoTimer').textContent='00:00';document.getElementById('videoBtnRow').innerHTML='<button class="video-btn" onclick="setVideoMode(\'accompany\')">陪伴</button><button class="video-btn" onclick="setVideoMode(\'sleep\')">陪睡</button><button class="video-btn" onclick="minimizeVideoCall()">缩小</button><button class="video-btn" onclick="closeVideoCall()">挂断</button>';updateVideoCallPanelColor();videoCallTimer=setInterval(()=>{videoCallSeconds++;document.getElementById('videoTimer').textContent=formatCallTime(videoCallSeconds)},1000);videoCallHangupTimeout=setTimeout(()=>{if(videoCallState==='connected'){closeVideoCall()}},rand(10800000,28800000))}
+function connectVideoCall(){if(videoCallAnswerTimeout){clearTimeout(videoCallAnswerTimeout);videoCallAnswerTimeout=null}videoCallState='connected';videoCallMode='video';videoCallSeconds=0;videoCallStartTime=Date.now();document.getElementById('videoStatus').textContent='';document.getElementById('videoTimer').textContent='00:00';document.getElementById('videoBtnRow').innerHTML='<button class="video-btn" onclick="setVideoMode(\'accompany\')">陪伴</button><button class="video-btn" onclick="setVideoMode(\'sleep\')">陪睡</button><button class="video-btn" onclick="minimizeVideoCall()">缩小</button><button class="video-btn" onclick="closeVideoCall()">挂断</button>';updateVideoCallPanelColor();videoCallTimer=setInterval(()=>{videoCallSeconds=Math.floor((Date.now()-videoCallStartTime)/1000);document.getElementById('videoTimer').textContent=formatCallTime(videoCallSeconds);},1000);videoCallHangupTimeout=setTimeout(()=>{if(videoCallState==='connected'){closeVideoCall()}},rand(10800000,28800000))}
 function setVideoMode(mode){const now=Date.now();if(now-lastClickTime<400){videoCallMode='video';document.getElementById('videoStatus').textContent=''}else{videoCallMode=mode;if(mode==='accompany'){document.getElementById('videoStatus').textContent='陪伴中'}else if(mode==='sleep'){document.getElementById('videoStatus').textContent='陪睡中'}}lastClickTime=now;updateVideoCallPanelColor();updateFloatCapsuleColor()}
 function updateVideoCallPanelColor(){const panel=document.getElementById('videoCallPanel');if(videoCallMode==='accompany'){panel.style.background='#FFF0E6'}else if(videoCallMode==='sleep'){panel.style.background='#F3E8FF'}else{panel.style.background='#E3F2FD'}}
 function cancelVideoCall(){if(videoCallAnswerTimeout){clearTimeout(videoCallAnswerTimeout);videoCallAnswerTimeout=null}closeVideoCall()}
-function minimizeVideoCall(){document.getElementById('videoCallOverlay').classList.remove('show');getMem().then(mem=>{const dream=mem.dreams[videoCallDreamId];const hn=dream?(dream.nickname||dream.name||'梦角'):'';const avatarHtml=(dream&&dream.avatar)?`<img src="${dream.avatar}">`:hn.charAt(0);document.getElementById('floatAvatar').innerHTML=avatarHtml;document.getElementById('floatNickname').textContent=hn;document.getElementById('floatCapsule').style.display='flex';updateFloatCapsuleColor();if(floatTimerInterval)clearInterval(floatTimerInterval);floatTimerInterval=setInterval(()=>{document.getElementById('floatTimer').textContent=formatCallTime(videoCallSeconds)},1000)});document.getElementById('floatTimer').textContent=formatCallTime(videoCallSeconds)}
+function minimizeVideoCall(){document.getElementById('videoCallOverlay').classList.remove('show');getMem().then(mem=>{const dream=mem.dreams[videoCallDreamId];const hn=dream?(dream.nickname||dream.name||'梦角'):'';const avatarHtml=(dream&&dream.avatar)?`<img src="${dream.avatar}">`:hn.charAt(0);document.getElementById('floatAvatar').innerHTML=avatarHtml;document.getElementById('floatNickname').textContent=hn;document.getElementById('floatCapsule').style.display='flex';updateFloatCapsuleColor();if(floatTimerInterval)clearInterval(floatTimerInterval);floatTimerInterval=setInterval(()=>{document.getElementById('floatTimer').textContent=formatCallTime(videoCallSeconds);},1000)});document.getElementById('floatTimer').textContent=formatCallTime(videoCallSeconds)}
 function updateFloatCapsuleColor(){const cap=document.getElementById('floatCapsule');if(videoCallMode==='accompany'){cap.style.background='#FFF0E6'}else if(videoCallMode==='sleep'){cap.style.background='#F3E8FF'}else{cap.style.background='#E3F2FD'}}
 function hangupFromCapsule(){closeVideoCall()}
-async function closeVideoCall(reason){if(videoCallAnswerTimeout){clearTimeout(videoCallAnswerTimeout);videoCallAnswerTimeout=null}if(videoCallHangupTimeout){clearTimeout(videoCallHangupTimeout);videoCallHangupTimeout=null}if(videoCallTimer){clearInterval(videoCallTimer);videoCallTimer=null}if(floatTimerInterval){clearInterval(floatTimerInterval);floatTimerInterval=null}const duration=videoCallSeconds;const callDreamId=videoCallDreamId;const prevState=videoCallState;const modeLabel=getCallModeLabel();videoCallState='idle';videoCallMode='video';videoCallSeconds=0;document.getElementById('videoCallOverlay').classList.remove('show');document.getElementById('floatCapsule').style.display='none';document.getElementById('videoAvatarWrap').classList.remove('breathing');if(callDreamId){const phoneIcon='<span class="css-phone-icon"><span class="css-phone-body"></span></span>';let systemMsg='';if(reason==='miss'){systemMsg=phoneIcon+' 视讯未接'}else if(reason==='reject'){systemMsg=phoneIcon+' 视讯已拒绝'}else if(reason==='busy'){systemMsg=phoneIcon+' 视讯忙线未接'}else if(prevState==='calling'){systemMsg=phoneIcon+' 视讯未接'}else if(duration>0){systemMsg=phoneIcon+' '+modeLabel+'结束，通话时长 '+formatCallTime(duration)}if(systemMsg){const convId='chat_'+callDreamId;try{await addMsg(convId,'system',systemMsg);if(document.getElementById('privateChatPage').style.display==='flex'&&currentDreamId===callDreamId){appendPrivateSystemMsg(systemMsg,Date.now());const c=document.getElementById('privateChatMessages');c.scrollTop=c.scrollHeight}}catch(e){console.error('保存通话记录失败',e)}}}scheduleNextIncomingCall()}
+async function closeVideoCall(reason){if(videoCallAnswerTimeout){clearTimeout(videoCallAnswerTimeout);videoCallAnswerTimeout=null}if(videoCallHangupTimeout){clearTimeout(videoCallHangupTimeout);videoCallHangupTimeout=null}if(videoCallTimer){clearInterval(videoCallTimer);videoCallTimer=null}if(floatTimerInterval){clearInterval(floatTimerInterval);floatTimerInterval=null}const duration=videoCallSeconds;const callDreamId=videoCallDreamId;const prevState=videoCallState;const modeLabel=getCallModeLabel();videoCallState='idle';videoCallMode='video';videoCallSeconds=0;videoCallStartTime=0;document.getElementById('videoCallOverlay').classList.remove('show');document.getElementById('floatCapsule').style.display='none';document.getElementById('videoAvatarWrap').classList.remove('breathing');if(callDreamId){const phoneIcon='<span class="css-phone-icon"><span class="css-phone-body"></span></span>';let systemMsg='';if(reason==='miss'){systemMsg=phoneIcon+' 视讯未接'}else if(reason==='reject'){systemMsg=phoneIcon+' 视讯已拒绝'}else if(reason==='busy'){systemMsg=phoneIcon+' 视讯忙线未接'}else if(prevState==='calling'){systemMsg=phoneIcon+' 视讯未接'}else if(duration>0){systemMsg=phoneIcon+' '+modeLabel+'结束，通话时长 '+formatCallTime(duration)}if(systemMsg){const convId='chat_'+callDreamId;try{await addMsg(convId,'system',systemMsg);if(document.getElementById('privateChatPage').style.display==='flex'&&currentDreamId===callDreamId){appendPrivateSystemMsg(systemMsg,Date.now());const c=document.getElementById('privateChatMessages');c.scrollTop=c.scrollHeight}}catch(e){console.error('保存通话记录失败',e)}}}scheduleNextIncomingCall()}
 function initVideoDrag(){const panel=document.getElementById('videoCallPanel');let startX,startY,initLeft,initTop;panel.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;startY=e.touches[0].clientY;const rect=panel.getBoundingClientRect();initLeft=rect.left;initTop=rect.top;panel.style.transition='none'});panel.addEventListener('touchmove',e=>{if(!startX)return;e.preventDefault();const dx=e.touches[0].clientX-startX;const dy=e.touches[0].clientY-startY;panel.style.left=(initLeft+dx)+'px';panel.style.top=(initTop+dy)+'px';panel.style.transform='none'});panel.addEventListener('touchend',()=>{startX=null;panel.style.transition=''})}
 (function(){const cap=document.getElementById('floatCapsule');let startX,startY,initLeft,initTop;cap.addEventListener('touchstart',e=>{if(e.target.classList.contains('float-close'))return;floatDragging=true;const t=e.touches[0];startX=t.clientX;startY=t.clientY;initLeft=cap.offsetLeft;initTop=cap.offsetTop;cap.style.transition='none'});cap.addEventListener('touchmove',e=>{if(!floatDragging)return;e.preventDefault();const t=e.touches[0];cap.style.left=(initLeft+t.clientX-startX)+'px';cap.style.top=(initTop+t.clientY-startY)+'px';cap.style.right='auto';cap.style.bottom='auto'});cap.addEventListener('touchend',()=>{floatDragging=false;cap.style.transition=''});cap.addEventListener('click',e=>{if(floatDragging)return;if(e.target.classList.contains('float-close'))return;document.getElementById('videoCallOverlay').classList.add('show');document.getElementById('floatCapsule').style.display='none';if(floatTimerInterval){clearInterval(floatTimerInterval);floatTimerInterval=null}})})();
 let incomingTimeout=null;
@@ -2055,8 +1871,13 @@ async function delDream(id){showConfirm('删除梦角','确定删除此梦角吗
 async function renderMemMe(){memEdit='';const mem=await getMem();if(!tmpMA)tmpMA=mem.myAvatar||'';if(!tmpGB)tmpGB=mem.groupBg||'';const mah=mem.myAvatar?`<img src="${mem.myAvatar}">`:'✿';const gbs=mem.groupBg?`background-image:url(${mem.groupBg})`:'';let h='';h+=`<div class="mem-form-group"><div class="mem-form-label">我的模样·头像</div><div class="mem-avatar-area"><div class="mem-avatar-preview" id="memMyAvatarPreview">${mah}</div><span class="mem-avatar-change" onclick="uploadMA('my')">更换头像</span></div></div>`;h+=`<div class="mem-form-group"><div class="mem-form-label">羁绊之名</div></div>`;h+=`<div class="mem-form-group"><div class="mem-form-label">我的名字</div><input type="text" id="memMyName" value="${escHtml(mem.myName)}" placeholder="输入你的名字"></div>`;h+=`<div class="mem-form-group"><div class="mem-form-label">群讯聊天背景</div><div class="mem-bg-preview" id="memGroupBgPreview" style="${gbs}">${mem.groupBg?'':'预览图'}</div><span class="mem-bg-change" onclick="uploadMB('group')">更换背景（全屏）</span></div>`;h+=`<div class="mem-save-btn" onclick="saveMe()">铭刻于心底</div>`;document.getElementById('memMainContent').innerHTML=h}
 async function saveMe(){const mn=document.getElementById('memMyName').value.trim();const mem=await getMem();mem.myName=mn||mem.myName;if(tmpMA)mem.myAvatar=tmpMA;if(tmpGB)mem.groupBg=tmpGB;tmpMA='';tmpGB='';await saveMem(mem);if(document.getElementById('privateChatPage').style.display==='flex')await updatePrivateChatUI();if(document.getElementById('groupChatPage').style.display==='flex')await updateGroupChatUI();await renderMemMe()}
 
-// ========== 初始化 ==========
-async function init(){loadMode();try{await initDB();console.log(APP_NAME+' '+APP_VERSION)}catch(e){console.error(e);showConfirm('初始化失败','数据库初始化失败，请清除浏览器数据后重试。',null,false,false)}try{const mem=await getMem();if(mem.currentDreamId&&mem.dreams[mem.currentDreamId])currentDreamId=mem.currentDreamId;else{const ids=Object.keys(mem.dreams);if(ids.length>0){currentDreamId=ids[0];mem.currentDreamId=currentDreamId;await saveMem(mem)}}}catch(e){console.error(e)}scheduleNextIncomingCall();scheduleAutoChat();scheduleAutoLetter();updateTotalDataSize();loadVinylBg();await applyPersonal();cleanOldNoticeCache();updateDesktopTimeCard();renderDesktopNotifs();await checkPendingLetterReplies();const stData=await getST();if(!stData.weather||stData.weather.length===0){stData.weather=['晴天','雨天','多云','夜晚','星空','彩虹','起风'];await saveST(stData);}if(!stData.mood||stData.mood.length===0){stData.mood=['开心','想你','平静','元气','困困','兴奋','低落','烦躁','温柔','期待'];await saveST(stData);}if(!stData.daily||stData.daily.length===0){stData.daily=['在晒太阳','在看书','在听歌','在发呆','在睡觉','在喝咖啡','在散步','在画画','在工作','在想你'];await saveST(stData);}const noticeData=await getDailyNoticeData();if(noticeData){renderDailyNotice(noticeData,'notice');}if(!getNextNoteTime())calcNextNoteTime();if(!getNextDiaryTime())calcNextDiaryTime();setInterval(()=>{updateDesktopTimeCard();checkNoteTrigger();checkDiaryTrigger();checkLetterReplyTrigger();},1000);}
+// ========== 初始化（含每日清理） ==========
+async function init(){loadMode();try{await initDB();console.log(APP_NAME+' '+APP_VERSION)}catch(e){console.error(e);showConfirm('初始化失败','数据库初始化失败，请清除浏览器数据后重试。',null,false,false)}try{const mem=await getMem();if(mem.currentDreamId&&mem.dreams[mem.currentDreamId])currentDreamId=mem.currentDreamId;else{const ids=Object.keys(mem.dreams);if(ids.length>0){currentDreamId=ids[0];mem.currentDreamId=currentDreamId;await saveMem(mem)}}}catch(e){console.error(e)}scheduleNextIncomingCall();scheduleAutoChat();scheduleAutoLetter();updateTotalDataSize();loadVinylBg();await applyPersonal();cleanOldNoticeCache();updateDesktopTimeCard();renderDesktopNotifs();await checkPendingLetterReplies();const stData=await getST();if(!stData.weather||stData.weather.length===0){stData.weather=['晴天','雨天','多云','夜晚','星空','彩虹','起风'];await saveST(stData);}if(!stData.mood||stData.mood.length===0){stData.mood=['开心','想你','平静','元气','困困','兴奋','低落','烦躁','温柔','期待'];await saveST(stData);}if(!stData.daily||stData.daily.length===0){stData.daily=['在晒太阳','在看书','在听歌','在发呆','在睡觉','在喝咖啡','在散步','在画画','在工作','在想你'];await saveST(stData);}const noticeData=await getDailyNoticeData();if(noticeData){renderDailyNotice(noticeData,'notice');}if(!getNextNoteTime())calcNextNoteTime();if(!getNextDiaryTime())calcNextDiaryTime();
+  let lastCleanDay='';
+  setInterval(()=>{updateDesktopTimeCard();checkNoteTrigger();checkDiaryTrigger();checkLetterReplyTrigger();
+    const today=getTodayKey();if(today!==lastCleanDay){lastCleanDay=today;dailyCleanMessages();}
+  },1000);
+}
 init();
 </script>
 </body>
